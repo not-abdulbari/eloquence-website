@@ -1,4 +1,43 @@
 import type React from "react"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Eloquence '25 | CAHCET National Tech Symposium",
+  description: "Official website for Eloquence '25, the National Tech Symposium at C. Abdul Hakeem College of Engineering and Technology.",
+  keywords: [
+    "symposium",
+    "cahcet",
+    "cachet",
+    "cahcet symposium",
+    "cahcet eloquence",
+    "eloquence cahcet",
+    "technical symposium",
+    "college",
+    "vellore",
+    "melvisharam",
+    "engineering",
+    "technology",
+    "national event",
+    "student event",
+    "coding",
+    "paper presentation",
+    "quiz",
+    "gaming",
+    "design",
+    "hackathon",
+    "CAHCET symposium",
+    "Eloquence 25",
+    "C Abdul Hakeem College",
+    "Ranipet",
+    "Tamil Nadu",
+    "tech fest",
+    "college fest",
+    "India symposium"
+  ],
+  other: {
+    "google-site-verification": "4wIKTurTCy2Kel_uAr6HIcb-vWJtN0m3lWIZNeU-B_A"
+  }
+}
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import EventsIconsStrip from "@/components/sections/events-icons-strip"
