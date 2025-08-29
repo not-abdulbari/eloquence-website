@@ -1,3 +1,10 @@
+// Required for static export: generateStaticParams
+import siteData from "../../../public/data/site-data.json";
+
+export function generateStaticParams() {
+  // siteData.events is an array of event objects with id
+  return (siteData.events as { id: string }[]).map((event) => ({ id: event.id }));
+}
 "use client"
 
 import { useParams } from "next/navigation"
