@@ -1,30 +1,106 @@
-# College event website
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+# Eloquence '25 – National Tech Symposium Website
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/3085744-1701s-projects/v0-college-event-website)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/ppKOIKF5vU7)
+Official website for Eloquence '25, a national-level technical symposium organized by the Department of Computer Science and Engineering, C. Abdul Hakeem College of Engineering and Technology.
 
-## Overview
+---
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## 🚀 Quick Start
 
-## Deployment
+### 1. Local Development
 
-Your project is live at:
+1. **Install dependencies** (using [pnpm](https://pnpm.io/)):
+	```sh
+	pnpm install
+	```
+2. **Run the development server:**
+	```sh
+	pnpm dev
+	```
+	The app will be available at [http://localhost:3000](http://localhost:3000).
 
-**[https://vercel.com/3085744-1701s-projects/v0-college-event-website](https://vercel.com/3085744-1701s-projects/v0-college-event-website)**
+### 2. Production Build (for Cloudflare Pages)
 
-## Build your app
+Cloudflare Pages supports Next.js static export. To deploy:
 
-Continue building your app on:
+1. **Build the app:**
+	```sh
+	pnpm build
+	```
+2. **Export static site:**
+	```sh
+	pnpm next export
+	```
+	This will output static files to the `out/` directory.
+3. **Deploy to Cloudflare Pages:**
+	- Connect your GitHub repo to Cloudflare Pages.
+	- Set the build command to `pnpm build && pnpm next export`.
+	- Set the output directory to `out`.
 
-**[https://v0.app/chat/projects/ppKOIKF5vU7](https://v0.app/chat/projects/ppKOIKF5vU7)**
+---
 
-## How It Works
+## 🌟 Features
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+- **Modern Next.js App Router** (React 19, TypeScript)
+- **Fully Responsive Design** for all devices
+- **Custom Fonts & Branding** (Decaydence, Monotype Corsiva, Garet, Chopsic, Maximum Voltage)
+- **Dynamic Event Listing** (Tech & Non-Tech events, fetched from JSON)
+- **Event Details Pages** (with rules, registration, and info)
+- **Live Countdown Timer** to event start
+- **Patrons & Committee Pages**
+- **Sponsors Section**
+- **Interactive Navbar** (mobile hamburger, theme toggle)
+- **Animated Background Grid & Floating Icons**
+- **Accessible, Mobile-First UI**
+- **Dark/Light Theme Toggle**
+- **Cloudflare Pages Ready** (static export)
+
+---
+
+## 📅 Event List (2025)
+
+### Tech Events
+- Paper Presentation
+- Aptitude & Coding
+- Tech Quiz
+- Web Designing
+
+### Non-Tech Events
+- CWF (Fun Challenge)
+- Art Competition
+- Connection (Word Game)
+- Memory Game
+- BGMI & Free Fire (Esports)
+- Short Film
+
+---
+
+## 🛠️ Project Structure
+
+- `app/` – Next.js app directory (pages, routes)
+- `components/` – Reusable UI and section components
+- `public/data/site-data.json` – Event and site data
+- `styles/` – Tailwind and global CSS
+
+---
+
+## ✅ Future Improvements / Checklist
+
+- [ ] Add event registration status (open/closed)
+- [ ] Add photo gallery and past event highlights
+- [ ] Add FAQ section
+- [ ] Add event coordinators contact info
+- [ ] Add event schedule/timetable page
+- [ ] Add results/leaderboard after event
+- [ ] Add sponsor logos and links dynamically from data
+- [ ] Improve accessibility (a11y audit)
+- [ ] Add more animations/interactivity
+- [ ] Add testimonials/feedback section
+- [ ] Add multi-language support
+- [ ] Add admin panel for event management
+
+---
+
+## 📄 License
+
+MIT. See [LICENSE](LICENSE) for details.
