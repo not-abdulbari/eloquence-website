@@ -1,0 +1,47 @@
+import type React from "react"
+import type { Metadata } from "next"
+import { GeistSans } from "geist/font/sans"
+import { Lilita_One } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import "./globals.css"
+import SiteNavbar from "@/components/site-navbar"
+import SiteFooter from "@/components/site-footer"
+import { Suspense } from "react"
+import { ThemeProvider } from "@/components/theme-provider"
+import BlurBubbles from "@/components/blur-bubbles"
+
+const display = Lilita_One({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-display",
+})
+
+export const metadata: Metadata = {
+  title: "Eloquence 25 - A National level Technical Symposium",
+  description: "Symposium website for C Abdul Hakeem College of Engineering and Technology's Department of Computer Science and Engineering.",
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`font-sans ${GeistSans.variable} ${display.variable} antialiased`}
+    >
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <BlurBubbles />
+          <Suspense fallback={<div>Loading...</div>}>
+            <SiteNavbar />
+            {/* Spacer for fixed navbar to avoid overlap */}
+            <div aria-hidden className="h-16 md:h-20"></div>
+            {children}
+            <SiteFooter />
+          </Suspense>
+        </ThemeProvider>
+        <Analytics />
+      </body>
+    </html>
+  )
+}

@@ -1,0 +1,145 @@
+{
+  "college": "C Abdul Hakeem College of Engineering and Technology",
+  "department": "Department of Computer Science Engineering",
+  "symposium": "Eloquence'25",
+  "googleFormUrl": "https://forms.gle/your-google-form-id",
+  "location": {
+    "name": "CAHCET, Ranipet",
+    "address": "C Abdul Hakeem College of Engineering and Technology, Ranipet, Tamil Nadu",
+    "mapUrl": "https://maps.google.com/maps?q=C%20Abdul%20Hakeem%20College%20of%20Engineering%20and%20Technology&t=&z=13&ie=UTF8&iwloc=&output=embed"
+  },
+  "sponsors": [
+    { "name": "Alpha Tech", "logo": "/placeholder.svg?height=40&width=120", "url": "https://example.com" },
+    { "name": "CloudMart", "logo": "/placeholder.svg?height=40&width=120", "url": "https://example.com" },
+    { "name": "DevWorks", "logo": "/placeholder.svg?height=40&width=120", "url": "https://example.com" }
+  ],
+  "events": [
+    {
+      "id": "pp",
+      "title": "Paper Presentation",
+      "type": "tech",
+      "short": "Present cutting-edge research.",
+      "venue": "Seminar Hall A",
+      "timing": "10:00 AM – 12:30 PM",
+      "registrationFee": "₹150 per team",
+      "members": "2–3 per team",
+      "theme": "AI • Data • Security • Green Tech",
+      "rules": [
+        "Abstract (max 300 words) to be submitted during registration.",
+        "Presentation time: 7 mins + 3 mins Q&A.",
+        "Original work only. Plagiarism leads to disqualification."
+      ]
+    },
+    {
+      "id": "ac",
+      "title": "Aptitude & Coding",
+      "type": "tech",
+      "short": "Speed rounds in logic and code.",
+      "venue": "Lab 1",
+      "timing": "11:00 AM – 1:00 PM",
+      "registrationFee": "₹100 per head",
+      "members": "Solo",
+      "rules": [
+        "2 rounds: Aptitude MCQ then coding challenge.",
+        "Languages allowed: C/C++/Java/Python.",
+        "Malpractice leads to disqualification."
+      ]
+    },
+    {
+      "id": "tq",
+      "title": "Tech Quiz",
+      "type": "tech",
+      "short": "Test your tech IQ.",
+      "venue": "Seminar Hall B",
+      "timing": "1:30 PM – 3:00 PM",
+      "registrationFee": "₹100 per team",
+      "members": "2 per team",
+      "rules": ["Prelims followed by finals.", "No use of electronic devices.", "Quizmaster's decision is final."]
+    },
+    {
+      "id": "wd",
+      "title": "Web Designing",
+      "type": "tech",
+      "short": "Design a responsive web UI.",
+      "venue": "Lab 2",
+      "timing": "10:30 AM – 12:30 PM",
+      "registrationFee": "₹150 per team",
+      "members": "2 per team",
+      "rules": [
+        "Assets and topic will be provided.",
+        "No external templates allowed.",
+        "Judged on usability, accessibility, and aesthetics."
+      ]
+    },
+    {
+      "id": "cwf",
+      "title": "CWF",
+      "type": "non-tech",
+      "short": "Fun challenge event.",
+      "venue": "Open Arena",
+      "timing": "2:00 PM – 3:30 PM",
+      "registrationFee": "₹50 per head",
+      "members": "2–4 per team",
+      "rules": ["On-spot rules will be briefed.", "Judge's decision is final."]
+    },
+    {
+      "id": "art",
+      "title": "Art Competition",
+      "type": "non-tech",
+      "short": "Theme-based art.",
+      "venue": "Drawing Hall",
+      "timing": "11:00 AM – 1:00 PM",
+      "registrationFee": "₹80 per head",
+      "members": "Solo",
+      "rules": ["Basic materials to be brought by participants.", "Topic announced on-spot.", "Time limit 90 minutes."]
+    },
+    {
+      "id": "conn",
+      "title": "Connection",
+      "type": "non-tech",
+      "short": "Guess the word from clues.",
+      "venue": "Room 212",
+      "timing": "12:00 PM – 1:00 PM",
+      "registrationFee": "₹60 per team",
+      "members": "2 per team",
+      "rules": ["Multiple rounds with eliminations.", "No mobile phones allowed."]
+    },
+    {
+      "id": "mem",
+      "title": "Memory Game",
+      "type": "non-tech",
+      "short": "Test your memory skills.",
+      "venue": "Room 214",
+      "timing": "2:30 PM – 3:30 PM",
+      "registrationFee": "₹50 per head",
+      "members": "Solo",
+      "rules": ["Single attempt per participant.", "Top scores advance to finals."]
+    },
+    {
+      "id": "bgmi",
+      "title": "BGMI & Free Fire",
+      "type": "non-tech",
+      "short": "Esports showdown.",
+      "venue": "Auditorium",
+      "timing": "11:00 AM – 3:00 PM",
+      "registrationFee": "₹300 per squad",
+      "members": "Squad",
+      "rules": ["Follow tournament rulebook.", "Bring your own devices.", "Use of hacks/cheats leads to immediate ban."]
+    },
+    {
+      "id": "sf",
+      "title": "Short Film",
+      "type": "non-tech",
+      "short": "Create and showcase.",
+      "venue": "Auditorium",
+      "timing": "3:30 PM – 5:00 PM",
+      "registrationFee": "₹200 per team",
+      "members": "2–5 per team",
+      "rules": [
+        "Duration: 3–7 minutes.",
+        "Original content only, no copyright issues.",
+        "Judging based on story, cinematography, and sound."
+      ]
+    }
+  ]
+}
