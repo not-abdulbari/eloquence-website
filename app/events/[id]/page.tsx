@@ -1,3 +1,4 @@
+"use client";
 // Required for static export: generateStaticParams
 import siteData from "../../../public/data/site-data.json";
 
