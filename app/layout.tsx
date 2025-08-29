@@ -29,6 +29,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
       className={`font-sans ${GeistSans.variable} ${display.variable} antialiased`}
     >
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        {/* Open Graph and Twitter Card for social sharing preview */}
+        <meta property="og:title" content="Eloquence 25 - A National level Technical Symposium" />
+        <meta property="og:description" content="Symposium website for C Abdul Hakeem College of Engineering and Technology's Department of Computer Science and Engineering." />
+        <meta property="og:image" content="/image.png" />
+        <meta property="og:image:alt" content="Eloquence 25" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://eloquence.pages.dev/" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Eloquence 25 - A National level Technical Symposium" />
+        <meta name="twitter:description" content="Symposium website for C Abdul Hakeem College of Engineering and Technology's Department of Computer Science and Engineering." />
+        <meta name="twitter:image" content="/image.png" />
+      </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <BlurBubbles />
