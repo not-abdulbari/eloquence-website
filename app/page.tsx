@@ -24,7 +24,7 @@ export default async function HomePage() {
   <section className="relative mx-auto w-full max-w-5xl px-[2vw] sm:px-4 py-[6vh] sm:py-8 md:py-12 lg:py-16 xl:py-20 text-center">
         <BackgroundGrid />
         <FloatingIcons variant="hero" />
-        <div className="relative z-10 flex flex-col items-center gap-2 sm:gap-3">
+        <div className="relative flex flex-col items-center gap-2 sm:gap-3">
           <div className="flex flex-col items-center gap-2 sm:gap-3">
             <img
               src="/cahcet-logo.png"
@@ -42,7 +42,7 @@ export default async function HomePage() {
             style={{
               fontFamily: 'Decaydence',
               letterSpacing: '0.07em',
-              fontSize: '7vw',
+              fontSize: 'clamp(20px, 7vw, 72px)',
               maxWidth: '100vw',
               lineHeight: 1.1,
             }}
