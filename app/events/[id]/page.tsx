@@ -1,108 +1,34 @@
-"use client";
-// Required for static export: generateStaticParams
-import siteData from "../../../public/data/site-data.json";
 
-export function generateStaticParams() {
-  // siteData.events is an array of event objects with id
-  return (siteData.events as { id: string }[]).map((event) => ({ id: event.id }));
-}
-"use client"
+import fs from "fs";
+import path from "path";
+import EventDetailClient from "./EventDetailClient";
 
-import { useParams } from "next/navigation"
-import useSWR from "swr"
-import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 
-type EventDetail = {
-  id: string
-  title: string
-  type: "TECH" | "NON-TECH"
-  venue: string
-  timing: string
-  registrationFee: string
-  members: string
-  theme?: string
-  rules: string[]
+export async function generateStaticParams() {
+  const filePath = path.join(process.cwd(), "public", "data", "site-data.json");
+  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  return data.events.map((e: { id: string }) => ({ id: e.id }));
 }
 
-type SiteData = {
-  events: EventDetail[]
-  googleFormUrl: string
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const filePath = path.join(process.cwd(), "public", "data", "site-data.json");
+  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  const event = data.events.find((e: { id: string }) => e.id === params.id);
+  return {
+    title: event ? `${event.title} | Eloquence '25` : "Event | Eloquence '25",
+    description: event ? `Details for ${event.title} at Eloquence '25.` : "Event details."
+  };
 }
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
-
-export default function EventDetailPage() {
-  const params = useParams<{ id: string }>()
-  const { data } = useSWR<SiteData>("/data/site-data.json", fetcher)
-  const event = data?.events.find((e) => e.id === params.id)
-
+export default async function EventDetailPage({ params }: { params: { id: string } }) {
+  const filePath = path.join(process.cwd(), "public", "data", "site-data.json");
+  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  const event = data.events.find((e: { id: string }) => e.id === params.id);
+  const googleFormUrl = data.googleFormUrl;
   if (!event) {
-    return (
-      <main className="mx-auto max-w-6xl px-4 py-12">
-        <p className="text-muted-foreground">Loading event...</p>
-      </main>
-    )
+    return <main className="mx-auto max-w-6xl px-4 py-12"><p className="text-muted-foreground">Event not found.</p></main>;
   }
-
-  return (
-    <main className="mx-auto max-w-6xl px-4 py-12">
-      <div className="mb-6 flex items-center gap-3">
-        <h1 className="text-3xl font-bold">{event.title}</h1>
-        <Badge variant={event.type === "TECH" ? "outline" : "secondary"}>{event.type}</Badge>
-      </div>
-
-      <div className="grid gap-8 md:grid-cols-3">
-        <div className="space-y-4 md:col-span-2">
-          <h2 className="text-xl font-semibold">Overview</h2>
-          <ul className="text-sm text-muted-foreground">
-            <li>
-              <strong className="text-foreground">Venue:</strong> {event.venue}
-            </li>
-            <li>
-              <strong className="text-foreground">Timing:</strong> {event.timing}
-            </li>
-            <li>
-              <strong className="text-foreground">Registration Fee:</strong> {event.registrationFee}
-            </li>
-            <li>
-              <strong className="text-foreground">Members:</strong> {event.members}
-            </li>
-            {event.theme ? (
-              <li>
-                <strong className="text-foreground">Theme:</strong> {event.theme}
-              </li>
-            ) : null}
-          </ul>
-
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Rules</h3>
-            <ol className="list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
-              {event.rules.map((r, i) => (
-                <li key={i}>{r}</li>
-              ))}
-            </ol>
-          </div>
-        </div>
-
-        <aside className="space-y-4">
-          <Link
-            href={`${data?.googleFormUrl}?event=${encodeURIComponent(event.title)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button className="w-full rounded-full bg-blue-600 text-white hover:bg-blue-700">
-              Register for {event.title}
-            </Button>
-          </Link>
-          <Link href="/events">
-            <Button variant="outline" className="w-full rounded-full bg-transparent">
-              Back to Events
-            </Button>
-          </Link>
-        </aside>
-      </div>
-    </main>
-  )
+  return <EventDetailClient event={event} googleFormUrl={googleFormUrl} />;
 }
+
+
