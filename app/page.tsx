@@ -71,12 +71,12 @@ export default async function HomePage() {
       className="h-20 w-20 sm:h-20 sm:w-20 md:h-40 md:w-40 rounded-md border bg-card p-1 mt-[-0.25rem]"
     />
   
-            <div className="text-base sm:text-lg md:text-xl font-bold text-center" style={{ fontFamily: 'sans-serif' ,fontSize: '1.5em' }}>
+            <div className="text-base sm:text-lg md:text-xl font-bold text-center mb-2" style={{ fontFamily: 'sans-serif' ,fontSize: '1.5em' }}>
               C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
             </div>
           </div>
           <p
-  className="text-nowrap font-medium text-muted-foreground"
+  className="text-nowrap font-medium text-muted-foreground mb-2"
   style={{
     fontFamily: 'sans-serif',
     fontSize: 'clamp(1rem, 2vw, 1.5em)',
@@ -87,7 +87,7 @@ export default async function HomePage() {
 </p>
 
 <p
-  className="text-nowrap font-medium text-muted-foreground"
+  className="text-nowrap font-medium text-muted-foreground mb-2"
   style={{
     fontFamily: 'Monotype Corsiva, cursive',
     fontSize: 'clamp(1rem, 1.8vw, 1.3em)',
@@ -98,7 +98,7 @@ export default async function HomePage() {
 </p>
          
          <h1
-            className="text-balance font-arial font-black leading-tight tracking-tight whitespace-nowrap"
+            className="text-balance font-arial font-black leading-tight tracking-tight whitespace-nowrap mb-2"
             style={{
               fontFamily: 'Decaydence',
               letterSpacing: '0.07em',
