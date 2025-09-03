@@ -122,8 +122,8 @@ export default async function HomePage() {
   }}
 >
   A National Level Technical Symposium
-</p><CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs" />
-          <p className="text-xs text-muted-foreground">01 November 2025 • 9:00 AM IST</p>
+</p><CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs mb-2" />
+          <p className="text-xs text-muted-foreground">November 01, 2025 • 9:00 AM IST</p>
           {/* CTAs */}
           <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 w-full" id="register">
             <Link href="/register">
