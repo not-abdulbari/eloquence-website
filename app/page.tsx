@@ -122,11 +122,11 @@ export default async function HomePage() {
 </p><CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs" />
           <p className="text-xs text-muted-foreground">01 November 2025 • 9:00 AM IST</p>
           {/* CTAs */}
-          <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 mt-[-5rem] w-full" id="register">
+          <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 w-full" id="register">
             <Link href="/register">
   <Button
     variant="glass"
-    className="rounded-full w-full sm:w-auto px-6 py-3 text-base sm:text-lg mt-[-10rem]"
+    className="rounded-full w-full sm:w-auto px-6 py-3 text-base sm:text-lg"
   >
     Register Now
   </Button>
@@ -135,7 +135,7 @@ export default async function HomePage() {
 <Link href="/events">
   <Button
     variant="glass"
-    className="rounded-full w-full sm:w-auto px-6 py-3 text-base sm:text-lg mt-[-10rem]"
+    className="rounded-full w-full sm:w-auto px-6 py-3 text-base sm:text-lg"
   >
     View Events
   </Button>
