@@ -63,7 +63,10 @@ export default async function HomePage() {
   <section className="relative mx-auto w-full max-w-5xl px-[2vw] sm:px-4 py-[6vh] sm:py-8 md:py-12 lg:py-16 xl:py-20 text-center">
         <BackgroundGrid />
         <FloatingIcons variant="hero" />
-<div className="relative flex flex-col items-center gap-0 sm:gap-1 mt-[-5rem]">
+<div
+  className="relative flex flex-col items-center gap-0 sm:gap-1"
+  style={{ marginTop: 'clamp(0rem, -2vw, -5rem)' }}
+>
   <div className="flex flex-col items-center gap-0 sm:gap-0">
     <img
       src="/cahcet-logo.png"
