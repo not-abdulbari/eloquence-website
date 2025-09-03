@@ -153,7 +153,7 @@ export default async function HomePage() {
         <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
           <div>
             <h2 className="text-2xl sm:text-3xl font-semibold">About the Event</h2>
-            <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-muted-foreground">
+            <p className="mt-2 sm:mt-3 md:text-base text-muted-foreground">
               Dive into coding challenges, paper presentations, design, quizzes, gaming and more. Eloquence&apos;25
               brings students from across India to learn, build, and have fun.<br />
               <br />
