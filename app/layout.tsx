@@ -18,7 +18,7 @@ const display = Lilita_One({
 })
 
 export const metadata: Metadata = {
-  title: "Eloquence 25 - A National level Technical Symposium",
+  title: "Eloquence'25 - A National level Technical Symposium",
   description: "Symposium website for C Abdul Hakeem College of Engineering and Technology's Department of Computer Science and Engineering.",
 }
 

@@ -10,7 +10,7 @@ export default function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold"style={{ fontFamily: 'Decaydence', letterSpacing: '0.01em' }}>
-              Eloquence &apos;25</h3>
+              Eloquence&apos;25</h3>
             <p className="text-sm text-muted-foreground text-pretty">
               National-level technical symposium by CSE, C Abdul Hakeem College of Engineering &amp; Technology.
             </p>
@@ -59,7 +59,7 @@ export default function SiteFooter() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/events/cwf" className="hover:text-foreground">
-                  CWF
+                  Cooking Without Fire
                 </Link>
               </li>
               <li>
@@ -73,18 +73,18 @@ export default function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/events/mem" className="hover:text-foreground">
-                  Memory Game
-                </Link>
-              </li>
-              <li>
-                <Link href="/events/bgmi" className="hover:text-foreground">
+                <Link href="/events/esp" className="hover:text-foreground">
                   BGMI & FF
                 </Link>
               </li>
               <li>
                 <Link href="/events/sf" className="hover:text-foreground">
                   Short Film
+                </Link>
+              </li>
+              <li>
+                <Link href="/events/th" className="hover:text-foreground">
+                  Treasure Hunt
                 </Link>
               </li>
             </ul>

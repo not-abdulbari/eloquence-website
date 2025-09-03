@@ -58,9 +58,9 @@
     },
     {
       "id": "wd",
-      "title": "Web Designing",
+      "title": "Mini Hackathon",
       "type": "tech",
-      "short": "Design a responsive web UI.",
+      "short": "Design a responsive web UI (Web Development).",
       "venue": "Lab 2",
       "timing": "10:30 AM – 12:30 PM",
       "registrationFee": "₹150 per team",
@@ -73,7 +73,7 @@
     },
     {
       "id": "cwf",
-      "title": "CWF",
+      "title": "Cooking Without Fire",
       "type": "non-tech",
       "short": "Fun challenge event.",
       "venue": "Open Arena",
@@ -84,9 +84,9 @@
     },
     {
       "id": "art",
-      "title": "Art Competition",
-      "type": "non-tech",
-      "short": "Theme-based art.",
+      "title": "Poster Designing",
+      "type": "tech",
+      "short": "Theme based.",
       "venue": "Drawing Hall",
       "timing": "11:00 AM – 1:00 PM",
       "registrationFee": "₹80 per head",
@@ -104,19 +104,9 @@
       "members": "2 per team",
       "rules": ["Multiple rounds with eliminations.", "No mobile phones allowed."]
     },
+   
     {
-      "id": "mem",
-      "title": "Memory Game",
-      "type": "non-tech",
-      "short": "Test your memory skills.",
-      "venue": "Room 214",
-      "timing": "2:30 PM – 3:30 PM",
-      "registrationFee": "₹50 per head",
-      "members": "Solo",
-      "rules": ["Single attempt per participant.", "Top scores advance to finals."]
-    },
-    {
-      "id": "bgmi",
+      "id": "esp",
       "title": "BGMI & Free Fire",
       "type": "non-tech",
       "short": "Esports showdown.",
@@ -128,10 +118,25 @@
     },
     {
       "id": "sf",
-      "title": "Short Film",
+      "title": "Reels & Photography",
       "type": "non-tech",
-      "short": "Create and showcase.",
+      "short": "Capture,shoot and showcase",
       "venue": "Auditorium",
+      "timing": "3:30 PM – 5:00 PM",
+      "registrationFee": "₹200 per team",
+      "members": "2–5 per team",
+      "rules": [
+        "Duration: 3–7 minutes.",
+        "Original content only, no copyright issues.",
+        "Judging based on story, cinematography, and sound."
+      ]
+    },
+     {
+      "id": "th",
+      "title": "Treasure Hunt",
+      "type": "non-tech",
+      "short": "step out and explore",
+      "venue": "college campus",
       "timing": "3:30 PM – 5:00 PM",
       "registrationFee": "₹200 per team",
       "members": "2–5 per team",

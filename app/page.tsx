@@ -2,8 +2,8 @@ import type React from "react"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Eloquence '25 | CAHCET National Tech Symposium",
-  description: "Official website for Eloquence '25, the National Tech Symposium at C. Abdul Hakeem College of Engineering and Technology.",
+  title: "Eloquence'25 | CAHCET National Tech Symposium",
+  description: "Official website for Eloquence'25, the National Tech Symposium at C. Abdul Hakeem College of Engineering and Technology.",
   keywords: [
     "symposium",
     "cahcet",
@@ -50,7 +50,7 @@ import { Utensils, Code2, Globe, HelpCircle } from "lucide-react"
 
 function IconPill({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-xl border bg-card/60 px-3 py-2 backdrop-blur supports-[backdrop-filter]:bg-card/50">
+    <div className="inline-flex items-center gap-1 rounded-xl border bg-card/60 px-3 py-2 backdrop-blur supports-[backdrop-filter]:bg-card/50">
       {children}
     </div>
   )
@@ -63,60 +63,102 @@ export default async function HomePage() {
   <section className="relative mx-auto w-full max-w-5xl px-[2vw] sm:px-4 py-[6vh] sm:py-8 md:py-12 lg:py-16 xl:py-20 text-center">
         <BackgroundGrid />
         <FloatingIcons variant="hero" />
-        <div className="relative flex flex-col items-center gap-2 sm:gap-3">
-          <div className="flex flex-col items-center gap-2 sm:gap-3">
-            <img
-              src="/cahcet-logo.png"
-              alt="CAHCET College logo"
-              className="h-24 w-24 sm:h-32 sm:w-32 md:h-40 md:w-40 rounded-md border bg-card p-1"
-            />
-            <div className="text-base sm:text-lg md:text-xl font-bold text-center" style={{ fontFamily: 'sans-serif' }}>
+<div className="relative flex flex-col items-center gap-0 sm:gap-1 mt-[-5rem]">
+  <div className="flex flex-col items-center gap-0 sm:gap-0">
+    <img
+      src="/cahcet-logo.png"
+      alt="CAHCET College logo"
+      className="h-20 w-20 sm:h-20 sm:w-20 md:h-40 md:w-40 rounded-md border bg-card p-1 mt-[-0.25rem]"
+    />
+  
+            <div className="text-base sm:text-lg md:text-xl font-bold text-center" style={{ fontFamily: 'sans-serif' ,fontSize: '1.5em' }}>
               C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
             </div>
           </div>
-          <p className="text-xs sm:text-sm font-medium text-muted-foreground">Department of Computer Science and Engineering</p>
-          <p className="text-xs sm:text-sm font-medium text-muted-foreground" style={{ fontFamily: 'Monotype Corsiva, cursive' }}>proudly presents</p>
-          <h1
+          <p
+  className="text-nowrap font-medium text-muted-foreground"
+  style={{
+    fontFamily: 'sans-serif',
+    fontSize: 'clamp(1rem, 2vw, 1.5em)',
+    lineHeight: '1.2'
+  }}
+>
+  Department of Computer Science and Engineering
+</p>
+
+<p
+  className="text-nowrap font-medium text-muted-foreground"
+  style={{
+    fontFamily: 'Monotype Corsiva, cursive',
+    fontSize: 'clamp(1rem, 1.8vw, 1.3em)',
+    lineHeight: '1.2'
+  }}
+>
+  proudly presents
+</p>
+         
+         <h1
             className="text-balance font-arial font-black leading-tight tracking-tight whitespace-nowrap"
             style={{
               fontFamily: 'Decaydence',
               letterSpacing: '0.07em',
               fontSize: 'clamp(20px, 7vw, 72px)',
               maxWidth: '100vw',
-              lineHeight: 1.1,
+              lineHeight: 1.0,
             }}
           >
-            <span className="hidden sm:inline">ELOQUENCE '25</span>
-            <span className="sm:hidden">ELOQUENCE '25</span>
+            <span className="hidden sm:inline">ELOQUENCE'25</span>
+            <span className="sm:hidden">ELOQUENCE'25</span>
           </h1>
-          <p className="max-w-2xl text-pretty text-xs sm:text-base md:text-lg text-muted-foreground">A National Tech Symposium</p>
-          <CountdownTimer target="2025-10-13T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs" />
-          <p className="text-xs text-muted-foreground">13 October 2025 • 9:00 AM IST</p>
+                    <p
+  className="text-nowrap font-medium text-muted-foreground"
+  style={{
+    fontFamily: 'sans-serif',
+    fontSize: 'clamp(1rem, 2vw, 1.5em)',
+    lineHeight: '1.2'
+  }}
+>
+  A National Level Technical Symposium
+</p><CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs" />
+          <p className="text-xs text-muted-foreground">01 November 2025 • 9:00 AM IST</p>
           {/* CTAs */}
-          <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-3 w-full" id="register">
-            <Link href="https://forms.gle/your-google-form-id" target="_blank" rel="noopener noreferrer">
-              <Button variant="glass" className="rounded-full w-full sm:w-auto">
-                Register Now
-              </Button>
-            </Link>
-            <Link href="/events">
-              <Button variant="glass" className="rounded-full w-full sm:w-auto">
-                View Events
-              </Button>
-            </Link>
+          <div className="mt-0 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 mt-[-5rem] w-full" id="register">
+            <Link href="/register">
+  <Button
+    variant="glass"
+    className="rounded-full w-full sm:w-auto px-6 py-3 text-base sm:text-lg mt-[-10rem]"
+  >
+    Register Now
+  </Button>
+</Link>
+
+<Link href="/events">
+  <Button
+    variant="glass"
+    className="rounded-full w-full sm:w-auto px-6 py-3 text-base sm:text-lg mt-[-10rem]"
+  >
+    View Events
+  </Button>
+</Link>
+
           </div>
         </div>
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16">
+      <section id="about" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16 mt-[-5rem]">
         <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
           <div>
             <h2 className="text-2xl sm:text-3xl font-semibold">About the Event</h2>
             <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-muted-foreground">
               Dive into coding challenges, paper presentations, design, quizzes, gaming and more. Eloquence&apos;25
-              brings students from across India to learn, build, and have fun.
+              brings students from across India to learn, build, and have fun.<br />
+              <br />
+              Experience a vibrant atmosphere where innovation meets inspiration. Participate in hands-on workshops, showcase your skills in competitive events, and connect with industry experts and fellow tech enthusiasts. Whether you are a coder, designer, gamer, or simply passionate about technology, Eloquence&apos;25 offers something for everyone.<br />
+              <br />
+              Join us for a day filled with knowledge sharing, creativity, and excitement. Unlock new opportunities, win exciting prizes, and make memories that last a lifetime!
             </p>
+
           </div>
           <div className="rounded-xl border bg-card p-4 sm:p-6 flex flex-col items-center">
             <img
@@ -132,17 +174,17 @@ export default async function HomePage() {
       </section>
 
       {/* PATRONS */}
-      <div className="w-full px-2 sm:px-4">
+      <div className="w-full px-2 sm:px-4 mt-[-5rem]">
         <PatronsSection />
       </div>
 
       {/* SPONSORS (big) */}
-      <div className="w-full px-2 sm:px-4">
+      <div className="w-full px-2 sm:px-4 mt-[-5rem]">
         <SponsorsSection />
       </div>
 
       {/* LOCATION + ORGANISATIONS */}
-      <section id="location" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16">
+      <section id="location" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16 mt-[-5rem]">
         <h2 className="mb-2 sm:mb-3 text-xl sm:text-2xl font-semibold">Location</h2>
         <p className="text-xs sm:text-sm text-muted-foreground">C Abdul Hakeem College of Engineering and Technology, Ranipet.</p>
         <div className="mt-3 sm:mt-4">

@@ -21,7 +21,7 @@ export default function SiteNavbar() {
             className="flex items-center gap-2 rounded-full px-2 text-[3.5vw] sm:text-base font-semibold tracking-tight text-foreground whitespace-nowrap mr-20"
             style={{ fontFamily: 'Decaydence', letterSpacing: '0.01em' }}
           >
-            Eloquence &apos;25
+            Eloquence&apos;25
           </Link>
           {/* Nav links: show on md+ or in mobile menu */}
           <nav
@@ -38,7 +38,7 @@ export default function SiteNavbar() {
             {/* Show Register button in mobile menu */}
             {menuOpen && (
               <Link href="#register" className="block w-full mt-2 sm:hidden">
-                <Button className="w-full rounded-full bg-primary/90 text-primary-foreground backdrop-blur hover:bg-primary text-xs px-3 py-2">
+                <Button className="w-full rounded-full bg-[#b97a56] text-white hover:bg-[#a86a48] dark:bg-[#7c3aed] dark:hover:bg-[#6d28d9] dark:text-white text-xs px-3 py-2 transition-colors">
                   Register
                 </Button>
               </Link>
@@ -47,7 +47,7 @@ export default function SiteNavbar() {
           {/* Right: Register (desktop), ThemeToggle, Hamburger */}
           <div className="flex items-center gap-1 ml-auto">
             <Link href="#register" className="hidden sm:block">
-              <Button className="rounded-full bg-primary/90 text-primary-foreground backdrop-blur hover:bg-primary text-xs sm:text-sm px-3 py-1">
+              <Button className="rounded-full bg-[#b97a56] text-white hover:bg-[#a86a48] dark:bg-[#7c3aed] dark:hover:bg-[#6d28d9] dark:text-white text-xs sm:text-sm px-3 py-1 transition-colors">
                 Register
               </Button>
             </Link>
