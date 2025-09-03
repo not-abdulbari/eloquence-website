@@ -122,7 +122,7 @@ export default async function HomePage() {
 </p><CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs" />
           <p className="text-xs text-muted-foreground">01 November 2025 • 9:00 AM IST</p>
           {/* CTAs */}
-          <div className="mt-0 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 mt-[-5rem] w-full" id="register">
+          <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 mt-[-5rem] w-full" id="register">
             <Link href="/register">
   <Button
     variant="glass"
@@ -146,7 +146,7 @@ export default async function HomePage() {
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16 mt-[-5rem]">
+      <section id="about" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16">
         <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
           <div>
             <h2 className="text-2xl sm:text-3xl font-semibold">About the Event</h2>
@@ -174,17 +174,17 @@ export default async function HomePage() {
       </section>
 
       {/* PATRONS */}
-      <div className="w-full px-2 sm:px-4 mt-[-5rem]">
+      <div className="w-full px-2 sm:px-4">
         <PatronsSection />
       </div>
 
       {/* SPONSORS (big) */}
-      <div className="w-full px-2 sm:px-4 mt-[-5rem]">
+      <div className="w-full px-2 sm:px-4">
         <SponsorsSection />
       </div>
 
       {/* LOCATION + ORGANISATIONS */}
-      <section id="location" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16 mt-[-5rem]">
+      <section id="location" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16">
         <h2 className="mb-2 sm:mb-3 text-xl sm:text-2xl font-semibold">Location</h2>
         <p className="text-xs sm:text-sm text-muted-foreground">C Abdul Hakeem College of Engineering and Technology, Ranipet.</p>
         <div className="mt-3 sm:mt-4">
