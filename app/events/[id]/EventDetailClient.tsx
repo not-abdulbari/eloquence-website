@@ -72,7 +72,7 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 						rel="noopener noreferrer"
 					>
 			
-						<Button className="w-full rounded-full bg-[#b97a56] text-white hover:bg-[#a86a48] dark:bg-[#7c3aed] dark:hover:bg-[#6d28d9] dark:text-white transition-colors">
+						<Button className="w-full rounded-full bg-[#b97a56] text-white hover:bg-[#a86a48] dark:bg-[#800000] dark:hover:bg-[#660000] dark:text-white transition-colors">
 							Register for {event.title}
 						</Button>
 					</Link>
