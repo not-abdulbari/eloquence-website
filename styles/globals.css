@@ -37,44 +37,50 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --neon-spot: 255, 115, 0; /* neon orange for light mode, used by BackgroundGrid */
 }
 
 .dark {
-  --background: oklch(0.32 0.18 25); /* Deep maroon */
-  --foreground: oklch(0.98 0.01 25); /* Light text */
-  --card: oklch(0.36 0.16 25);       /* Maroon card */
-  --card-foreground: oklch(0.98 0.01 25);
-  --popover: oklch(0.36 0.16 25);
-  --popover-foreground: oklch(0.98 0.01 25);
-  --primary: oklch(0.55 0.19 25);    /* Vibrant maroon for buttons */
-  --primary-foreground: oklch(0.98 0.01 25);
-  --secondary: oklch(0.42 0.13 25);  /* Slightly lighter maroon */
-  --secondary-foreground: oklch(0.98 0.01 25);
-  --muted: oklch(0.42 0.13 25);
-  --muted-foreground: oklch(0.85 0.01 25);
-  --accent: oklch(0.60 0.21 25);     /* Accent maroon */
-  --accent-foreground: oklch(0.98 0.01 25);
-  --destructive: oklch(0.65 0.23 25); /* Bright red for destructive */
-  --destructive-foreground: oklch(0.98 0.01 25);
-  --border: oklch(0.42 0.13 25);
-  --input: oklch(0.42 0.13 25);
-  --ring: oklch(0.55 0.19 25);
-  --chart-1: oklch(0.55 0.19 25);
-  --chart-2: oklch(0.60 0.21 25);
-  --chart-3: oklch(0.65 0.23 25);
-  --chart-4: oklch(0.42 0.13 25);
-  --chart-5: oklch(0.36 0.16 25);
-  --sidebar: oklch(0.36 0.16 25);
-  --sidebar-foreground: oklch(0.98 0.01 25);
-  --sidebar-primary: oklch(0.55 0.19 25);
-  --sidebar-primary-foreground: oklch(0.98 0.01 25);
-  --sidebar-accent: oklch(0.60 0.21 25);
-  --sidebar-accent-foreground: oklch(0.98 0.01 25);
-  --sidebar-border: oklch(0.42 0.13 25);
-  --sidebar-ring: oklch(0.55 0.19 25);
+  --background: oklch(0.18 0.16 25.0); /* Obsidian Ruby */
+  --foreground: oklch(0.95 0.05 30); /* bright off-white for contrast */
+  --card: oklch(0.22 0.17 25.5);       /* Nocturnal Garnet */
+  --card-foreground: oklch(0.95 0.05 30);
+  --popover: oklch(0.22 0.17 25.5);
+  --popover-foreground: oklch(0.95 0.05 30);
+  --primary: #330F17;    /* Obsidian Ruby */
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: #41151F;  /* Nocturnal Garnet */
+  --secondary-foreground: oklch(0.95 0.05 30);
+  --muted: #41151F;
+  --muted-foreground: oklch(0.70 0.05 30);
+  --accent: #330F17;     /* Obsidian Ruby */
+  --accent-foreground: oklch(0.95 0.05 30);
+  --destructive: oklch(0.50 0.25 20); /* deep red for destructive */
+  --destructive-foreground: oklch(0.95 0.05 30);
+  --border: #330F17;
+  --input: #2e2425;
+  --ring: #330F17;
+  --chart-1: oklch(0.40 0.25 25);
+  --chart-2: oklch(0.55 0.20 25);
+  --chart-3: oklch(0.60 0.18 25);
+  --chart-4: oklch(0.50 0.25 25);
+  --chart-5: oklch(0.55 0.22 25);
+  --sidebar: oklch(0.18 0.16 25.0);  /* Obsidian Ruby */
+  --sidebar-foreground: oklch(0.95 0.05 30);
+  --sidebar-primary: #330F17;
+  --sidebar-primary-foreground: oklch(0.95 0.05 30);
+  --sidebar-accent: #330F17;
+  --sidebar-accent-foreground: oklch(0.95 0.05 30);
+  --sidebar-border: #330F17;
+  --sidebar-ring: #330F17;
+  --neon-spot: 128, 0, 32; /* neon maroon for dark mode, used by BackgroundGrid */
 }
 
 @theme inline {
+  --font-sans: var(--font-geist-sans);
+  /* map serif to the new display font and make mono fall back to sans to keep only 2 families */
+  --font-serif: var(--font-display);
+  --font-mono: var(--font-geist-sans);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
