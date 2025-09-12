@@ -4,9 +4,11 @@ import type React from "react"
 
 import useSWR from "swr"
 import Link from "next/link"
-import fetcher from "@/lib/fetcher" // Import the fetcher function
+import fetcher from "@/lib/fetcher"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import BackgroundGrid from "@/components/background-grid"
+import FloatingIcons from "@/components/floating-icons"
+import BlurBubbles from "@/components/blur-bubbles"
 import {
   Code2,
   ChefHat,
@@ -19,6 +21,10 @@ import {
   Brain,
   Link2,
 } from "lucide-react"
+
+// Type assertions for components with variant prop
+const TypedBlurBubbles = BlurBubbles as React.ComponentType<{ variant?: string }>
+const TypedFloatingIcons = FloatingIcons as React.ComponentType<{ variant?: string }>
 
 type EventItem = {
   id: string
@@ -56,14 +62,13 @@ function EventIcon({ id }: { id: string }) {
   return <Icon className="h-5 w-5 text-primary" />
 }
 
-function EventCard({ e, badge }: { e: EventItem; badge: React.ReactNode }) {
+function EventCard({ e }: { e: EventItem }) {
   const imgSrc = e.image || "/vibrant-outdoor-event.png"
   const imgAlt = e.imageAlt || `${e.title} image`
 
   return (
     <Link href={`/events/${e.id}`}>
       <Card className="h-full transition hover:shadow-sm">
-        {/* Media area */}
         <div className="relative overflow-hidden rounded-t-xl border-b border-border bg-background/40">
           <img src={imgSrc || "/placeholder.svg"} alt={imgAlt} loading="lazy" className="h-40 w-full object-cover" />
         </div>
@@ -74,7 +79,6 @@ function EventCard({ e, badge }: { e: EventItem; badge: React.ReactNode }) {
               <EventIcon id={e.icon || e.id} />
               {e.title}
             </span>
-            {badge}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -92,26 +96,32 @@ export default function EventsPage() {
   const byType = (t: "tech" | "non-tech") => events.filter((e) => e.type === t)
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="mb-8 text-3xl font-bold">Events</h1>
+    <main className="relative mx-auto max-w-6xl px-4 py-12">
+      <BackgroundGrid />
+      <TypedBlurBubbles variant="events" />
+      <TypedFloatingIcons variant="events" />
+      
+      <div className="relative z-10">
+        <h1 className="mb-8 text-3xl font-bold">Events</h1>
 
-      <section className="space-y-6">
-        <h2 className="text-xl font-semibold">Tech</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {byType("tech").map((e) => (
-            <EventCard key={e.id} e={e} badge={<Badge variant="outline">Tech</Badge>} />
-          ))}
-        </div>
-      </section>
+        <section className="space-y-6">
+          <h2 className="text-xl font-semibold">Technical Events</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {byType("tech").map((e) => (
+              <EventCard key={e.id} e={e} />
+            ))}
+          </div>
+        </section>
 
-      <section className="mt-10 space-y-6">
-        <h2 className="text-xl font-semibold">Non‑Tech</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {byType("non-tech").map((e) => (
-            <EventCard key={e.id} e={e} badge={<Badge variant="secondary">Fun</Badge>} />
-          ))}
-        </div>
-      </section>
+        <section className="mt-10 space-y-6">
+          <h2 className="text-xl font-semibold">Non‑Technical Events</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {byType("non-tech").map((e) => (
+              <EventCard key={e.id} e={e} />
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
   )
 }

@@ -16,11 +16,8 @@ export default function SiteFooter() {
             </p>
 
             <div className="flex gap-3 text-muted-foreground">
-              <Link aria-label="Instagram" href="https://instagram.com" className="hover:text-foreground">
+              <Link aria-label="Instagram" href="https://instagram.com/eloquence_2025" className="hover:text-foreground">
                 <Instagram className="h-4 w-4" />
-              </Link>
-              <Link aria-label="LinkedIn" href="https://linkedin.com" className="hover:text-foreground">
-                <Linkedin className="h-4 w-4" />
               </Link>
               <Link aria-label="Mail" href="mailto:info@example.com" className="hover:text-foreground">
                 <Mail className="h-4 w-4" />
@@ -29,7 +26,7 @@ export default function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="mb-3 text-sm font-medium">Tech</h4>
+            <h4 className="mb-3 text-sm font-medium">Technical Events</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/events/pp" className="hover:text-foreground">
@@ -55,7 +52,7 @@ export default function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="mb-3 text-sm font-medium">Non‑Tech</h4>
+            <h4 className="mb-3 text-sm font-medium">Non‑Technical Events</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/events/cwf" className="hover:text-foreground">

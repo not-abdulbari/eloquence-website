@@ -1,8 +1,13 @@
-
 import fs from "fs";
 import path from "path";
 import EventDetailClient from "./EventDetailClient";
+import BackgroundGrid from "@/components/background-grid";
+import FloatingIcons from "@/components/floating-icons";
+import BlurBubbles from "@/components/blur-bubbles";
 
+// Type assertions for components with variant prop
+const TypedBlurBubbles = BlurBubbles as React.ComponentType<{ variant?: string }>
+const TypedFloatingIcons = FloatingIcons as React.ComponentType<{ variant?: string }>
 
 export async function generateStaticParams() {
   const filePath = path.join(process.cwd(), "public", "data", "site-data.json");
@@ -25,10 +30,28 @@ export default async function EventDetailPage({ params }: { params: { id: string
   const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
   const event = data.events.find((e: { id: string }) => e.id === params.id);
   const googleFormUrl = data.googleFormUrl;
+  
   if (!event) {
-    return <main className="mx-auto max-w-6xl px-4 py-12"><p className="text-muted-foreground">Event not found.</p></main>;
+    return (
+      <main className="relative mx-auto max-w-6xl px-4 py-12">
+        <BackgroundGrid />
+        <TypedBlurBubbles variant="events" />
+        <TypedFloatingIcons variant="events" />
+        <div className="relative z-10">
+          <p className="text-muted-foreground">Event not found.</p>
+        </div>
+      </main>
+    );
   }
-  return <EventDetailClient event={event} googleFormUrl={googleFormUrl} />;
+  
+  return (
+    <main className="relative mx-auto max-w-6xl px-4 py-12">
+      <BackgroundGrid />
+      <TypedBlurBubbles variant="events" />
+      <TypedFloatingIcons variant="events" />
+      <div className="relative z-10">
+        <EventDetailClient event={event} googleFormUrl={googleFormUrl} />
+      </div>
+    </main>
+  );
 }
-
-
