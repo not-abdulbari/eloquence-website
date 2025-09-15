@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:image" content="/image.png" />
         <meta property="og:image:alt" content="Eloquence 25" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://eloquence.pages.dev/" />
+        <meta property="og:url" content="https://eloquence.in.net" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Eloquence 25 - A National level Technical Symposium" />
         <meta name="twitter:description" content="Symposium website for C Abdul Hakeem College of Engineering and Technology's Department of Computer Science and Engineering." />
