@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     "India symposium"
   ],
   other: {
-    "google-site-verification": "4wIKTurTCy2Kel_uAr6HIcb-vWJtN0m3lWIZNeU-B_A"
+    "google-site-verification":"CjN_JJcnkw_xzymW0JRsZEicq0ZNsURnJrPIHzMizMs"
   }
 }
 import Link from "next/link"

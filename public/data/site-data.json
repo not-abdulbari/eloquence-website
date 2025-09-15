@@ -1,21 +1,92 @@
+
 {
   "college": "C Abdul Hakeem College of Engineering and Technology",
   "department": "Department of Computer Science Engineering",
   "symposium": "Eloquence'25",
-  "googleFormUrl": "https://forms.gle/your-google-form-id",
+  "googleFormUrl": "https://forms.gle/your-google-form-id    ",
   "location": {
     "name": "CAHCET, Ranipet",
     "address": "C Abdul Hakeem College of Engineering and Technology, Ranipet, Tamil Nadu",
     "mapUrl": "https://maps.google.com/maps?q=C%20Abdul%20Hakeem%20College%20of%20Engineering%20and%20Technology&t=&z=13&ie=UTF8&iwloc=&output=embed"
   },
   "sponsors": [
-    { "name": "Alpha Tech", "logo": "/placeholder.svg?height=40&width=120", "url": "https://example.com" },
-    { "name": "CloudMart", "logo": "/placeholder.svg?height=40&width=120", "url": "https://example.com" },
-    { "name": "DevWorks", "logo": "/placeholder.svg?height=40&width=120", "url": "https://example.com" }
+    {
+      "name": "Alpha Tech",
+      "logo": "/placeholder.svg?height=40&width=120",
+      "url": "    https://example.com    "
+    },
+    {
+      "name": "CloudMart",
+      "logo": "/placeholder.svg?height=40&width=120",
+      "url": "https://example.com    "
+    },
+    {
+      "name": "DevWorks",
+      "logo": "/placeholder.svg?height=40&width=120",
+      "url": "https://example.com    "
+    }
   ],
   "events": [
     {
-      "id": "pp",
+      "id": "coding-debugging",
+      "title": "Coding & Debugging",
+      "type": "tech",
+      "short": "Speed rounds in logic and code.",
+      "venue": "Lab 1",
+      "timing": "11:00 AM – 1:00 PM",
+      "registrationFee": "₹100 per head",
+      "members": "Solo",
+      "rules": [
+        "2 rounds: Aptitude MCQ then coding challenge.",
+        "Languages allowed: C/C++/Java/Python.",
+        "Malpractice leads to disqualification."
+      ]
+    },
+    {
+      "id": "connection",
+      "title": "Connection",
+      "type": "non-tech",
+      "short": "Guess the word from clues.",
+      "venue": "Room 212",
+      "timing": "12:00 PM – 1:00 PM",
+      "registrationFee": "₹60 per team",
+      "members": "2 per team",
+      "rules": [
+        "Multiple rounds with eliminations.",
+        "No mobile phones allowed."
+      ]
+    },
+    {
+      "id": "cooking-without-fire",
+      "title": "Cooking Without Fire",
+      "type": "non-tech",
+      "short": "Fun challenge event.",
+      "venue": "Open Arena",
+      "timing": "2:00 PM – 3:30 PM",
+      "registrationFee": "₹50 per head",
+      "members": "2–4 per team",
+      "rules": [
+        "On-spot rules will be briefed.",
+        "Judge's decision is final."
+      ]
+    },
+    {
+      "id": "esports",
+      "title": "E-Sports",
+      "type": "non-tech",
+      "short": "Esports showdown.",
+      "venue": "Auditorium",
+      "timing": "11:00 AM – 3:00 PM",
+      "registrationFee": "₹300 per squad",
+      "members": "Squad",
+      "rules": [
+        "Follow tournament rulebook.",
+        "Bring your own devices.",
+        "Use of hacks/cheats leads to immediate ban."
+      ]
+    },
+    {
+      "id": "paper-presentation",
       "title": "Paper Presentation",
       "type": "tech",
       "short": "Present cutting-edge research.",
@@ -31,93 +102,22 @@
       ]
     },
     {
-      "id": "ac",
-      "title": "Aptitude & Coding",
-      "type": "tech",
-      "short": "Speed rounds in logic and code.",
-      "venue": "Lab 1",
-      "timing": "11:00 AM – 1:00 PM",
-      "registrationFee": "₹100 per head",
-      "members": "Solo",
-      "rules": [
-        "2 rounds: Aptitude MCQ then coding challenge.",
-        "Languages allowed: C/C++/Java/Python.",
-        "Malpractice leads to disqualification."
-      ]
-    },
-    {
-      "id": "tq",
-      "title": "Tech Quiz",
-      "type": "tech",
-      "short": "Test your tech IQ.",
-      "venue": "Seminar Hall B",
-      "timing": "1:30 PM – 3:00 PM",
-      "registrationFee": "₹100 per team",
-      "members": "2 per team",
-      "rules": ["Prelims followed by finals.", "No use of electronic devices.", "Quizmaster's decision is final."]
-    },
-    {
-      "id": "wd",
-      "title": "Mini Hackathon",
-      "type": "tech",
-      "short": "Design a responsive web UI (Web Development).",
-      "venue": "Lab 2",
-      "timing": "10:30 AM – 12:30 PM",
-      "registrationFee": "₹150 per team",
-      "members": "2 per team",
-      "rules": [
-        "Assets and topic will be provided.",
-        "No external templates allowed.",
-        "Judged on usability, accessibility, and aesthetics."
-      ]
-    },
-    {
-      "id": "cwf",
-      "title": "Cooking Without Fire",
-      "type": "non-tech",
-      "short": "Fun challenge event.",
-      "venue": "Open Arena",
-      "timing": "2:00 PM – 3:30 PM",
-      "registrationFee": "₹50 per head",
-      "members": "2–4 per team",
-      "rules": ["On-spot rules will be briefed.", "Judge's decision is final."]
-    },
-    {
-      "id": "art",
-      "title": "Poster Designing",
+      "id": "poster-making",
+      "title": "Poster Making",
       "type": "tech",
       "short": "Theme based.",
       "venue": "Drawing Hall",
       "timing": "11:00 AM – 1:00 PM",
       "registrationFee": "₹80 per head",
       "members": "Solo",
-      "rules": ["Basic materials to be brought by participants.", "Topic announced on-spot.", "Time limit 90 minutes."]
+      "rules": [
+        "Basic materials to be brought by participants.",
+        "Topic announced on-spot.",
+        "Time limit 90 minutes."
+      ]
     },
     {
-      "id": "conn",
-      "title": "Connection",
-      "type": "non-tech",
-      "short": "Guess the word from clues.",
-      "venue": "Room 212",
-      "timing": "12:00 PM – 1:00 PM",
-      "registrationFee": "₹60 per team",
-      "members": "2 per team",
-      "rules": ["Multiple rounds with eliminations.", "No mobile phones allowed."]
-    },
-   
-    {
-      "id": "esp",
-      "title": "BGMI & Free Fire",
-      "type": "non-tech",
-      "short": "Esports showdown.",
-      "venue": "Auditorium",
-      "timing": "11:00 AM – 3:00 PM",
-      "registrationFee": "₹300 per squad",
-      "members": "Squad",
-      "rules": ["Follow tournament rulebook.", "Bring your own devices.", "Use of hacks/cheats leads to immediate ban."]
-    },
-    {
-      "id": "sf",
+      "id": "reels-photography",
       "title": "Reels & Photography",
       "type": "non-tech",
       "short": "Capture,shoot and showcase",
@@ -131,8 +131,23 @@
         "Judging based on story, cinematography, and sound."
       ]
     },
-     {
-      "id": "th",
+    {
+      "id": "tech-quiz",
+      "title": "Tech Quiz Showdown",
+      "type": "tech",
+      "short": "Test your tech IQ.",
+      "venue": "Seminar Hall B",
+      "timing": "1:30 PM – 3:00 PM",
+      "registrationFee": "₹100 per team",
+      "members": "2 per team",
+      "rules": [
+        "Prelims followed by finals.",
+        "No use of electronic devices.",
+        "Quizmaster's decision is final."
+      ]
+    },
+    {
+      "id": "treasure-hunt",
       "title": "Treasure Hunt",
       "type": "non-tech",
       "short": "step out and explore",
@@ -144,6 +159,21 @@
         "Duration: 3–7 minutes.",
         "Original content only, no copyright issues.",
         "Judging based on story, cinematography, and sound."
+      ]
+    },
+    {
+      "id": "web-designing",
+      "title": "Web Designing",
+      "type": "tech",
+      "short": "Design a responsive web UI (Web Development).",
+      "venue": "Lab 2",
+      "timing": "10:30 AM – 12:30 PM",
+      "registrationFee": "₹150 per team",
+      "members": "2 per team",
+      "rules": [
+        "Assets and topic will be provided.",
+        "No external templates allowed.",
+        "Judged on usability, accessibility, and aesthetics."
       ]
     }
   ]
