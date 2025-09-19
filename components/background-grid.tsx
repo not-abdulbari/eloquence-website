@@ -54,7 +54,7 @@ export default function BackgroundGrid() {
   return (
   <div aria-hidden="true" className="pointer-events-none fixed inset-0 w-screen h-screen -z-10">
       {/* Base subtle grid - increased visibility; slightly softer in dark */}
-      <div className="absolute inset-0 bg-grid opacity-[0.35] dark:opacity-[0.28]" />
+      <div className="absolute inset-0 bg-grid opacity-[0.35] dark:opacity-[0.5]" />
       {/* Neon bright spots that pop on/off, always behind text */}
       {spots.map((s) => {
         const style: React.CSSProperties = {
