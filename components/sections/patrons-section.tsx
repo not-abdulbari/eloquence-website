@@ -7,7 +7,7 @@ export default function PatronsSection() {
     { role: "Principal", name: "Dr. M. Sasikumar" },
     { role: "Vice Principal", name: "Dr. Mohammed Muzaffar Hussain" },
     { role: "HOD - CSE", name: "Dr. K. Abrar Ahmed" },
-    { role: "Staff Convenors", name: "Mr. K.A. Suhail Ahmed"},
+    { role: "Staff Convenors", names: ["Mr. K.A. Suhail Ahmed", "Mrs. Saranya", "Mrs. A. Kalaiselvi"] }
   ]
 
   return (
@@ -24,7 +24,13 @@ export default function PatronsSection() {
             <CardHeader>
               <CardTitle className="text-base">{p.role}</CardTitle>
             </CardHeader>
-            <CardContent className="text-muted-foreground">{p.name}</CardContent>
+            <CardContent className="text-muted-foreground">
+              {Array.isArray(p.names) ? (
+                p.names.map((name, index) => <div key={index}>{name}</div>)
+              ) : (
+                p.name
+              )}
+            </CardContent>
           </Card>
         ))}
       </div>
