@@ -22,7 +22,6 @@ import {
   Link2,
   Compass,
 } from "lucide-react"
-import { connection } from "next/server"
 
 // Type assertions for components with variant prop
 const TypedBlurBubbles = BlurBubbles as React.ComponentType<{ variant?: string }>
@@ -38,22 +37,22 @@ type EventItem = {
   imageAlt?: string
 }
 
+
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   // --- Technical Events ---
-  "coding-debugging": Code2,
-  "paper-presentation": FileText,
-  "poster-making": Palette,
-  "tech-quiz": Brain,
-  "web-designing": Globe,
+  "coding-debugging": Code2, // Matches 'coding'
+  "paper-presentation": FileText, // Matches 'pp'
+  "poster-making": Palette, // Could also be 'art', but specific to poster
+  "tech-quiz": Brain, // Matches 'tq' and 'quiz'
+  "web-designing": Globe, // Matches 'wd' and 'web'
 
   // --- Non-Technical Events ---
-  esports: Gamepad2,
-  "reels-photography": Clapperboard,
-  connection: Link2,
-  "cooking-without-fire": ChefHat,
-  "treasure-hunt": Compass,
-  
-  // --- Original mappings preserved ---
+  esports: Gamepad2, // Matches 'gaming'
+  "reels-photography": Clapperboard, // Matches 'filming' and 'sf'
+  connection: Link2, // Matches 'conn' and 'connection' (already there)
+  "cooking-without-fire": ChefHat, // Matches 'cooking'
+  "treasure-hunt": Compass, // New addition for treasure hunt
+  // --- Original mappings preserved (in case of other uses) ---
   coding: Code2,
   code: Code2,
   ac: Code2,
@@ -63,7 +62,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   quiz: HelpCircle,
   tq: HelpCircle,
   gaming: Gamepad2,
-  bgmi: Gamepad2,
+  bgmi: Gamepad2, // Although 'esports' is the ID, 'bgmi' key is kept
   filming: Clapperboard,
   sf: Clapperboard,
   art: Palette,
@@ -83,19 +82,13 @@ function EventCard({ e }: { e: EventItem }) {
   const imgAlt = e.imageAlt || `${e.title} image`
 
   return (
-    <Link href={`/events/${e.id}`} className="w-full mx-auto">
-      <Card className="h-full transition hover:shadow-sm overflow-hidden rounded-xl border border-border">
-        {/* Image container with proper aspect ratio */}
-        <div className="relative w-full h-48 sm:h-64 md:h-72 lg:h-80 overflow-hidden rounded-t-xl">
-          <img 
-            src={imgSrc || "/placeholder.svg"} 
-            alt={imgAlt} 
-            loading="lazy" 
-            className="absolute inset-0 object-cover w-full h-full"
-          />
+    <Link href={`/events/${e.id}`}>
+      <Card className="h-full transition hover:shadow-sm">
+        <div className="relative overflow-hidden rounded-t-xl border-b border-border bg-background/40">
+          <img src={imgSrc || "/placeholder.svg"} alt={imgAlt} loading="lazy" className="h-40 w-full object-cover" />
         </div>
 
-        <CardHeader className="p-4 pt-3">
+        <CardHeader>
           <CardTitle className="flex items-center justify-between gap-3">
             <span className="flex items-center gap-2">
               <EventIcon id={e.icon || e.id} />
@@ -103,7 +96,7 @@ function EventCard({ e }: { e: EventItem }) {
             </span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-4 pb-3">
+        <CardContent>
           <p className="text-sm text-muted-foreground">{e.short ?? "Click to view details"}</p>
         </CardContent>
       </Card>
