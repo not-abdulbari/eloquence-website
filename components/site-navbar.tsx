@@ -7,6 +7,10 @@ import { useState } from "react"
 
 export default function SiteNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  // Function to close menu
+  const closeMenu = () => setMenuOpen(false);
+  
   return (
     <div className="fixed inset-x-0 top-[2vh] z-50 flex justify-center pointer-events-none" aria-hidden={false}>
       <header
@@ -20,6 +24,7 @@ export default function SiteNavbar() {
             href="/"
             className="flex items-center gap-2 rounded-full px-2 text-[3.5vw] sm:text-base font-semibold tracking-tight text-foreground whitespace-nowrap mr-20"
             style={{ fontFamily: 'Decaydence', letterSpacing: '0.01em' }}
+            onClick={closeMenu}
           >
             Eloquence&apos;25
           </Link>
@@ -29,16 +34,28 @@ export default function SiteNavbar() {
             className={`mx-2 items-center gap-5 ${menuOpen ? 'flex flex-col absolute top-full left-0 w-full bg-background rounded-b-xl shadow-lg p-4 sm:p-0 z-50' : 'hidden'} md:flex md:static md:flex-row md:bg-transparent md:rounded-none md:shadow-none md:p-0`}
           >
             {/* Remove Home link */}
-            <Link href="/events" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            <Link 
+              href="/events" 
+              className="text-sm text opacity-50 transition-colors hover:text-foreground"
+              onClick={closeMenu}
+            >
               Events
             </Link>
-            <Link href="#location" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            <Link 
+              href="/#location" 
+              className="text-sm text opacity-50 transition-colors hover:text-foreground"
+              onClick={closeMenu}
+            >
               Location
             </Link>
             {/* Show Register button in mobile menu */}
             {menuOpen && (
-              <Link href="#register" className="block w-full mt-2 sm:hidden">
-                <Button className="w-full rounded-full bg-[#b97a56] text-white hover:bg-[#a86a48] dark:bg-[#7c3aed] dark:hover:bg-[#6d28d9] dark:text-white text-xs px-3 py-2 transition-colors">
+              <Link 
+                href="/register" 
+                className="block w-full mt-2 sm:hidden"
+                onClick={closeMenu}
+              >
+<Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
                   Register
                 </Button>
               </Link>
@@ -46,8 +63,8 @@ export default function SiteNavbar() {
           </nav>
           {/* Right: Register (desktop), ThemeToggle, Hamburger */}
           <div className="flex items-center gap-1 ml-auto">
-            <Link href="#register" className="hidden sm:block">
-              <Button className="rounded-full bg-[#b97a56] text-white hover:bg-[#a86a48] dark:bg-[#7c3aed] dark:hover:bg-[#6d28d9] dark:text-white text-xs sm:text-sm px-3 py-1 transition-colors">
+            <Link href="/register" className="hidden sm:block">
+<Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
                 Register
               </Button>
             </Link>
@@ -65,7 +82,6 @@ export default function SiteNavbar() {
             </button>
           </div>
         </div>
-  {/* Nav links moved above for layout control */}
       </header>
     </div>
   )

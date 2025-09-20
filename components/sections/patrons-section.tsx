@@ -16,7 +16,7 @@ export default function PatronsSection() {
 
       <div className="mb-6">
         <h2 className="text-balance text-3xl font-semibold">Patrons</h2>
-        <p className="text-muted-foreground">With guidance and support from our leadership.</p>
+        <p className="text opacity-50">With guidance and support from our leadership.</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {patrons.map((p) => (
@@ -24,7 +24,7 @@ export default function PatronsSection() {
             <CardHeader>
               <CardTitle className="text-base">{p.role}</CardTitle>
             </CardHeader>
-            <CardContent className="text-muted-foreground">
+            <CardContent className="text opacity-50">
               {Array.isArray(p.names) ? (
                 p.names.map((name, index) => <div key={index}>{name}</div>)
               ) : (

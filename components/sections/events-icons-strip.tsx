@@ -16,7 +16,7 @@ export default function EventsIconsStrip() {
         <div
           key={label}
           aria-label={label}
-          className="flex items-center justify-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs text-muted-foreground backdrop-blur transition-colors hover:bg-primary/10 hover:text-foreground focus-within:ring-2 focus-within:ring-primary/35"
+          className="flex items-center justify-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs text opacity-50 backdrop-blur transition-colors hover:bg-primary/10 hover:text-foreground focus-within:ring-2 focus-within:ring-primary/35"
         >
           <Icon className="h-4 w-4 text-primary drop-shadow-glow" />
           <span className="hidden sm:inline">{label}</span>

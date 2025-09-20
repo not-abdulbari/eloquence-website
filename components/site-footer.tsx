@@ -30,15 +30,15 @@ export default function SiteFooter() {
             <h3 className="text-lg font-semibold" style={{ fontFamily: 'Decaydence', letterSpacing: '0.01em' }}>
               Eloquence&apos;25
             </h3>
-            <p className="text-sm text-muted-foreground text-pretty">
+            <p className="text-sm text opacity-50 text-pretty">
               National-level technical symposium by CSE, C Abdul Hakeem College of Engineering &amp; Technology.
             </p>
 
-            <div className="flex gap-3 text-muted-foreground">
+            <div className="flex gap-3 text opacity-50">
               <Link aria-label="Instagram" href="https://instagram.com/eloquence_2025" className="hover:text-foreground">
                 <Instagram className="h-4 w-4" />
               </Link>
-              <Link aria-label="Mail" href="mailto:info@example.com" className="hover:text-foreground">
+              <Link aria-label="Mail" href="mailto:info@eloquence.in.net" className="hover:text-foreground">
                 <Mail className="h-4 w-4" />
               </Link>
             </div>
@@ -47,7 +47,7 @@ export default function SiteFooter() {
           {/* Technical Events */}
           <div>
             <h4 className="mb-3 text-sm font-medium">Technical Events</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-2 text-sm text opacity-50">
               {technicalEvents.map((event, index) => (
                 <li key={index}>
                   <Link href={event.href} className="hover:text-foreground">
@@ -61,7 +61,7 @@ export default function SiteFooter() {
           {/* Non-Technical Events */}
           <div>
             <h4 className="mb-3 text-sm font-medium">Non‑Technical Events</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-2 text-sm text opacity-50">
               {nonTechnicalEvents.map((event, index) => (
                 <li key={index}>
                   <Link href={event.href} className="hover:text-foreground">
@@ -74,14 +74,14 @@ export default function SiteFooter() {
 
           <div>
             <h4 className="mb-3 text-sm font-medium">Get Started</h4>
-            <Link href="#register">
-              <Button variant="secondary" className="rounded-full">
+            <Link href="/register">
+<Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
                 Register
               </Button>
             </Link>
           </div>
         </div>
-        <div className="mt-10 border-t pt-6 text-xs text-muted-foreground">
+        <div className="mt-10 border-t pt-6 text-xs text opacity-50">
           © 2025 Eloquence&apos;25 · CSE, CAHCET · All rights reserved
         </div>
       </div>

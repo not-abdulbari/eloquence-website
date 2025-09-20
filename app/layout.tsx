@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { Lilita_One } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import SiteNavbar from "@/components/site-navbar"
 import SiteFooter from "@/components/site-footer"
@@ -54,7 +53,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <SiteFooter />
           </Suspense>
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   )

@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: 'Decaydence';
   src: url('/fonts/Decaydence.otf') format('opentype'),
@@ -98,39 +97,62 @@
 }
 
 .dark {
-  --background: oklch(0.18 0.06 300);
-  --foreground: oklch(0.98 0.02 300);
-  --card: oklch(0.2 0.06 300);
-  --card-foreground: oklch(0.98 0.02 300);
-  --popover: oklch(0.2 0.06 300);
-  --popover-foreground: oklch(0.98 0.02 300);
-  --primary: oklch(0.62 0.22 300); /* royal violet */
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.26 0.04 300);
-  --secondary-foreground: oklch(0.98 0.02 300);
-  --muted: oklch(0.26 0.04 300);
-  --muted-foreground: oklch(0.73 0.03 300);
-  --accent: oklch(0.3 0.05 300);
-  --accent-foreground: oklch(0.98 0.02 300);
-  --destructive: oklch(0.45 0.18 25);
-  --destructive-foreground: oklch(0.98 0.02 300);
-  --border: oklch(0.28 0.04 300);
-  --input: oklch(0.28 0.04 300);
-  --ring: oklch(0.62 0.22 300);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
-  --neon-spot: 168, 85, 247; /* neon violet for dark mode, used by BackgroundGrid */
+  /* Even deeper burgundy background */
+  --background: oklch(0.10 0.05 25); /* Nearly black burgundy */
+  --foreground: oklch(0.94 0.01 25); /* Slightly warmer white */
+
+  /* Card and popover - deeper and richer */
+  --card: oklch(0.14 0.04 25); /* Deeper maroon */
+  --card-foreground: oklch(0.90 0.01 25); /* Creamy white */
+  --popover: oklch(0.14 0.04 25);
+  --popover-foreground: oklch(0.90 0.01 25);
+
+  /* Primary: Rich maroon */
+  --primary: oklch(0.42 0.19 25); /* More saturated maroon */
+  --primary-foreground: oklch(0.98 0 0); /* Pure white */
+
+  /* Secondary: Darker maroon-gray */
+  --secondary: oklch(0.22 0.07 25); /* Even darker */
+  --secondary-foreground: oklch(0.88 0.01 25); /* Softer cream */
+
+  /* Muted: Subtle maroon-gray */
+  --muted: oklch(0.19 0.04 25);
+  --muted-foreground: oklch(0.65 0.03 25); /* Warmer gray */
+
+  /* Accent: Bright red/maroon */
+  --accent: oklch(0.52 0.23 25); /* Vibrant maroon-red */
+  --accent-foreground: oklch(0.96 0.01 0); /* Off-white */
+
+  /* Destructive: Bright red */
+  --destructive: oklch(0.58 0.25 25);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  /* Borders with warm undertones */
+  --border: oklch(0.18 0.05 25); /* Darker than background */
+  --input: oklch(0.18 0.05 25);
+
+  /* Ring: Maroon accent */
+  --ring: oklch(0.42 0.19 25);
+
+  /* Chart colors - all maroon/red variations */
+  --chart-1: oklch(0.52 0.23 25); /* Bright red */
+  --chart-2: oklch(0.46 0.19 25); /* Medium maroon */
+  --chart-3: oklch(0.40 0.16 20); /* Deep maroon */
+  --chart-4: oklch(0.58 0.19 30); /* Warm red */
+  --chart-5: oklch(0.36 0.12 20); /* Dark maroon */
+
+  /* Sidebar colors */
+  --sidebar: oklch(0.09 0.03 25); /* Darkest burgundy */
+  --sidebar-foreground: oklch(0.88 0.01 25);
+  --sidebar-primary: oklch(0.52 0.23 25); /* Vibrant red */
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.19 0.05 25);
+  --sidebar-accent-foreground: oklch(0.82 0.01 25);
+  --sidebar-border: oklch(0.17 0.04 25);
+  --sidebar-ring: oklch(0.42 0.19 25);
+
+  /* Neon spot: Warm red for glow effects */
+  --neon-spot: 200, 50, 50; /* Darker warm red */
 }
 
 @theme inline {

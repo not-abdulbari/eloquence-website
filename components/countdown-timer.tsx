@@ -46,7 +46,7 @@ function TimeBlock({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex min-w-10 flex-col items-center justify-center rounded-lg bg-muted px-1 py-1">
       <div className="font-sans text-lg font-semibold tabular-nums">{padded}</div>
-      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</div>
+      <div className="text-[10px] uppercase tracking-wide text opacity-50">{label}</div>
     </div>
   )
 }

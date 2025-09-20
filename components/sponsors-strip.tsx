@@ -17,7 +17,7 @@ export default function SponsorsStrip() {
   return (
     <section id="sponsors" aria-labelledby="sponsors-title" className="border-y bg-muted/30">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8">
-        <h2 id="sponsors-title" className="text-center text-sm font-medium text-muted-foreground">
+        <h2 id="sponsors-title" className="text-center text-sm font-medium text opacity-50">
           Sponsors
         </h2>
         <div className="flex flex-wrap items-center justify-center gap-6">

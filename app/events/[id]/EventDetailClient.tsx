@@ -67,14 +67,14 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 
 				<aside className="space-y-4">
 					<Link
-						href={`${googleFormUrl}?event=${encodeURIComponent(event.title)}`}
+						href={`/register?event=${event.id}`}
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 			
-						<Button className="w-full rounded-full bg-[#b97a56] text-white hover:bg-[#a86a48] dark:bg-[#7c3aed] dark:hover:bg-[#6d28d9] dark:text-white transition-colors">
-							Register for {event.title}
-						</Button>
+<Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
+  Register for {event.title}
+</Button>
 					</Link>
 					<div className="mt-3" />
 					<Link href="/events">
