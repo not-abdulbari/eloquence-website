@@ -64,7 +64,7 @@ export default function SiteNavbar() {
           {/* Right: Register (desktop), ThemeToggle, Hamburger */}
           <div className="flex items-center gap-1 ml-auto">
             <Link href="/register" className="hidden sm:block">
-<Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
+<Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors ">
                 Register
               </Button>
             </Link>

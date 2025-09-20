@@ -11,15 +11,20 @@ type Props = {
 export default function CountdownTimer({ target, className }: Props) {
   // Freeze date instance
   const targetDate = useMemo(() => new Date(target), [target])
-  const [diff, setDiff] = useState<number>(() => Math.max(targetDate.getTime() - Date.now(), 0))
+  const [diff, setDiff] = useState<number>(0)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+    setDiff(Math.max(targetDate.getTime() - Date.now(), 0))
     const id = setInterval(() => {
       setDiff(Math.max(targetDate.getTime() - Date.now(), 0))
     }, 1000)
     return () => clearInterval(id)
   }, [targetDate])
 
+  if (!mounted) return null
+  
   const totalSeconds = Math.floor(diff / 1000)
   const days = Math.floor(totalSeconds / (60 * 60 * 24))
   const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / 3600)

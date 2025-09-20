@@ -127,10 +127,8 @@ export default async function HomePage() {
           {/* CTAs */}
           <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 w-full" id="register">
             <Link href="/register">
-  <Button
-    variant="glass"
-    className="rounded-full w-full sm:w-auto px-6 py-3 text-base sm:text-lg"
-  >
+<Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
+
     Register Now
   </Button>
 </Link>

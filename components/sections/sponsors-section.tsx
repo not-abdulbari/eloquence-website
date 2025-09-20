@@ -17,13 +17,16 @@ export default function SponsorsSection() {
 
       <div className="grid place-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {sponsors.map((s) => (
-          <div key={s.alt} className="flex h-24 w-full items-center justify-center rounded-xl border bg-card p-4">
+          <div
+            key={s.alt}
+            className="relative w-full pt-[26.67%] rounded-xl border bg-card overflow-hidden"
+          >
             <Image
-              src={`https://placehold.co/1600x400.png?height=${s.h}&width=${s.w}`}
+              src={`https://placehold.co/1500x400.png?height=${s.h}&width=${s.w}`}
               alt={s.alt}
-              width={s.w}
-              height={s.h}
-              className="opacity-90"
+              fill
+              className="object-contain opacity-90"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           </div>
         ))}
