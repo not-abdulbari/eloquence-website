@@ -74,15 +74,16 @@ export default async function HomePage() {
       className="h-20 w-20 sm:h-20 sm:w-20 md:h-40 md:w-40 rounded-md border bg-card p-1 mt-[-0.25rem]"
     />
   
-            <div className="text-base sm:text-lg md:text-xl font-bold text-center mb-2" style={{ fontFamily: 'sans-serif' ,fontSize: '1.5em' }}>
+            <div className="text-base sm:text-lg md:text-xl font text-center mb-2" style={{ fontFamily: 'Verdana', fontWeight: 'normal' ,fontSize: '1.5em' }}>
               C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
             </div>
           </div>
           <p
-  className="text-nowrap font-medium text opacity-50 mb-2"
+  className="text-nowrap font-small text opacity-50 mb-2"
   style={{
-    fontFamily: 'sans-serif',
-    fontSize: 'clamp(1rem, 2vw, 1.5em)',
+    fontFamily: 'Verdana',
+    fontWeight: 'normal',
+    fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
     lineHeight: '1.2'
   }}
 >
@@ -90,10 +91,11 @@ export default async function HomePage() {
 </p>
 
 <p
-  className="text-nowrap font-medium text opacity-50 mb-2"
+  className="text-nowrap font-small text opacity-50 mb-2"
   style={{
     fontFamily: 'Monotype Corsiva, cursive',
-    fontSize: 'clamp(1rem, 1.8vw, 1.3em)',
+    fontWeight: 'normal',
+    fontSize: 'clamp(0.8rem, 1.5vw, 1.1em)',
     lineHeight: '1.2'
   }}
 >
@@ -101,7 +103,7 @@ export default async function HomePage() {
 </p>
          
          <h1
-            className="text-balance font-arial font-black leading-tight tracking-tight whitespace-nowrap mb-2"
+            className="text-balance font-Verdana font-black leading-tight tracking-tight whitespace-nowrap mb-2"
             style={{
               fontFamily: 'Decaydence',
               letterSpacing: '0.07em',
@@ -116,8 +118,9 @@ export default async function HomePage() {
                     <p
   className="text-nowrap font-medium text opacity-50"
   style={{
-    fontFamily: 'sans-serif',
-    fontSize: 'clamp(1rem, 2vw, 1.5em)',
+    fontFamily: 'Verdana',
+    fontWeight: 'normal' ,
+    fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
     lineHeight: '1.2'
   }}
 >
@@ -136,7 +139,7 @@ export default async function HomePage() {
 <Link href="/events">
   <Button
     variant="glass"
-    className="rounded-full w-full sm:w-auto px-6 py-3 text-base sm:text-lg"
+    className="rounded-full w-full sm:w-auto px-6 py-3"
   >
     View Events
   </Button>
