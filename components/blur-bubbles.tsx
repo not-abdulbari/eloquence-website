@@ -44,8 +44,9 @@ export default function BlurBubbles() {
 
   // Create animated bubbles
   useEffect(() => {
-    const intensity = prefersReducedMotion ? 0.3 : isMobile ? 0.5 : 1
-    const count = Math.max(3, Math.round(8 * intensity))
+    // Reduced bubble count by ~40%
+    const intensity = prefersReducedMotion ? 0.2 : isMobile ? 0.3 : 0.5
+    const count = Math.max(2, Math.round(5 * intensity))
     const baseSize = 100 * intensity + (isMobile ? 40 : 100)
 
     const initialBubbles = Array.from({ length: count }).map((_, i) => ({
@@ -53,33 +54,34 @@ export default function BlurBubbles() {
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: baseSize + Math.random() * (120 * intensity),
-      opacity: 0, // Start invisible
-      targetOpacity: Math.random() * (prefersReducedMotion || isMobile ? 0.25 : 0.3) + 0.15,
-      color: isDark ? 'red' : (['red', 'purple', 'orange'][Math.floor(Math.random() * 3)] as 'red' | 'purple' | 'orange') // Red only for dark mode
+      opacity: 0,
+      targetOpacity: Math.random() * (prefersReducedMotion || isMobile ? 0.15 : 0.2) + 0.05,
+      color: isDark ? 'red' : (['red', 'purple', 'orange'][Math.floor(Math.random() * 3)] as 'red' | 'purple' | 'orange')
     }))
     setBubbles(initialBubbles)
 
-    const movement = prefersReducedMotion ? 1 : isMobile ? 2 : 3
-    const intervalMs = prefersReducedMotion ? 3500 : isMobile ? 2500 : 1500
-    const opacityChangeChance = prefersReducedMotion ? 0.25 : isMobile ? 0.4 : 0.5
+    // Slower, smoother animations
+    const movement = prefersReducedMotion ? 0.5 : isMobile ? 1 : 1.5
+    const intervalMs = prefersReducedMotion ? 5000 : isMobile ? 4000 : 3000
+    const opacityChangeChance = prefersReducedMotion ? 0.15 : isMobile ? 0.25 : 0.35
 
     const interval = setInterval(() => {
       setBubbles(prev => 
         prev.map(bubble => {
-          // Update position with gentle movement
-          const newX = (bubble.x + (Math.random() * movement * 2 - movement) + 100) % 100
-          const newY = (bubble.y + (Math.random() * movement * 2 - movement) + 100) % 100
+          // Constrained movement within bounds
+          const newX = Math.max(5, Math.min(95, bubble.x + (Math.random() * movement * 2 - movement)))
+          const newY = Math.max(5, Math.min(95, bubble.y + (Math.random() * movement * 2 - movement)))
           
-          // Change target opacity for constant fade cycle
+          // Less frequent opacity changes for smoother transitions
           const shouldChangeOpacity = Math.random() < opacityChangeChance
           const newTargetOpacity = shouldChangeOpacity 
-            ? Math.random() * (prefersReducedMotion || isMobile ? 0.25 : 0.3) + 0.15
+            ? Math.random() * (prefersReducedMotion || isMobile ? 0.15 : 0.2) + 0.05
             : bubble.targetOpacity
           
-          // Only change color in light mode
+          // Less frequent color changes
           let newColor = bubble.color
           if (!isDark) {
-            const shouldChangeColor = Math.random() < 0.2
+            const shouldChangeColor = Math.random() < 0.1
             if (shouldChangeColor) {
               newColor = ['red', 'purple', 'orange'][Math.floor(Math.random() * 3)] as 'red' | 'purple' | 'orange'
             }
@@ -99,13 +101,14 @@ export default function BlurBubbles() {
     return () => clearInterval(interval)
   }, [isDark, isMobile, prefersReducedMotion])
 
-  // Handle smooth opacity transitions
+  // Handle smoother opacity transitions
   useEffect(() => {
     const transitionInterval = setInterval(() => {
       setBubbles(prev => 
         prev.map(bubble => {
           let newOpacity = bubble.opacity
-          const transitionSpeed = prefersReducedMotion ? 0.01 : isMobile ? 0.018 : 0.025
+          // Slower transitions for smoother fades
+          const transitionSpeed = prefersReducedMotion ? 0.005 : isMobile ? 0.01 : 0.015
           
           if (bubble.opacity < bubble.targetOpacity) {
             newOpacity = Math.min(bubble.opacity + transitionSpeed, bubble.targetOpacity)
@@ -119,22 +122,20 @@ export default function BlurBubbles() {
           }
         })
       )
-    }, prefersReducedMotion ? 50 : isMobile ? 24 : 16)
+    }, prefersReducedMotion ? 60 : isMobile ? 30 : 16)
 
     return () => clearInterval(transitionInterval)
   }, [isMobile, prefersReducedMotion])
 
-  // Get color class based on bubble color and theme
+  // Get color class with reduced opacity for subtlety
   const getColorClass = (color: 'red' | 'purple' | 'orange') => {
     if (isDark) {
-      // Only red variants for dark mode
-      return 'bg-red-600/40'
+      return 'bg-red-600/20' // Reduced opacity for dark mode
     } else {
-      // More vibrant colors for light mode
       switch (color) {
-        case 'red': return 'bg-red-500/60'    // Increased opacity for light mode
-        case 'purple': return 'bg-purple-500/60' // Increased opacity for light mode
-        case 'orange': return 'bg-orange-400/60' // Increased opacity for light mode
+        case 'red': return 'bg-red-500/30'    // Reduced opacity
+        case 'purple': return 'bg-purple-500/30' // Reduced opacity
+        case 'orange': return 'bg-orange-400/30' // Reduced opacity
       }
     }
   }
@@ -144,7 +145,7 @@ export default function BlurBubbles() {
       {bubbles.map((bubble) => (
         <div
           key={bubble.id}
-          className={`absolute rounded-full ${prefersReducedMotion || isMobile ? 'blur-xl' : 'blur-3xl'} ${prefersReducedMotion || isMobile ? '' : 'mix-blend-screen'} transition-all duration-1000 ease-in-out ${getColorClass(bubble.color)}`}
+          className={`absolute rounded-full blur-2xl transition-all duration-[2000ms] ease-in-out ${getColorClass(bubble.color)}`}
           style={{
             left: `${bubble.x}%`,
             top: `${bubble.y}%`,

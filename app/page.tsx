@@ -74,7 +74,7 @@ export default async function HomePage() {
       className="h-20 w-20 sm:h-20 sm:w-20 md:h-40 md:w-40 rounded-md border bg-card p-1 mt-[-0.25rem]"
     />
   
-            <div className="text-base sm:text-lg md:text-xl font text-center mb-2" style={{ fontFamily: 'Verdana', fontWeight: 'normal' ,fontSize: '1.5em' }}>
+            <div className="text-base sm:text-lg md:text-xl font text-center mb-2" style={{ fontFamily: 'Verdana', fontWeight: 'bold' ,fontSize: '1.5em' }}>
               C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
             </div>
           </div>
@@ -82,7 +82,7 @@ export default async function HomePage() {
   className="text-nowrap font-small text opacity-75 mb-2"
   style={{
     fontFamily: 'Verdana',
-    fontWeight: 'normal',
+    fontWeight: 'bold',
     fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
     lineHeight: '1.2'
   }}
@@ -94,7 +94,7 @@ export default async function HomePage() {
   className="text-nowrap font-small text opacity-75 mb-2"
   style={{
     fontFamily: 'Monotype Corsiva, cursive',
-    fontWeight: 'normal',
+    fontWeight: 'bold',
     fontSize: 'clamp(0.8rem, 1.5vw, 1.1em)',
     lineHeight: '1.2'
   }}
@@ -119,7 +119,7 @@ export default async function HomePage() {
   className="text-nowrap font-medium text opacity-75"
   style={{
     fontFamily: 'Verdana',
-    fontWeight: 'normal' ,
+    fontWeight: 'bold' ,
     fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
     lineHeight: '1.2'
   }}

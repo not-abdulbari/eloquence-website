@@ -59,9 +59,9 @@ export default function BackgroundGrid() {
   }, [])
 
   useEffect(() => {
-    // Determine intensity based on device and user preference
-    const intensity = prefersReducedMotion ? 0.3 : isMobile ? 0.5 : 1
-    const count = Math.max(4, Math.round(12 * intensity))
+    // Reduced spot count by ~40%
+    const intensity = prefersReducedMotion ? 0.2 : isMobile ? 0.3 : 0.6
+    const count = Math.max(2, Math.round(7 * intensity))
     const baseSize = 100 * intensity + (isMobile ? 40 : 100)
 
     const seeded: Spot[] = Array.from({ length: count }).map((_, i) => ({
@@ -75,26 +75,25 @@ export default function BackgroundGrid() {
     }))
     setSpots(seeded)
 
-    // Slow down updates on mobile/reduced-motion
-    const intervalMs = prefersReducedMotion ? 4000 : isMobile ? 3000 : 2000
-    const movement = prefersReducedMotion ? 1 : isMobile ? 2 : 4
-    const toggleChance = prefersReducedMotion ? 0.15 : isMobile ? 0.25 : 0.4
+    // Slower, smoother animations
+    const intervalMs = prefersReducedMotion ? 5000 : isMobile ? 4000 : 3000
+    const movement = prefersReducedMotion ? 0.5 : isMobile ? 1 : 2
+    const toggleChance = prefersReducedMotion ? 0.1 : isMobile ? 0.15 : 0.25
 
     const id = setInterval(() => {
       setSpots((prev) =>
         prev.map((s) => {
-          // Always update every spot (no static ones)
           const newHue = isDark
             ? "red"
             : Math.random() > 0.5
               ? "violet"
               : "yellow"
 
-          // Gentle movement with proper bounds
-          const newX = (s.x + (Math.random() * movement - movement / 2) + 100) % 100
-          const newY = (s.y + (Math.random() * movement - movement / 2) + 100) % 100
+          // Slower, bounded movement
+          const newX = Math.max(5, Math.min(95, s.x + (Math.random() * movement - movement / 2)))
+          const newY = Math.max(5, Math.min(95, s.y + (Math.random() * movement - movement / 2)))
 
-          // Ensure visibility changes happen regularly
+          // Less frequent visibility changes
           const shouldToggle = Math.random() < toggleChance
           const newVisible = shouldToggle ? !s.visible : s.visible
 
@@ -112,16 +111,18 @@ export default function BackgroundGrid() {
     return () => clearInterval(id)
   }, [isDark, isMobile, prefersReducedMotion])
 
-  // Handle smooth opacity transitions
+  // Smoother opacity transitions
   useEffect(() => {
     const transitionInterval = setInterval(() => {
       setSpots(prev => 
         prev.map(spot => {
-          // Lower opacity on mobile/reduced-motion to reduce overdraw
-          const maxOpacity = prefersReducedMotion ? 0.4 : isMobile ? 0.55 : (isDark ? 0.8 : 0.7)
+          // Reduced maximum opacity for subtlety
+          const maxOpacity = prefersReducedMotion ? 0.25 : isMobile ? 0.35 : (isDark ? 0.5 : 0.4)
           const targetOpacity = spot.visible ? maxOpacity : 0
           let newOpacity = spot.opacity
-          const transitionSpeed = prefersReducedMotion ? 0.01 : isMobile ? 0.015 : 0.02
+          
+          // Slower transitions
+          const transitionSpeed = prefersReducedMotion ? 0.005 : isMobile ? 0.01 : 0.015
 
           if (spot.opacity < targetOpacity) {
             newOpacity = Math.min(spot.opacity + transitionSpeed, targetOpacity)
@@ -135,15 +136,14 @@ export default function BackgroundGrid() {
           }
         })
       )
-    // Lower frame rate on mobile/reduced-motion
-    }, prefersReducedMotion ? 50 : isMobile ? 24 : 16)
+    }, prefersReducedMotion ? 60 : isMobile ? 30 : 16)
 
     return () => clearInterval(transitionInterval)
   }, [isDark, isMobile, prefersReducedMotion])
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 w-screen h-screen -z-10">
-      {/* 🔁 Enhanced Grid – Visible in Both Modes */}
+      {/* Enhanced Grid */}
       <div
         className="absolute inset-0 transition-opacity duration-500"
         style={{
@@ -157,7 +157,7 @@ export default function BackgroundGrid() {
         }}
       />
 
-      {/* Neon Glow Spots with smooth fade transitions */}
+      {/* Softer glow spots with smooth transitions */}
       {spots.map((s) => {
         const rgb = COLORS[s.hue]
         const style: React.CSSProperties = {
@@ -169,27 +169,20 @@ export default function BackgroundGrid() {
           background: `
             radial-gradient(
               circle closest-side,
-              rgba(${rgb}, ${prefersReducedMotion || isMobile ? 0.5 : (isDark ? 0.8 : 0.7)}),
-              rgba(${rgb}, ${prefersReducedMotion || isMobile ? 0.3 : 0.5}) 50%,
-              rgba(${rgb}, ${prefersReducedMotion || isMobile ? 0.15 : 0.2}) 70%,
+              rgba(${rgb}, ${s.opacity * 0.7}),
+              rgba(${rgb}, ${s.opacity * 0.4}) 50%,
+              rgba(${rgb}, ${s.opacity * 0.2}) 70%,
               transparent 85%
             )
           `,
-          boxShadow: prefersReducedMotion || isMobile
-            ? `0 0 ${Math.max(8, s.size / 8)}px rgba(${rgb}, 0.25)`
-            : (isDark
-              ? `0 0 ${s.size / 5}px rgba(${rgb}, 0.4)`
-              : `0 0 ${s.size / 6}px rgba(${rgb}, 0.4)`),
+          boxShadow: `0 0 ${Math.max(8, s.size / 8)}px rgba(${rgb}, ${s.opacity * 0.3})`,
           opacity: s.opacity,
         }
 
         return (
           <div
             key={s.id}
-            className={
-              `absolute rounded-full ${prefersReducedMotion || isMobile ? 'blur-xl' : 'blur-3xl'} ` +
-              `${prefersReducedMotion || isMobile ? '' : 'mix-blend-screen'} transition-opacity duration-1000 ease-in-out`
-            }
+            className={`absolute rounded-full blur-2xl transition-opacity duration-[2000ms] ease-in-out`}
             style={style}
           />
         )
