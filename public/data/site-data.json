@@ -144,7 +144,12 @@
         "Prelims followed by finals.",
         "No use of electronic devices.",
         "Quizmaster's decision is final."
-      ]
+      ],
+      "contact":
+        {
+          "name": "John Doe",
+          "phone": "+91 98765 43210"
+        }
     },
     {
       "id": "treasure-hunt",
