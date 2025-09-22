@@ -46,24 +46,23 @@ export default function BlurBubbles() {
   useEffect(() => {
     // Reduced bubble count for less visual noise
     const intensity = prefersReducedMotion ? 0.2 : isMobile ? 0.3 : 0.5
-    const count = Math.max(2, Math.round(5 * intensity))
-    const baseSize = 100 * intensity + (isMobile ? 40 : 100)
+    const count = Math.max(2, Math.round(4 * intensity))
+    const baseSize = 80 * intensity + (isMobile ? 30 : 60)
 
     const initialBubbles = Array.from({ length: count }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: baseSize + Math.random() * (120 * intensity),
+      size: baseSize + Math.random() * (80 * intensity),
       opacity: 0,
-      targetOpacity: Math.random() * 0.15 + 0.05, // Lower max opacity
+      targetOpacity: Math.random() * 0.15 + 0.05,
       color: isDark ? 'red' : (['red', 'purple', 'orange'][Math.floor(Math.random() * 3)] as 'red' | 'purple' | 'orange')
     }))
     setBubbles(initialBubbles)
 
-    // Slower, more controlled animations
-    const movement = prefersReducedMotion ? 0.3 : isMobile ? 0.5 : 1
+    // Slower, more consistent animations
+    const movement = prefersReducedMotion ? 0.3 : isMobile ? 0.5 : 0.8
     const intervalMs = prefersReducedMotion ? 6000 : isMobile ? 5000 : 4000
-    const opacityChangeChance = prefersReducedMotion ? 0.1 : isMobile ? 0.2 : 0.3
 
     const interval = setInterval(() => {
       setBubbles(prev => 
@@ -72,19 +71,13 @@ export default function BlurBubbles() {
           const newX = Math.max(10, Math.min(90, bubble.x + (Math.random() * movement * 2 - movement)))
           const newY = Math.max(10, Math.min(90, bubble.y + (Math.random() * movement * 2 - movement)))
           
-          // Controlled opacity changes
-          const shouldChangeOpacity = Math.random() < opacityChangeChance
-          const newTargetOpacity = shouldChangeOpacity 
-            ? Math.random() * 0.15 + 0.05
-            : bubble.targetOpacity
+          // Gradual opacity changes only
+          const newTargetOpacity = Math.random() * 0.15 + 0.05
           
-          // Infrequent color changes
+          // Color changes only in light mode, less frequently
           let newColor = bubble.color
-          if (!isDark) {
-            const shouldChangeColor = Math.random() < 0.05
-            if (shouldChangeColor) {
-              newColor = ['red', 'purple', 'orange'][Math.floor(Math.random() * 3)] as 'red' | 'purple' | 'orange'
-            }
+          if (!isDark && Math.random() < 0.1) {
+            newColor = ['red', 'purple', 'orange'][Math.floor(Math.random() * 3)] as 'red' | 'purple' | 'orange'
           }
           
           return {
@@ -108,7 +101,7 @@ export default function BlurBubbles() {
         prev.map(bubble => {
           let newOpacity = bubble.opacity
           // Very slow transitions to prevent blinking
-          const transitionSpeed = 0.005
+          const transitionSpeed = 0.008
           
           if (bubble.opacity < bubble.targetOpacity) {
             newOpacity = Math.min(bubble.opacity + transitionSpeed, bubble.targetOpacity)
@@ -127,10 +120,10 @@ export default function BlurBubbles() {
     return () => clearInterval(transitionInterval)
   }, [])
 
-  // Get color class with consistent low opacity
+  // Get color class with consistent opacity
   const getColorClass = (color: 'red' | 'purple' | 'orange') => {
     if (isDark) {
-      return 'bg-red-600/15' // Very low opacity for dark mode
+      return 'bg-red-600/15' // Subtle red for dark mode
     } else {
       switch (color) {
         case 'red': return 'bg-red-500/20'

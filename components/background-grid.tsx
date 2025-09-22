@@ -11,6 +11,7 @@ type Spot = {
   hue: "red" | "violet" | "yellow"
   visible: boolean
   opacity: number
+  targetOpacity: number
 }
 
 const COLORS = {
@@ -59,50 +60,50 @@ export default function BackgroundGrid() {
   }, [])
 
   useEffect(() => {
-    // Reduced spot count for less visual noise
+    // Reduced spot count and intensity
     const intensity = prefersReducedMotion ? 0.2 : isMobile ? 0.3 : 0.5
     const count = Math.max(2, Math.round(5 * intensity))
-    const baseSize = 100 * intensity + (isMobile ? 40 : 100)
+    const baseSize = 80 * intensity + (isMobile ? 30 : 60)
 
     const seeded: Spot[] = Array.from({ length: count }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: baseSize + Math.random() * (120 * intensity),
+      size: baseSize + Math.random() * (80 * intensity),
       hue: isDark ? "red" : Math.random() > 0.5 ? "violet" : "yellow",
-      visible: false,
+      visible: true, // Always visible now
       opacity: 0,
+      targetOpacity: Math.random() * 0.15 + 0.05,
     }))
     setSpots(seeded)
 
-    // Slower, more controlled animations
+    // Slower, more consistent animations
+    const movement = prefersReducedMotion ? 0.3 : isMobile ? 0.5 : 0.8
     const intervalMs = prefersReducedMotion ? 6000 : isMobile ? 5000 : 4000
-    const movement = prefersReducedMotion ? 0.3 : isMobile ? 0.5 : 1
-    const toggleChance = prefersReducedMotion ? 0.1 : isMobile ? 0.2 : 0.3
 
     const id = setInterval(() => {
       setSpots((prev) =>
         prev.map((s) => {
-          const newHue = isDark
-            ? "red"
-            : Math.random() > 0.5
-              ? "violet"
-              : "yellow"
-
           // Smooth, constrained movement
           const newX = Math.max(10, Math.min(90, s.x + (Math.random() * movement - movement / 2)))
           const newY = Math.max(10, Math.min(90, s.y + (Math.random() * movement - movement / 2)))
 
-          // Controlled visibility changes
-          const shouldToggle = Math.random() < toggleChance
-          const newVisible = shouldToggle ? !s.visible : s.visible
+          // Gradual opacity changes only
+          const newTargetOpacity = Math.random() * 0.15 + 0.05
+          
+          // Color changes less frequently
+          const newHue = isDark
+            ? "red"
+            : Math.random() > 0.9
+              ? (Math.random() > 0.5 ? "violet" : "yellow")
+              : s.hue
 
           return {
             ...s,
             x: newX,
             y: newY,
             hue: newHue,
-            visible: newVisible,
+            targetOpacity: newTargetOpacity,
           }
         }),
       )
@@ -116,17 +117,14 @@ export default function BackgroundGrid() {
     const transitionInterval = setInterval(() => {
       setSpots(prev => 
         prev.map(spot => {
-          const maxOpacity = isDark ? 0.3 : 0.25
-          const targetOpacity = spot.visible ? maxOpacity : 0
           let newOpacity = spot.opacity
-          
           // Very slow transitions to prevent blinking
-          const transitionSpeed = 0.005
+          const transitionSpeed = 0.008
 
-          if (spot.opacity < targetOpacity) {
-            newOpacity = Math.min(spot.opacity + transitionSpeed, targetOpacity)
-          } else if (spot.opacity > targetOpacity) {
-            newOpacity = Math.max(spot.opacity - transitionSpeed, targetOpacity)
+          if (spot.opacity < spot.targetOpacity) {
+            newOpacity = Math.min(spot.opacity + transitionSpeed, spot.targetOpacity)
+          } else if (spot.opacity > spot.targetOpacity) {
+            newOpacity = Math.max(spot.opacity - transitionSpeed, spot.targetOpacity)
           }
           
           return {
@@ -138,7 +136,7 @@ export default function BackgroundGrid() {
     }, 30) // Consistent frame rate
 
     return () => clearInterval(transitionInterval)
-  }, [isDark])
+  }, [])
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 w-screen h-screen -z-10">
@@ -156,7 +154,7 @@ export default function BackgroundGrid() {
         }}
       />
 
-      {/* Softer glow spots with smooth transitions */}
+      {/* Neon Glow Spots with smooth fade transitions */}
       {spots.map((s) => {
         const rgb = COLORS[s.hue]
         const style: React.CSSProperties = {
@@ -174,7 +172,7 @@ export default function BackgroundGrid() {
               transparent 85%
             )
           `,
-          boxShadow: `0 0 ${Math.max(8, s.size / 8)}px rgba(${rgb}, ${s.opacity * 0.2})`,
+          boxShadow: `0 0 ${Math.max(8, s.size / 8)}px rgba(${rgb}, ${s.opacity * 0.3})`,
           opacity: s.opacity,
         }
 
