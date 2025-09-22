@@ -20,7 +20,7 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 	if (!event) {
 		return (
 			<main className="mx-auto max-w-6xl px-4 py-12">
-				<p className="text-muted-foreground">Loading event...</p>
+				<p className="opacity-75">Loading event...</p>
 			</main>
 		);
 	}
@@ -35,7 +35,7 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 			<div className="grid gap-8 md:grid-cols-3">
 				<div className="space-y-4 md:col-span-2">
 					<h2 className="text-xl font-semibold">Overview</h2>
-					<ul className="text-sm text-muted-foreground">
+					<ul className="text-sm opacity-75">
 						<li>
 							<strong className="text-foreground">Venue:</strong> {event.venue}
 						</li>
@@ -57,7 +57,7 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 
 					<div className="space-y-2">
 						<h3 className="text-lg font-semibold">Rules</h3>
-						<ol className="list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
+						<ol className="list-decimal space-y-1 pl-5 text-sm opacity-75">
 							{event.rules.map((r, i) => (
 								<li key={i}>{r}</li>
 							))}

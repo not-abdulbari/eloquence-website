@@ -38,7 +38,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
         <TypedBlurBubbles variant="events" />
         <TypedFloatingIcons variant="events" />
         <div className="relative z-10">
-          <p className="text-muted-foreground">Event not found.</p>
+          <p className="opacity-75">Event not found.</p>
         </div>
       </main>
     );

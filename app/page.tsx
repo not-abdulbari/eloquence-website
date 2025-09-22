@@ -79,7 +79,7 @@ export default async function HomePage() {
             </div>
           </div>
           <p
-  className="text-nowrap font-small text opacity-50 mb-2"
+  className="text-nowrap font-small text opacity-75 mb-2"
   style={{
     fontFamily: 'Verdana',
     fontWeight: 'normal',
@@ -91,7 +91,7 @@ export default async function HomePage() {
 </p>
 
 <p
-  className="text-nowrap font-small text opacity-50 mb-2"
+  className="text-nowrap font-small text opacity-75 mb-2"
   style={{
     fontFamily: 'Monotype Corsiva, cursive',
     fontWeight: 'normal',
@@ -116,7 +116,7 @@ export default async function HomePage() {
             <span className="sm:hidden">ELOQUENCE'25</span>
           </h1>
                     <p
-  className="text-nowrap font-medium text opacity-50"
+  className="text-nowrap font-medium text opacity-75"
   style={{
     fontFamily: 'Verdana',
     fontWeight: 'normal' ,
@@ -126,7 +126,7 @@ export default async function HomePage() {
 >
   A National Level Technical Symposium
 </p><CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs mb-2" />
-          <p className="text-xs text opacity-50">November 01, 2025 • 9:00 AM IST</p>
+          <p className="text-xs text opacity-75">November 01, 2025 • 9:00 AM IST</p>
           {/* CTAs */}
           <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 w-full" id="register">
             <Link href="/register">
@@ -154,7 +154,7 @@ export default async function HomePage() {
         <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
           <div>
             <h2 className="text-2xl sm:text-3xl font-semibold">About the Event</h2>
-            <p className="mt-2 sm:mt-3 md:text-base text opacity-50">
+            <p className="mt-2 sm:mt-3 md:text-base text opacity-75">
               Dive into coding challenges, paper presentations, design, quizzes, gaming and more. Eloquence&apos;25
               brings students from across India to learn, build, and have fun.<br />
               <br />
@@ -170,7 +170,7 @@ export default async function HomePage() {
               alt="C Abdul Hakeem College of Engineering and Technology"
               className="w-full max-w-xs sm:max-w-sm md:max-w-md rounded-md border bg-card p-2 mb-4 object-cover"
             />
-            <div className="text-center text-xs sm:text-sm text opacity-50 font-medium">
+            <div className="text-center text-xs sm:text-sm text opacity-75 font-medium">
               Venue: C Abdul Hakeem College of Engineering and Technology, Melvisharam, Ranipet District
             </div>
           </div>
@@ -190,7 +190,7 @@ export default async function HomePage() {
       {/* LOCATION + ORGANISATIONS */}
       <section id="location" className="mx-auto w-full max-w-6xl px-2 sm:px-4 py-8 sm:py-12 md:py-16">
         <h2 className="mb-2 sm:mb-3 text-xl sm:text-2xl font-semibold">Location</h2>
-        <p className="text-xs sm:text-sm text opacity-50">C. Abdul Hakeem College of Engineering and Technology, Ranipet District - 632 509.</p>
+        <p className="text-xs sm:text-sm text opacity-75">C. Abdul Hakeem College of Engineering and Technology, Ranipet District - 632 509.</p>
         <div className="mt-3 sm:mt-4">
           <iframe
             title="College Map"
