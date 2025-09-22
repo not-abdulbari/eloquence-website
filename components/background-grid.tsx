@@ -59,9 +59,9 @@ export default function BackgroundGrid() {
   }, [])
 
   useEffect(() => {
-    // Reduced spot count by ~40%
-    const intensity = prefersReducedMotion ? 0.2 : isMobile ? 0.3 : 0.6
-    const count = Math.max(2, Math.round(7 * intensity))
+    // Reduced spot count for less visual noise
+    const intensity = prefersReducedMotion ? 0.2 : isMobile ? 0.3 : 0.5
+    const count = Math.max(2, Math.round(5 * intensity))
     const baseSize = 100 * intensity + (isMobile ? 40 : 100)
 
     const seeded: Spot[] = Array.from({ length: count }).map((_, i) => ({
@@ -75,10 +75,10 @@ export default function BackgroundGrid() {
     }))
     setSpots(seeded)
 
-    // Slower, smoother animations
-    const intervalMs = prefersReducedMotion ? 5000 : isMobile ? 4000 : 3000
-    const movement = prefersReducedMotion ? 0.5 : isMobile ? 1 : 2
-    const toggleChance = prefersReducedMotion ? 0.1 : isMobile ? 0.15 : 0.25
+    // Slower, more controlled animations
+    const intervalMs = prefersReducedMotion ? 6000 : isMobile ? 5000 : 4000
+    const movement = prefersReducedMotion ? 0.3 : isMobile ? 0.5 : 1
+    const toggleChance = prefersReducedMotion ? 0.1 : isMobile ? 0.2 : 0.3
 
     const id = setInterval(() => {
       setSpots((prev) =>
@@ -89,11 +89,11 @@ export default function BackgroundGrid() {
               ? "violet"
               : "yellow"
 
-          // Slower, bounded movement
-          const newX = Math.max(5, Math.min(95, s.x + (Math.random() * movement - movement / 2)))
-          const newY = Math.max(5, Math.min(95, s.y + (Math.random() * movement - movement / 2)))
+          // Smooth, constrained movement
+          const newX = Math.max(10, Math.min(90, s.x + (Math.random() * movement - movement / 2)))
+          const newY = Math.max(10, Math.min(90, s.y + (Math.random() * movement - movement / 2)))
 
-          // Less frequent visibility changes
+          // Controlled visibility changes
           const shouldToggle = Math.random() < toggleChance
           const newVisible = shouldToggle ? !s.visible : s.visible
 
@@ -111,18 +111,17 @@ export default function BackgroundGrid() {
     return () => clearInterval(id)
   }, [isDark, isMobile, prefersReducedMotion])
 
-  // Smoother opacity transitions
+  // Handle smooth, consistent opacity transitions
   useEffect(() => {
     const transitionInterval = setInterval(() => {
       setSpots(prev => 
         prev.map(spot => {
-          // Reduced maximum opacity for subtlety
-          const maxOpacity = prefersReducedMotion ? 0.25 : isMobile ? 0.35 : (isDark ? 0.5 : 0.4)
+          const maxOpacity = isDark ? 0.3 : 0.25
           const targetOpacity = spot.visible ? maxOpacity : 0
           let newOpacity = spot.opacity
           
-          // Slower transitions
-          const transitionSpeed = prefersReducedMotion ? 0.005 : isMobile ? 0.01 : 0.015
+          // Very slow transitions to prevent blinking
+          const transitionSpeed = 0.005
 
           if (spot.opacity < targetOpacity) {
             newOpacity = Math.min(spot.opacity + transitionSpeed, targetOpacity)
@@ -136,10 +135,10 @@ export default function BackgroundGrid() {
           }
         })
       )
-    }, prefersReducedMotion ? 60 : isMobile ? 30 : 16)
+    }, 30) // Consistent frame rate
 
     return () => clearInterval(transitionInterval)
-  }, [isDark, isMobile, prefersReducedMotion])
+  }, [isDark])
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 w-screen h-screen -z-10">
@@ -175,14 +174,14 @@ export default function BackgroundGrid() {
               transparent 85%
             )
           `,
-          boxShadow: `0 0 ${Math.max(8, s.size / 8)}px rgba(${rgb}, ${s.opacity * 0.3})`,
+          boxShadow: `0 0 ${Math.max(8, s.size / 8)}px rgba(${rgb}, ${s.opacity * 0.2})`,
           opacity: s.opacity,
         }
 
         return (
           <div
             key={s.id}
-            className={`absolute rounded-full blur-2xl transition-opacity duration-[2000ms] ease-in-out`}
+            className={`absolute rounded-full blur-2xl transition-all duration-1000 ease-out`}
             style={style}
           />
         )
