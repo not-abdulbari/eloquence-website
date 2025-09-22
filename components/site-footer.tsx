@@ -27,7 +27,7 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold" style={{ fontFamily: 'Decaydence', letterSpacing: '0.01em' }}>
+            <h3 className="text-m font-semibold" style={{ fontFamily: 'Decaydence', letterSpacing: '0.01em' }}>
               Eloquence&apos;25
             </h3>
             <p className="text-sm text opacity-50 text-pretty">
