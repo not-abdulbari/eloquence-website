@@ -90,7 +90,7 @@ function EventCard({ e }: { e: EventItem }) {
 
         <CardHeader>
           <CardTitle className="flex items-center justify-between gap-3">
-            <span className="flex items-center gap-3">
+            <span className="flex items-center gap-2">
               <EventIcon id={e.icon || e.id} />
               {e.title}
             </span>

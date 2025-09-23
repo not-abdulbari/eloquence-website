@@ -12,25 +12,23 @@ export default function PatronsSection() {
 
   return (
     <section id="patrons" className="mx-auto max-w-6xl px-4 py-16">
+
+
       <div className="mb-6">
         <h2 className="text-balance text-3xl font-semibold">Patrons</h2>
-        <p className="text opacity-75">With guidance and support from our leadership.</p>
+        <p className="text opacity-50">With guidance and support from our leadership.</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {patrons.map((p) => (
           <Card key={p.role} className="bg-card">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base mt-6">{p.role}</CardTitle>
+            <CardHeader>
+              <CardTitle className="text-base">{p.role}</CardTitle>
             </CardHeader>
-            <CardContent className="text opacity-75">
+            <CardContent className="text opacity-50">
               {Array.isArray(p.names) ? (
-                <div className="mb-6">
-                 {p.names.map((name, index) => (
-                    <div key={index}>{name}</div>
-                  ))}
-              </div>  
+                p.names.map((name, index) => <div key={index}>{name}</div>)
               ) : (
-                <div className="mb-6">{p.name}</div>
+                p.name
               )}
             </CardContent>
           </Card>
