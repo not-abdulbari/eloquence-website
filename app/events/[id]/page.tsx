@@ -16,9 +16,12 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
+  // Await params before accessing properties
+  const { id } = await params;
+  
   const filePath = path.join(process.cwd(), "public", "data", "site-data.json");
   const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  const event = data.events.find((e: { id: string }) => e.id === params.id);
+  const event = data.events.find((e: { id: string }) => e.id === id);
   return {
     title: event ? `${event.title} | Eloquence'25` : "Event | Eloquence'25",
     description: event ? `Details for ${event.title} at Eloquence'25.` : "Event details."
@@ -26,9 +29,12 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function EventDetailPage({ params }: { params: { id: string } }) {
+  // Await params before accessing properties
+  const { id } = await params;
+  
   const filePath = path.join(process.cwd(), "public", "data", "site-data.json");
   const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  const event = data.events.find((e: { id: string }) => e.id === params.id);
+  const event = data.events.find((e: { id: string }) => e.id === id);
   const googleFormUrl = data.googleFormUrl;
   
   if (!event) {

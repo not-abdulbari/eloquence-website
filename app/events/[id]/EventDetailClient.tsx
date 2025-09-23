@@ -29,7 +29,6 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 		<main className="mx-auto max-w-6xl px-4 py-12">
 			<div className="mb-6 flex items-center gap-3">
 				<h1 className="text-3xl font-bold">{event.title}</h1>
-				<Badge variant={event.type === "TECH" ? "outline" : "secondary"}>{event.type}</Badge>
 			</div>
 
 			<div className="grid gap-8 md:grid-cols-3">
