@@ -60,9 +60,8 @@ export default function BackgroundGrid() {
   }, [])
 
   useEffect(() => {
-    // Reduced spot count and intensity
     const intensity = prefersReducedMotion ? 0.2 : isMobile ? 0.3 : 0.5
-    const count = Math.max(2, Math.round(5 * intensity))
+    const count = Math.max(4, Math.round(10 * intensity))
     const baseSize = 80 * intensity + (isMobile ? 30 : 60)
 
     const seeded: Spot[] = Array.from({ length: count }).map((_, i) => ({
@@ -71,27 +70,23 @@ export default function BackgroundGrid() {
       y: Math.random() * 100,
       size: baseSize + Math.random() * (80 * intensity),
       hue: isDark ? "red" : Math.random() > 0.5 ? "violet" : "yellow",
-      visible: true, // Always visible now
+      visible: true,
       opacity: 0,
-      targetOpacity: Math.random() * 0.15 + 0.05,
+      // Reduced target opacity by 50%
+      targetOpacity: Math.random() * 0.2 + 0.2, // Was 0.4 + 0.4
     }))
     setSpots(seeded)
 
-    // Slower, more consistent animations
     const movement = prefersReducedMotion ? 0.3 : isMobile ? 0.5 : 0.8
     const intervalMs = prefersReducedMotion ? 6000 : isMobile ? 5000 : 4000
 
     const id = setInterval(() => {
       setSpots((prev) =>
         prev.map((s) => {
-          // Smooth, constrained movement
           const newX = Math.max(10, Math.min(90, s.x + (Math.random() * movement - movement / 2)))
           const newY = Math.max(10, Math.min(90, s.y + (Math.random() * movement - movement / 2)))
-
-          // Gradual opacity changes only
-          const newTargetOpacity = Math.random() * 0.15 + 0.05
-          
-          // Color changes less frequently
+          // Reduced target opacity by 50%
+          const newTargetOpacity = Math.random() * 0.2 + 0.2 // Was 0.4 + 0.4
           const newHue = isDark
             ? "red"
             : Math.random() > 0.9
@@ -112,13 +107,11 @@ export default function BackgroundGrid() {
     return () => clearInterval(id)
   }, [isDark, isMobile, prefersReducedMotion])
 
-  // Handle smooth, consistent opacity transitions
   useEffect(() => {
     const transitionInterval = setInterval(() => {
       setSpots(prev => 
         prev.map(spot => {
           let newOpacity = spot.opacity
-          // Very slow transitions to prevent blinking
           const transitionSpeed = 0.008
 
           if (spot.opacity < spot.targetOpacity) {
@@ -133,14 +126,13 @@ export default function BackgroundGrid() {
           }
         })
       )
-    }, 30) // Consistent frame rate
+    }, 30)
 
     return () => clearInterval(transitionInterval)
   }, [])
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 w-screen h-screen -z-10">
-      {/* Enhanced Grid */}
       <div
         className="absolute inset-0 transition-opacity duration-500"
         style={{
@@ -154,7 +146,6 @@ export default function BackgroundGrid() {
         }}
       />
 
-      {/* Neon Glow Spots with smooth fade transitions */}
       {spots.map((s) => {
         const rgb = COLORS[s.hue]
         const style: React.CSSProperties = {
@@ -163,23 +154,25 @@ export default function BackgroundGrid() {
           width: s.size,
           height: s.size,
           transform: "translate(-50%, -50%)",
+          // Reduced gradient opacity by 50%
           background: `
             radial-gradient(
               circle closest-side,
-              rgba(${rgb}, ${s.opacity * 0.7}),
-              rgba(${rgb}, ${s.opacity * 0.4}) 50%,
-              rgba(${rgb}, ${s.opacity * 0.2}) 70%,
-              transparent 85%
+              rgba(${rgb}, ${s.opacity}),
+              rgba(${rgb}, ${s.opacity * 0.3}) 50%, 
+              rgba(${rgb}, ${s.opacity * 0.15}) 70%,
+              transparent 80%
             )
           `,
-          boxShadow: `0 0 ${Math.max(8, s.size / 8)}px rgba(${rgb}, ${s.opacity * 0.3})`,
+          // Reduced shadow opacity by 50%
+          boxShadow: `0 0 ${Math.max(12, s.size / 6)}px rgba(${rgb}, ${s.opacity * 0.35})`,
           opacity: s.opacity,
         }
 
         return (
           <div
             key={s.id}
-            className={`absolute rounded-full blur-2xl transition-all duration-1000 ease-out`}
+            className={`absolute rounded-full blur-xl transition-all duration-1000 ease-out`}
             style={style}
           />
         )

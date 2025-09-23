@@ -74,15 +74,15 @@ export default async function HomePage() {
       className="h-20 w-20 sm:h-20 sm:w-20 md:h-40 md:w-40 rounded-md border bg-card p-1 mt-[-0.25rem]"
     />
   
-            <div className="text-base sm:text-lg md:text-xl font text-center mb-2" style={{ fontFamily: 'Verdana', fontWeight: 'bold' ,fontSize: '1.5em' }}>
+            <div className="text-base sm:text-lg md:text-xl font text-center mb-2" style={{ fontFamily: 'Helvetica', fontWeight: 'bold' ,fontSize: '1.5em' }}>
               C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
             </div>
           </div>
           <p
   className="text-nowrap font-small text opacity-75 mb-2"
   style={{
-    fontFamily: 'Verdana',
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica',
+    fontWeight: 'normal',
     fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
     lineHeight: '1.2'
   }}
@@ -94,7 +94,7 @@ export default async function HomePage() {
   className="text-nowrap font-small text opacity-75 mb-2"
   style={{
     fontFamily: 'Monotype Corsiva, cursive',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     fontSize: 'clamp(0.8rem, 1.5vw, 1.1em)',
     lineHeight: '1.2'
   }}
@@ -103,7 +103,7 @@ export default async function HomePage() {
 </p>
          
          <h1
-            className="text-balance font-Verdana font-black leading-tight tracking-tight whitespace-nowrap mb-2"
+            className="text-balance font-Helvetica font-black leading-tight tracking-tight whitespace-nowrap mb-2"
             style={{
               fontFamily: 'Decaydence',
               letterSpacing: '0.07em',
@@ -118,8 +118,8 @@ export default async function HomePage() {
                     <p
   className="text-nowrap font-medium text opacity-75"
   style={{
-    fontFamily: 'Verdana',
-    fontWeight: 'bold' ,
+    fontFamily: 'Helvetica',
+    fontWeight: 'normal' ,
     fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
     lineHeight: '1.2'
   }}
