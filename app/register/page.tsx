@@ -19,7 +19,7 @@ export default function RegisterPage() {
               maxWidth: '100vw',
               lineHeight: 1.0,
             }}>
-            STAY TUNED!
+            Hello World!
           </h1>
           <p className="text opacity-50">
             Registration details will be announced soon. We look forward to your participation in this exciting event!
