@@ -69,7 +69,7 @@ export default async function HomePage() {
 >
   <div className="flex flex-col items-center gap-0 sm:gap-0">
     <img
-      src="/cahcet-logo.png"
+      src="/cahcet-logo.webp"
       alt="CAHCET College logo"
       className="h-20 w-20 sm:h-20 sm:w-20 md:h-40 md:w-40 rounded-md border bg-card p-1 mt-[-0.25rem]"
     />
@@ -166,7 +166,7 @@ export default async function HomePage() {
           </div>
           <div className="rounded-xl border bg-card p-4 sm:p-6 flex flex-col items-center">
             <img
-              src="/cahcet_top.jpg"
+              src="/cahcet_top.webp"
               alt="C Abdul Hakeem College of Engineering and Technology"
               className="w-full max-w-xs sm:max-w-sm md:max-w-md rounded-md border bg-card p-2 mb-4 object-cover"
             />
