@@ -97,7 +97,7 @@ function EventCard({ e }: { e: EventItem }) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm opacity-75">{e.short ?? "Click to view details"}</p>
+          <p className="text-sm opacity-75 mb-6">{e.short ?? "Click to view details"}</p>
         </CardContent>
       </Card>
     </Link>
