@@ -1,26 +1,42 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Instagram, Linkedin, Mail } from "lucide-react"
+import useSWR from "swr"
+import { fetchSiteData } from "@/lib/fetcher"
+import { SiteData } from "@/lib/types"
 
 export default function SiteFooter() {
-  // Technical Events - Alphabetically Sorted
-  const technicalEvents = [
-    { name: "Coding & Debugging", href: "/events/coding-debugging" },
-    { name: "Paper Presentation", href: "/events/paper-presentation" },
-    { name: "Poster Making", href: "/events/poster-making" },
-    { name: "Tech Quiz Showdown", href: "/events/tech-quiz" },
-    { name: "Web Designing", href: "/events/web-designing" },
-  ]
+  const { data: siteData } = useSWR<SiteData>("/data/site-data.json", fetchSiteData)
 
-  // Non-Technical Events - Alphabetically Sorted
-  const nonTechnicalEvents = [
-    { name: "Connection", href: "/events/connection" },
-    { name: "Cooking without Fire", href: "/events/cooking-without-fire" },
-    { name: "E-Sports", href: "/events/esports" },
-    { name: "Reels & Photography", href: "/events/reels-photography" },
-    { name: "Treasure Hunt", href: "/events/treasure-hunt" },
-  ]
+  if (!siteData) {
+    return (
+      <footer className="border-t">
+        <div className="mx-auto max-w-6xl px-4 py-12">
+          <p className="text-center opacity-50">Loading...</p>
+        </div>
+      </footer>
+    )
+  }
+
+  // Get events dynamically from site data
+  const technicalEvents = siteData.events
+    .filter(event => event.type === "tech")
+    .sort((a, b) => a.title.localeCompare(b.title))
+    .map(event => ({
+      name: event.title,
+      href: `/events/${event.id}`
+    }))
+
+  const nonTechnicalEvents = siteData.events
+    .filter(event => event.type === "non-tech")
+    .sort((a, b) => a.title.localeCompare(b.title))
+    .map(event => ({
+      name: event.title,
+      href: `/events/${event.id}`
+    }))
 
   return (
     <footer className="border-t">
@@ -28,10 +44,10 @@ export default function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="space-y-3">
             <h3 className="text-m font-semibold" style={{ fontFamily: 'Decaydence', letterSpacing: '0.01em' }}>
-              Eloquence&apos;25
+              {siteData.symposium}
             </h3>
             <p className="text-sm text opacity-50 text-pretty">
-              National-level technical symposium by CSE, C Abdul Hakeem College of Engineering &amp; Technology.
+              National-level technical symposium by {siteData.department}, {siteData.college}.
             </p>
 
             <div className="flex gap-3 text opacity-50">

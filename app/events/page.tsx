@@ -4,7 +4,8 @@ import type React from "react"
 
 import useSWR from "swr"
 import Link from "next/link"
-import fetcher from "@/lib/fetcher"
+import { fetchSiteData } from "@/lib/fetcher"
+import { SiteData } from "@/lib/types"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import BackgroundGrid from "@/components/background-grid"
 import FloatingIcons from "@/components/floating-icons"
@@ -22,21 +23,14 @@ import {
   Compass,
   Grid3x3,   // ✅ for Chess (3x3 grid = board)
   PenTool,   // ✅ for Mehendi (hand-drawn art)
+  Palette,
 } from "lucide-react"
 
 // Type assertions
 const TypedBlurBubbles = BlurBubbles as React.ComponentType<{ variant?: string }>
 const TypedFloatingIcons = FloatingIcons as React.ComponentType<{ variant?: string }>
 
-type EventItem = {
-  id: string
-  title: string
-  type: "tech" | "non-tech"
-  short?: string
-  icon?: string
-  image?: string
-  imageAlt?: string
-}
+// EventItem type is now imported from types.ts
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   // --- Technical Events ---
@@ -74,22 +68,18 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   cooking: ChefHat,
 }
 
-// Re-import Palette only if used elsewhere (e.g., poster-making)
-// If not, you can remove it from imports
-import { Palette } from "lucide-react"
-
 function EventIcon({ id }: { id: string }) {
   const key = id.toLowerCase()
   const Icon = iconMap[key] || Code2
   return <Icon className="h-5 w-5 text-primary" />
 }
 
-function EventCard({ e }: { e: EventItem }) {
-  const imgSrc = e.image || "/vibrant-outdoor-event.png"
-  const imgAlt = e.imageAlt || `${e.title} image`
+function EventCard({ event }: { event: SiteData['events'][0] }) {
+  const imgSrc = "/vibrant-outdoor-event.png"
+  const imgAlt = `${event.title} image`
 
   return (
-    <Link href={`/events/${e.id}`}>
+    <Link href={`/events/${event.id}`}>
       <Card className="h-full transition hover:shadow-sm">
         <div className="relative overflow-hidden rounded-t-xl border-b border-border bg-background/40">
           <img
@@ -101,15 +91,20 @@ function EventCard({ e }: { e: EventItem }) {
         </div>
 
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <EventIcon id={e.icon || e.id} />
-            {e.title}
+          <CardTitle className="flex items-center gap-1">
+            <EventIcon id={event.id} />
+            {event.title}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm opacity-75 mb-6">
-            {e.short ?? "Click to view details"}
+          <p className="text-sm opacity-75 mb-1">
+            {event.short}
           </p>
+          <div className="text-xs opacity-60 space-y-1 mb-3">
+            <p><strong>Venue:</strong> {event.venue}</p>
+            <p><strong>Time:</strong> {event.timing}</p>
+            <p><strong>Fee:</strong> {event.registrationFee}</p>
+          </div>
         </CardContent>
       </Card>
     </Link>
@@ -117,10 +112,24 @@ function EventCard({ e }: { e: EventItem }) {
 }
 
 export default function EventsPage() {
-  const { data } = useSWR<{ events: EventItem[] }>("/data/site-data.json", fetcher)
-  const events = data?.events ?? []
+  const { data } = useSWR<SiteData>("/data/site-data.json", fetchSiteData)
+  const siteData = data
 
-  const byType = (t: "tech" | "non-tech") => events.filter((e) => e.type === t)
+  if (!siteData) {
+    return (
+      <main className="relative mx-auto max-w-6xl px-4 py-12">
+        <BackgroundGrid />
+        <TypedBlurBubbles variant="events" />
+        <TypedFloatingIcons variant="events" />
+        <div className="relative z-10">
+          <p className="opacity-75">Loading events...</p>
+        </div>
+      </main>
+    )
+  }
+
+  const technicalEvents = siteData.events.filter(event => event.type === "tech")
+  const nonTechnicalEvents = siteData.events.filter(event => event.type === "non-tech")
 
   return (
     <main className="relative mx-auto max-w-6xl px-4 py-12">
@@ -134,8 +143,8 @@ export default function EventsPage() {
         <section className="space-y-6">
           <h2 className="text-xl font-semibold">Technical Events</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {byType("tech").map((e) => (
-              <EventCard key={e.id} e={e} />
+            {technicalEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
             ))}
           </div>
         </section>
@@ -143,8 +152,8 @@ export default function EventsPage() {
         <section className="mt-10 space-y-6">
           <h2 className="text-xl font-semibold">Non‑Technical Events</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {byType("non-tech").map((e) => (
-              <EventCard key={e.id} e={e} />
+            {nonTechnicalEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
             ))}
           </div>
         </section>
