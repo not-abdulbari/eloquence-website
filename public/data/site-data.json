@@ -86,6 +86,38 @@
       ]
     },
     {
+  "id": "chess",
+  "title": "Chess",
+  "type": "non-tech",
+  "short": "Strategic board battle.",
+  "venue": "Indoor Hall",
+  "timing": "10:00 AM – 1:00 PM",
+  "registrationFee": "₹30 per participant",
+  "members": "Individual",
+  "rules": [
+    "Standard FIDE rules apply.",
+    "Each match will be 10 minutes per player (blitz format).",
+    "Judge's decision is final."
+  ]
+},
+{
+  "id": "mehendi",
+  "title": "Mehendi",
+  "type": "non-tech",
+  "short": "Traditional art contest.",
+  "venue": "Open Arena",
+  "timing": "11:00 AM – 1:30 PM",
+  "registrationFee": "₹40 per participant",
+  "members": "Individual",
+  "rules": [
+    "Only natural henna provided by organizers is allowed.",
+    "Design must be hand-drawn (no stencils).",
+    "Time limit: 2 hours.",
+    "Theme: 'Festive Elegance'.",
+    "Judge's decision is final."
+  ]
+  },
+    {
       "id": "paper-presentation",
       "title": "Paper Presentation",
       "type": "tech",
@@ -103,7 +135,7 @@
     },
     {
       "id": "poster-making",
-      "title": "Poster Making",
+      "title": "Poster Design",
       "type": "tech",
       "short": "Theme based.",
       "venue": "Drawing Hall",
@@ -133,7 +165,7 @@
     },
     {
       "id": "tech-quiz",
-      "title": "Tech Quiz Showdown",
+      "title": "Tech Quiz",
       "type": "tech",
       "short": "Test your tech IQ.",
       "venue": "Seminar Hall B",
@@ -168,7 +200,7 @@
     },
     {
       "id": "web-designing",
-      "title": "Web Designing",
+      "title": "Web Development",
       "type": "tech",
       "short": "Design a responsive web UI (Web Development).",
       "venue": "Lab 2",

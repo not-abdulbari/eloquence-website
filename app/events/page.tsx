@@ -17,13 +17,14 @@ import {
   Gamepad2,
   Clapperboard,
   HelpCircle,
-  Palette,
   Brain,
   Link2,
   Compass,
+  Grid3x3,   // ✅ for Chess (3x3 grid = board)
+  PenTool,   // ✅ for Mehendi (hand-drawn art)
 } from "lucide-react"
 
-// Type assertions for components with variant prop
+// Type assertions
 const TypedBlurBubbles = BlurBubbles as React.ComponentType<{ variant?: string }>
 const TypedFloatingIcons = FloatingIcons as React.ComponentType<{ variant?: string }>
 
@@ -37,22 +38,24 @@ type EventItem = {
   imageAlt?: string
 }
 
-
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   // --- Technical Events ---
-  "coding-debugging": Code2, // Matches 'coding'
-  "paper-presentation": FileText, // Matches 'pp'
-  "poster-making": Palette, // Could also be 'art', but specific to poster
-  "tech-quiz": Brain, // Matches 'tq' and 'quiz'
-  "web-designing": Globe, // Matches 'wd' and 'web'
+  "coding-debugging": Code2,
+  "paper-presentation": FileText,
+  "poster-making": Palette,
+  "tech-quiz": Brain,
+  "web-designing": Globe,
 
   // --- Non-Technical Events ---
-  esports: Gamepad2, // Matches 'gaming'
-  "reels-photography": Clapperboard, // Matches 'filming' and 'sf'
-  connection: Link2, // Matches 'conn' and 'connection' (already there)
-  "cooking-without-fire": ChefHat, // Matches 'cooking'
-  "treasure-hunt": Compass, // New addition for treasure hunt
-  // --- Original mappings preserved (in case of other uses) ---
+  esports: Gamepad2,
+  "reels-photography": Clapperboard,
+  connection: Link2,
+  "cooking-without-fire": ChefHat,
+  "treasure-hunt": Compass,
+  chess: Grid3x3,     // ✅ 3x3 grid = chess board metaphor
+  mehendi: PenTool,   // ✅ pen for hand-drawn henna
+
+  // --- Legacy fallbacks ---
   coding: Code2,
   code: Code2,
   ac: Code2,
@@ -62,14 +65,18 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   quiz: HelpCircle,
   tq: HelpCircle,
   gaming: Gamepad2,
-  bgmi: Gamepad2, // Although 'esports' is the ID, 'bgmi' key is kept
+  bgmi: Gamepad2,
   filming: Clapperboard,
   sf: Clapperboard,
-  art: Palette,
+  art: PenTool,
   mem: Brain,
   conn: Link2,
   cooking: ChefHat,
-};
+}
+
+// Re-import Palette only if used elsewhere (e.g., poster-making)
+// If not, you can remove it from imports
+import { Palette } from "lucide-react"
 
 function EventIcon({ id }: { id: string }) {
   const key = id.toLowerCase()
@@ -85,19 +92,24 @@ function EventCard({ e }: { e: EventItem }) {
     <Link href={`/events/${e.id}`}>
       <Card className="h-full transition hover:shadow-sm">
         <div className="relative overflow-hidden rounded-t-xl border-b border-border bg-background/40">
-          <img src={imgSrc || "/placeholder.svg"} alt={imgAlt} loading="lazy" className="h-40 w-full object-cover" />
+          <img
+            src={imgSrc}
+            alt={imgAlt}
+            loading="lazy"
+            className="h-40 w-full object-cover"
+          />
         </div>
 
         <CardHeader>
-          <CardTitle className="flex items-center justify-between gap-3">
-            <span className="flex items-center gap-2">
-              <EventIcon id={e.icon || e.id} />
-              {e.title}
-            </span>
+          <CardTitle className="flex items-center gap-2">
+            <EventIcon id={e.icon || e.id} />
+            {e.title}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm opacity-75 mb-6">{e.short ?? "Click to view details"}</p>
+          <p className="text-sm opacity-75 mb-6">
+            {e.short ?? "Click to view details"}
+          </p>
         </CardContent>
       </Card>
     </Link>
@@ -115,7 +127,7 @@ export default function EventsPage() {
       <BackgroundGrid />
       <TypedBlurBubbles variant="events" />
       <TypedFloatingIcons variant="events" />
-      
+
       <div className="relative z-10">
         <h1 className="mb-8 text-3xl font-bold">Events</h1>
 
