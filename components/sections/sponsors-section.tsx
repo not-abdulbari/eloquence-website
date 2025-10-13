@@ -11,7 +11,7 @@ export default function SponsorsSection() {
     { 
       alt: "Pughzal Brownie", 
       src: "/pughzal-brownie.webp",
-      url: "" // no URL provided — leave blank or omit if unknown
+      url: "https://www.instagram.com/pugazhal_brownie/"
     },
     { 
       alt: "Waffle on Wheels", 
