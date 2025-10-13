@@ -36,14 +36,14 @@ export default function SiteNavbar() {
             {/* Remove Home link */}
             <Link 
               href="/events" 
-              className="text-sm text opacity-50 transition-colors hover:text-foreground"
+              className="text-sm text opacity-75 transition-colors hover:text-foreground"
               onClick={closeMenu}
             >
               Events
             </Link>
             <Link 
               href="/#location" 
-              className="text-sm text opacity-50 transition-colors hover:text-foreground"
+              className="text-sm text opacity-75 transition-colors hover:text-foreground"
               onClick={closeMenu}
             >
               Location
