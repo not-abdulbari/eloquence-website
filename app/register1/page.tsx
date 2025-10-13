@@ -10,16 +10,6 @@ import { SiteData, Event, TeamMember, EventRegistration } from "@/lib/types"
 import { formatMembersText, parseRegistrationFee, checkScheduleConflicts } from "@/lib/event-utils"
 import QRCode from "qrcode"
 
-interface EventRegistration {
-  eventId: string
-  teamSize: number
-  teamMembers: TeamMember[]
-  maxTeamSize: number
-  // Remove the includeFood flag
-  // Add a field to potentially track food allocation per event if needed later (optional for now)
-  // selectedFoodItems: number // Initially 0 for each event
-}
-
 interface RegistrationForm {
   title: string
   name: string
@@ -153,6 +143,7 @@ export default function RegisterPage() {
       teamSize: 1,
       teamMembers: [],
       maxTeamSize: event.maxMembers,
+      includeFood: false,
       // selectedFoodItems: 0 // Initialize food items for the new event
     }
 
