@@ -22,8 +22,7 @@ interface RegistrationForm {
   department: string
   eventRegistrations: EventRegistration[]
   paymentScreenshot: File | null
-  // Add state for total food items selected
-  totalFoodItems: number // New field in the form state
+  totalFoodItems: number
 }
 
 export default function RegisterPage() {
@@ -39,15 +38,13 @@ export default function RegisterPage() {
     department: "",
     eventRegistrations: [],
     paymentScreenshot: null,
-    totalFoodItems: 0 // Initialize total food items to 0
+    totalFoodItems: 0
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [siteData, setSiteData] = useState<SiteData | null>(null)
   const [loading, setLoading] = useState(true)
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("")
-  // const [totalFoodItems, setTotalFoodItems] = useState(0) // State is now in formData
 
-  // Load site data on component mount
   useEffect(() => {
     const loadSiteData = async () => {
       try {
@@ -62,7 +59,6 @@ export default function RegisterPage() {
     loadSiteData()
   }, [])
 
-  // Generate QR code when total amount changes
   useEffect(() => {
     const generateQRCode = async () => {
       const totalAmount = calculateTotalFee()
@@ -84,18 +80,11 @@ export default function RegisterPage() {
       }
     }
     generateQRCode()
-  }, [formData.eventRegistrations, formData.totalFoodItems]) // Add totalFoodItems to dependency
-
-  // Calculate total food items from the formData state
-  // This useEffect is no longer needed if totalFoodItems is managed directly in formData
-  // useEffect(() => {
-  //   const foodCount = formData.eventRegistrations.reduce((count, reg) => count + (reg.selectedFoodItems || 0), 0)
-  //   setTotalFoodItems(foodCount) // This line would be removed if using formData.totalFoodItems
-  // }, [formData.eventRegistrations])
+  }, [formData.eventRegistrations, formData.totalFoodItems])
 
   if (loading) {
     return (
-      <main className="relative mx-auto max-w-6xl px-4 py-16">
+      <main className="relative mx-auto w-[95%] py-16">
         <BackgroundGrid />
         <BlurBubbles />
         <div className="relative z-10 text-center">
@@ -107,7 +96,7 @@ export default function RegisterPage() {
 
   if (!siteData) {
     return (
-      <main className="relative mx-auto max-w-6xl px-4 py-16">
+      <main className="relative mx-auto w-[95%] py-16">
         <BackgroundGrid />
         <BlurBubbles />
         <div className="relative z-10 text-center">
@@ -132,7 +121,6 @@ export default function RegisterPage() {
     const event = allEvents.find(e => e.id === eventId)
     if (!event) return
 
-    // Check if already registered for this event
     if (formData.eventRegistrations.some(reg => reg.eventId === eventId)) {
       alert("You are already registered for this event!")
       return
@@ -144,7 +132,6 @@ export default function RegisterPage() {
       teamMembers: [],
       maxTeamSize: event.maxMembers,
       includeFood: false,
-      // selectedFoodItems: 0 // Initialize food items for the new event
     }
 
     setFormData(prev => ({
@@ -233,9 +220,7 @@ export default function RegisterPage() {
     }))
   }
 
-  // Function to update the total number of food items selected
   const handleTotalFoodChange = (newTotal: number) => {
-    // Ensure the new total doesn't exceed 4
     if (newTotal >= 0 && newTotal <= 4) {
       setFormData(prev => ({
         ...prev,
@@ -243,19 +228,6 @@ export default function RegisterPage() {
       }))
     }
   }
-
-  // Function to distribute food items across events (simplest: distribute evenly or add to first available)
-  // For this implementation, we just track the total, distribution happens during calculation/payment display
-  // This function is not strictly needed if only tracking the total, but could be useful if distributing per event.
-  // const distributeFoodItems = (total: number): EventRegistration[] => {
-  //   // Logic to assign 'total' food items across events in formData.eventRegistrations
-  //   // Could prioritize based on order added, or allow user to assign per event later.
-  //   // For now, we just track the total and show it in the summary/payment section.
-  //   return formData.eventRegistrations.map((reg, index) => ({
-  //     ...reg,
-  //     selectedFoodItems: index < total ? 1 : 0 // Example: give 1 food item to first 'total' events
-  //   }))
-  // }
 
   const checkForScheduleConflicts = () => {
     const conflicts = []
@@ -265,7 +237,7 @@ export default function RegisterPage() {
       for (let j = i + 1; j < registrations.length; j++) {
         const event1 = allEvents.find(e => e.id === registrations[i].eventId)
         const event2 = allEvents.find(e => e.id === registrations[j].eventId)
-
+        
         if (event1 && event2 && event1.timing === event2.timing) {
           conflicts.push({
             event1: event1.title,
@@ -275,7 +247,6 @@ export default function RegisterPage() {
         }
       }
     }
-
     return conflicts
   }
 
@@ -283,33 +254,26 @@ export default function RegisterPage() {
     let total = 0
     let foodCost = 0
 
-    // Calculate event fees based on team size
     formData.eventRegistrations.forEach(registration => {
       const event = allEvents.find(e => e.id === registration.eventId)
       if (event) {
         const baseFee = parseRegistrationFee(event.registrationFee)
         total += baseFee * registration.teamSize
-        // Food cost calculation is now based on totalFoodItems
       }
     })
 
-    // Calculate food cost based on totalFoodItems
-    foodCost = formData.totalFoodItems * 100 // 100 per food item, total count is formData.totalFoodItems
-
+    foodCost = formData.totalFoodItems * 100
     return total + foodCost
   }
 
-  // ... (validateForm remains largely the same, but update validation if needed)
   const validateForm = () => {
     const errors = []
 
-    // Check for schedule conflicts
     const conflicts = checkForScheduleConflicts()
     if (conflicts.length > 0) {
       errors.push(`Schedule conflicts detected: ${conflicts.map(c => `${c.event1} & ${c.event2}`).join(', ')}`)
     }
 
-    // Validate team member requirements (unchanged)
     formData.eventRegistrations.forEach(registration => {
       const event = allEvents.find(e => e.id === registration.eventId)
       if (!event) return
@@ -326,6 +290,7 @@ export default function RegisterPage() {
 
       const hasTeamLead = registration.teamMembers.some(member => member.isTeamLead)
       const hasAlternateContact = registration.teamMembers.some(member => member.isAlternateContact)
+
       if (registration.teamSize > 1 && !hasTeamLead) {
         errors.push(`${event.title}: Please select a team lead`)
       }
@@ -346,18 +311,13 @@ export default function RegisterPage() {
       })
     })
 
-    // Add validation for food limit if needed elsewhere, though UI prevents exceeding 4
-    // if (formData.totalFoodItems > 4) {
-    //   errors.push("Maximum 4 food items allowed in total.")
-    // }
-
     return errors
   }
 
-  // ... (handleSubmit remains largely the same, update submission data if needed)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const errors = validateForm()
+    
     if (errors.length > 0) {
       alert("Please fix the following errors:\n" + errors.join("\n"))
       return
@@ -365,7 +325,6 @@ export default function RegisterPage() {
 
     setIsSubmitting(true)
 
-    // Prepare submission data
     const submissionData = {
       mainRegistrant: {
         title: formData.title,
@@ -384,23 +343,21 @@ export default function RegisterPage() {
         teamSize: reg.teamSize,
         teamMembers: reg.teamMembers,
         registrationFee: allEvents.find(e => e.id === reg.eventId)?.registrationFee,
-        // Include the total food items selected
         totalFoodItemsSelected: formData.totalFoodItems,
         isNonTechnical: nonTechnicalEvents.some(e => e.id === reg.eventId)
       })),
       totalAmount: calculateTotalFee(),
-      totalFoodItems: formData.totalFoodItems, // Add total food items to submission
+      totalFoodItems: formData.totalFoodItems,
       paymentScreenshot: formData.paymentScreenshot?.name || "No file uploaded",
       submittedAt: new Date().toISOString()
     }
+
     console.log("Registration Data:", JSON.stringify(submissionData, null, 2))
 
-    // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000))
     alert("Registration submitted successfully! We'll contact you soon.")
     setIsSubmitting(false)
 
-    // Reset form
     setFormData({
       title: "Mr.",
       name: "",
@@ -413,19 +370,16 @@ export default function RegisterPage() {
       department: "",
       eventRegistrations: [],
       paymentScreenshot: null,
-      totalFoodItems: 0 // Reset total food items
+      totalFoodItems: 0
     })
   }
 
-  // ... (return statement JSX - the main changes are here)
-
   return (
-    <main className="relative min-h-screen">
+    <main className="relative min-h-screen w-[95%] mx-auto">
       <BackgroundGrid />
       <BlurBubbles />
-      <div className="relative z-10 w-full m-4">
-        {/* Header */}
-        <div className="text-center pt-20 pb-8 px-4 p-4">
+      <div className="relative z-10 w-[95%] mx-auto">
+        <div className="text-center pt-20 pb-8 px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-wider" style={{
             fontFamily: 'Decaydence',
             letterSpacing: '0.07em',
@@ -445,9 +399,9 @@ export default function RegisterPage() {
             📅 November 1, 2025 | 🕘 9:00 AM - 5:00 PM
           </Badge>
         </div>
-        {/* Schedule Conflicts Warning */}
+
         {checkForScheduleConflicts().length > 0 && (
-          <div className="max-w-4xl mx-auto mb-8 px-4 p-4">
+          <div className="max-w-[95%] mx-auto mb-8 px-4">
             <Card className="border-orange-200 bg-orange-50/80 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="flex items-start space-x-3">
@@ -470,9 +424,9 @@ export default function RegisterPage() {
             </Card>
           </div>
         )}
-        {/* Registration Form */}
-        <div className="max-w-4xl mx-auto px-4 pb-12 p-4 ">
-          <Card className="border-foreground/10 bg-background/70 backdrop-blur-sm m-4">
+
+        <div className="max-w-[95%] mx-auto px-4 pb-12">
+          <Card className="border-foreground/10 bg-background/70 backdrop-blur-sm">
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl font-semibold mt-5">Registration Form</CardTitle>
               <p className="text-sm text-muted-foreground mt-2">
@@ -480,8 +434,7 @@ export default function RegisterPage() {
               </p>
             </CardHeader>
             <CardContent className="px-6">
-              <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Personal Information */}
+              <form onSubmit={handleSubmit} className="space-y-8 mb-5">
                 <div className="space-y-6 p-4">
                   <div className="border-b border-foreground/10 pb-2">
                     <h3 className="text-xl font-semibold">Personal Information</h3>
@@ -613,12 +566,12 @@ export default function RegisterPage() {
                     </div>
                   </div>
                 </div>
-                {/* Event Selection */}
+
                 <div className="space-y-8 p-4">
                   <div className="border-b border-foreground/10 pb-2">
                     <h3 className="text-xl font-semibold">Event Registration</h3>
                   </div>
-                  {/* Technical Events */}
+
                   <div className="space-y-4 p-4">
                     <h4 className="text-lg font-medium text-primary">Technical Events</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -644,7 +597,7 @@ export default function RegisterPage() {
                       ))}
                     </div>
                   </div>
-                  {/* Non-Technical Events */}
+
                   <div className="space-y-4 p-4">
                     <h4 className="text-lg font-medium text-primary">Non-Technical Events</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -671,10 +624,11 @@ export default function RegisterPage() {
                     </div>
                   </div>
                 </div>
-                {/* Team Configuration for Each Event */}
+
                 {formData.eventRegistrations.map((registration) => {
                   const event = allEvents.find(e => e.id === registration.eventId)
                   if (!event) return null
+
                   return (
                     <Card key={registration.eventId} className="border-foreground/10 bg-background/50 backdrop-blur-sm">
                       <CardHeader className="pb-4">
@@ -695,7 +649,6 @@ export default function RegisterPage() {
                         </p>
                       </CardHeader>
                       <CardContent className="space-y-6 px-6">
-                        {/* Team Size Selection */}
                         <div>
                           <label className="block text-sm font-medium mb-2">
                             Team Size (including you) <span className="text-red-500">*</span>
@@ -703,37 +656,14 @@ export default function RegisterPage() {
                           <select
                             value={registration.teamSize}
                             onChange={(e) => updateEventTeamSize(registration.eventId, parseInt(e.target.value))}
-                            className="w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors"
+                            className=" mb-5 w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors"
                           >
                             {Array.from({ length: event.maxMembers }, (_, i) => i + 1).map(size => (
                               <option key={size} value={size}>{size} member{size > 1 ? 's' : ''}</option>
                             ))}
                           </select>
                         </div>
-                        {/* Food Option - REMOVED from here */}
-                        {/* <div className="p-4 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm mb-5">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h5 className="font-medium text-foreground">Food Option</h5>
-                              <p className="text-sm text-muted-foreground">
-                                Include food for this event (+₹100) • {totalFoodItems}/4 used
-                              </p>
-                            </div>
-                            <label className="flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={registration.includeFood}
-                                onChange={() => toggleFoodOption(registration.eventId)}
-                                disabled={!registration.includeFood && totalFoodItems >= 4}
-                                className="w-4 h-4 text-primary focus:ring-primary/50 border-foreground/20 rounded disabled:opacity-50"
-                              />
-                              <span className="ml-2 text-sm font-medium text-foreground">
-                                {registration.includeFood ? 'Opted In' : 'Opt In'}
-                              </span>
-                            </label>
-                          </div>
-                        </div> */}
-                        {/* Team Members */}
+
                         {registration.teamSize > 1 && (
                           <div>
                             <div className="flex items-center justify-between mb-3">
@@ -835,7 +765,7 @@ export default function RegisterPage() {
                                       </select>
                                     </div>
                                   </div>
-                                  {/* Team Lead and Alternate Contact Selection */}
+
                                   {registration.teamSize > 1 && (
                                     <div className="flex space-x-4 mt-3">
                                       <label className="flex items-center">
@@ -843,7 +773,6 @@ export default function RegisterPage() {
                                           type="checkbox"
                                           checked={member.isTeamLead}
                                           onChange={(e) => {
-                                            // Uncheck other team leads
                                             registration.teamMembers.forEach(otherMember => {
                                               if (otherMember.id !== member.id) {
                                                 updateTeamMember(registration.eventId, otherMember.id, 'isTeamLead', false)
@@ -861,7 +790,6 @@ export default function RegisterPage() {
                                             type="checkbox"
                                             checked={member.isAlternateContact}
                                             onChange={(e) => {
-                                              // Uncheck other alternate contacts
                                               registration.teamMembers.forEach(otherMember => {
                                                 if (otherMember.id !== member.id) {
                                                   updateTeamMember(registration.eventId, otherMember.id, 'isAlternateContact', false)
@@ -886,7 +814,6 @@ export default function RegisterPage() {
                   )
                 })}
 
-                {/* NEW: Food Selection Section - Appears only if events are selected */}
                 {formData.eventRegistrations.length > 0 && (
                   <div className="space-y-6 p-4">
                     <div className="border-b border-foreground/10 pb-2">
@@ -923,14 +850,12 @@ export default function RegisterPage() {
                   </div>
                 )}
 
-                {/* Payment Information */}
                 {formData.eventRegistrations.length > 0 && (
                   <div className="space-y-6 p-4">
                     <div className="border-b border-foreground/10 pb-2">
                       <h3 className="text-xl font-semibold">Payment Information</h3>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-4">
-                      {/* QR Code Section */}
                       <div className="space-y-4">
                         <div className="text-center">
                           <h4 className="font-medium text-foreground mb-3">Scan to Pay</h4>
@@ -955,7 +880,7 @@ export default function RegisterPage() {
                           )}
                         </div>
                       </div>
-                      {/* Payment Details */}
+
                       <div className="space-y-4">
                         <div className="p-4 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
                           <h4 className="font-medium text-foreground mb-3">Payment Details</h4>
@@ -964,10 +889,9 @@ export default function RegisterPage() {
                             <p><strong>UPI Number:</strong> +91 95972 25564</p>
                           </div>
                         </div>
-                        {/* Fee Breakdown - UPDATED to reflect food as a separate line */}
+
                         <div className="p-6 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
                           <h4 className="font-medium text-foreground mb-4">Payment Breakdown</h4>
-                          {/* Payment Table - UPDATED */}
                           <div className="overflow-x-auto">
                             <table className="w-full border-collapse border border-foreground/20">
                               <thead>
@@ -980,7 +904,6 @@ export default function RegisterPage() {
                                 </tr>
                               </thead>
                               <tbody>
-                                {/* Event Fees */}
                                 {formData.eventRegistrations.map((registration, index) => {
                                   const event = allEvents.find(e => e.id === registration.eventId)
                                   if (!event) return null
@@ -996,7 +919,6 @@ export default function RegisterPage() {
                                     </tr>
                                   )
                                 })}
-                                {/* Food Costs - SINGLE LINE */}
                                 {formData.totalFoodItems > 0 && (
                                   <tr>
                                     <td className="border border-foreground/20 p-3 text-sm">{formData.eventRegistrations.length + 1}</td>
@@ -1006,7 +928,6 @@ export default function RegisterPage() {
                                     <td className="border border-foreground/20 p-3 text-center text-sm">₹{formData.totalFoodItems * 100}</td>
                                   </tr>
                                 )}
-                                {/* Total Row */}
                                 <tr className="bg-muted/30">
                                   <td className="border border-foreground/20 p-3"></td>
                                   <td className="border border-foreground/20 p-3"></td>
@@ -1042,8 +963,8 @@ export default function RegisterPage() {
                     </div>
                   </div>
                 )}
-                {/* Contact Information */}
-                <div className="p-6 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm m-4">
+
+                <div className="p-6 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
                   <h3 className="text-lg font-semibold mb-4 text-foreground">Contact for Queries</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
                     <div className="text-center">
@@ -1060,8 +981,8 @@ export default function RegisterPage() {
                     </div>
                   </div>
                 </div>
-                {/* Submit Button */}
-                <div className="text-center pt-6 p-4">
+
+                <div className="text-center pt-6">
                   <Button
                     type="submit"
                     disabled={isSubmitting || formData.eventRegistrations.length === 0}
