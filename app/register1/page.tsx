@@ -696,7 +696,7 @@ export default function RegisterPage() {
       <BackgroundGrid />
       <BlurBubbles />
       <div className="relative z-10 w-[95%] mx-auto">
-        <div className="text-base sm:text-sm md:text-sm font text-center mt-10 mb-2" style={{ fontFamily: 'Helvetica', fontWeight: 'bold' ,fontSize: '1.5em' }}>
+        <div className="text-base sm:text-sm md:text-sm font text-center mt-10 mb-2" style={{ fontFamily: 'Helvetica', fontWeight: 'bold' ,fontSize: '0.8em' }}>
               C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
             </div>
           </div>
