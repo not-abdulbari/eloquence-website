@@ -381,13 +381,13 @@ export default function RegisterPage() {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-6 p-4">
+          <div className="space-y-6 p-0">
             <div className="border-b border-foreground/10 pb-2">
               <h3 className="text-xl font-semibold">Personal Information</h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 p-0 w-full">
               <div>
-                <label className="block text-sm font-medium mb-2">Title <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium mt -2 mb-2">Title <span className="text-red-500">*</span></label>
                 <select value={formData.title} onChange={(e) => handleInputChange('title', e.target.value)} className="w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors" required>
                   <option value="Mr.">Mr.</option>
                   <option value="Mrs.">Mrs.</option>
