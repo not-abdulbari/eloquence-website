@@ -15,7 +15,7 @@ export default function SiteFooter() {
     return (
       <footer className="border-t">
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <p className="text-center opacity-50">Loading...</p>
+          <p className="text-center opacity-75">Loading...</p>
         </div>
       </footer>
     )
@@ -46,11 +46,11 @@ export default function SiteFooter() {
             <h3 className="text-m font-semibold" style={{ fontFamily: 'Decaydence', letterSpacing: '0.01em' }}>
               {siteData.symposium}
             </h3>
-            <p className="text-sm text opacity-50 text-pretty">
+            <p className="text-sm text opacity-75 text-pretty">
               National-level technical symposium by {siteData.department}, {siteData.college}.
             </p>
 
-            <div className="flex gap-3 text opacity-50">
+            <div className="flex gap-3 text opacity-75">
               <Link aria-label="Instagram" href="https://instagram.com/eloquence_2025" className="hover:text-foreground">
                 <Instagram className="h-4 w-4" />
               </Link>
@@ -63,7 +63,7 @@ export default function SiteFooter() {
           {/* Technical Events */}
           <div>
             <h4 className="mb-3 text-sm font-medium">Technical Events</h4>
-            <ul className="space-y-2 text-sm text opacity-50">
+            <ul className="space-y-2 text-sm text opacity-75">
               {technicalEvents.map((event, index) => (
                 <li key={index}>
                   <Link href={event.href} className="hover:text-foreground">
@@ -77,7 +77,7 @@ export default function SiteFooter() {
           {/* Non-Technical Events */}
           <div>
             <h4 className="mb-3 text-sm font-medium">Non‑Technical Events</h4>
-            <ul className="space-y-2 text-sm text opacity-50">
+            <ul className="space-y-2 text-sm text opacity-75">
               {nonTechnicalEvents.map((event, index) => (
                 <li key={index}>
                   <Link href={event.href} className="hover:text-foreground">
@@ -97,7 +97,7 @@ export default function SiteFooter() {
             </Link>
           </div>
         </div>
-        <div className="mt-10 border-t pt-6 text-xs text opacity-50">
+        <div className="mt-10 border-t pt-6 text-xs text opacity-75">
           © 2025 Eloquence&apos;25 · CSE, CAHCET · All rights reserved
         </div>
       </div>
