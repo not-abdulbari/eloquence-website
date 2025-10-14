@@ -35,7 +35,6 @@ export interface EventRegistration {
   teamSize: number
   teamMembers: TeamMember[]
   maxTeamSize: number
-  includeFood: boolean
 }
 
 export interface TeamMember {

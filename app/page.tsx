@@ -124,7 +124,7 @@ export default async function HomePage() {
     lineHeight: '1.2'
   }}
 >
-  A National Level Technical Symposium
+  8th National Level Technical Symposium
 </p><CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs mb-2" />
           <p className="text-xs text opacity-75">November 01, 2025 • 9:00 AM IST</p>
           {/* CTAs */}

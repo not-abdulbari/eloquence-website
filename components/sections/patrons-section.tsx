@@ -7,7 +7,7 @@ export default function PatronsSection() {
     { role: "Principal", name: "Dr. M. Sasikumar" },
     { role: "Vice Principal", name: "Dr. Mohammed Muzaffar Hussain" },
     { role: "HOD - CSE", name: "Dr. K. Abrar Ahmed" },
-    { role: "Staff Convenors", names: ["Mr. K.A. Suhail Ahmed", "Mrs. Saranya", "Mrs. A. Kalaiselvi"] }
+    { role: "Staff Convenors", names: ["Mr. K.A. Suhail Ahmed", "Mrs. S. Saranya", "Mrs. A. Kalaiselvi"] }
   ]
 
   return (
