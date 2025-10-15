@@ -1,5 +1,4 @@
 // app/register/page.tsx
-
 "use client"
 import { useState, useEffect } from "react"
 import BackgroundGrid from "@/components/background-grid"
@@ -11,10 +10,8 @@ import { fetchSiteData } from "@/lib/fetcher"
 import { SiteData, Event, TeamMember, EventRegistration } from "@/lib/types"
 import { formatMembersText, parseRegistrationFee } from "@/lib/event-utils"
 import QRCode from "qrcode"
-
 // Import Lucide icons
 import { User, ListChecks, Users, Wallet, CheckCircle } from 'lucide-react'
-
 interface RegistrationForm {
   title: string
   name: string
@@ -28,7 +25,6 @@ interface RegistrationForm {
   eventRegistrations: EventRegistration[]
   paymentScreenshot: File | null
 }
-
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegistrationForm>({
     title: "Mr.",
@@ -43,20 +39,18 @@ export default function RegisterPage() {
     eventRegistrations: [],
     paymentScreenshot: null,
   })
-
   const [currentStep, setCurrentStep] = useState(1) // Track current step
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [siteData, setSiteData] = useState<SiteData | null>(null)
   const [loading, setLoading] = useState(true)
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("")
-
   useEffect(() => {
     const loadSiteData = async () => {
       try {
         const data = await fetchSiteData()
         setSiteData(data)
       } catch (error) {
-        console.error('Failed to load site data:', error)
+        console.error('Failed to load site ', error)
       } finally {
         setLoading(false)
       }
@@ -232,6 +226,29 @@ export default function RegisterPage() {
     }))
   }
 
+  // Helper function to convert time string (e.g., "10:40 AM") to minutes since midnight
+  const timeStringToMinutes = (timeStr: string): number => {
+    if (!timeStr) return 0;
+    const [time, period] = timeStr.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+    if (period === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+      hours = 0;
+    }
+    return hours * 60 + minutes;
+  };
+
+  // Helper function to extract start and end times from a timing string (e.g., "10:40 AM - 12:40 PM")
+  const parseTiming = (timingStr: string): { start: number, end: number } => {
+    if (!timingStr) return { start: 0, end: 0 };
+    const parts = timingStr.split('-').map(part => part.trim());
+    if (parts.length !== 2) return { start: 0, end: 0 };
+    const start = timeStringToMinutes(parts[0]);
+    const end = timeStringToMinutes(parts[1]);
+    return { start, end };
+  };
+
   const checkForScheduleConflicts = () => {
     const conflicts = []
     const registrations = formData.eventRegistrations
@@ -239,12 +256,20 @@ export default function RegisterPage() {
       for (let j = i + 1; j < registrations.length; j++) {
         const event1 = allEvents.find(e => e.id === registrations[i].eventId)
         const event2 = allEvents.find(e => e.id === registrations[j].eventId)
-        if (event1 && event2 && event1.timing === event2.timing) {
-          conflicts.push({
-            event1: event1.title,
-            event2: event2.title,
-            timing: event1.timing
-          })
+        if (event1 && event2) {
+          // Parse the timing strings into start/end minutes
+          const timing1 = parseTiming(event1.timing);
+          const timing2 = parseTiming(event2.timing);
+
+          // Check for overlap: Two intervals [s1, e1] and [s2, e2] overlap if s1 < e2 and s2 < e1
+          if (timing1.start < timing2.end && timing2.start < timing1.end) {
+            conflicts.push({
+              event1: event1.title,
+              event2: event2.title,
+              timing1: event1.timing,
+              timing2: event2.timing
+            })
+          }
         }
       }
     }
@@ -252,15 +277,28 @@ export default function RegisterPage() {
   }
 
   const validateStep = (step: number) => {
-    const errors = []
+    const errors: string[] = []; // Explicitly type the errors array
+
     if (step === 1) {
-      if (!formData.name.trim()) errors.push("Name is required")
-      if (!formData.email.trim()) errors.push("Email is required")
-      if (!formData.phone.trim()) errors.push("Phone is required")
-      if (!formData.rollNo.trim()) errors.push("Roll No is required")
-      if (!formData.collegeName.trim()) errors.push("College Name is required")
-      if (!formData.department.trim()) errors.push("Department is required")
+      if (!formData.name.trim()) errors.push("Name is required");
+      // Validate email format
+      if (!formData.email.trim()) {
+        errors.push("Email is required");
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+        errors.push("Please enter a valid email address");
+      }
+      // Validate phone number format (10 digits)
+      if (!formData.phone.trim()) {
+        errors.push("Phone number is required");
+      } else if (!/^\d{10}$/.test(formData.phone.trim())) {
+        errors.push("Phone number must be exactly 10 digits");
+      }
+
+      if (!formData.rollNo.trim()) errors.push("Roll No is required");
+      if (!formData.collegeName.trim()) errors.push("College Name is required");
+      if (!formData.department.trim()) errors.push("Department is required");
     }
+
     if (step === 3) {
         formData.eventRegistrations.forEach(registration => {
             const event = allEvents.find(e => e.id === registration.eventId)
@@ -275,39 +313,50 @@ export default function RegisterPage() {
             if (registration.teamMembers.length !== registration.teamSize - 1) {
                 errors.push(`${event.title}: Please add ${registration.teamSize - 1} team member(s)`)
             }
-            const hasTeamLead = registration.teamMembers.some(member => member.isTeamLead)
+
+            // Removed validation for team leader selection
+            // const hasTeamLead = registration.teamMembers.some(member => member.isTeamLead)
+            // if (registration.teamSize > 1 && !hasTeamLead) {
+            //     errors.push(`${event.title}: Please select a team lead`)
+            // }
+
             const hasAlternateContact = registration.teamMembers.some(member => member.isAlternateContact)
-            if (registration.teamSize > 1 && !hasTeamLead) {
-                errors.push(`${event.title}: Please select a team lead`)
-            }
+
+            // Only require alternate contact for teams with 3+ *total* members (2+ team members added)
             if (registration.teamSize > 2 && !hasAlternateContact) {
                 errors.push(`${event.title}: Please select an alternate contact for teams with 3+ members`)
             }
+
             registration.teamMembers.forEach(member => {
                 if (!member.name.trim()) {
                     errors.push(`${event.title}: All team members must have names`)
                 }
-                if (!member.email.trim()) {
-                    errors.push(`${event.title}: All team members must have email addresses`)
+                // Validate team member email format *only if email is provided*
+                if (member.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(member.email.trim())) {
+                    errors.push(`${event.title}: Please enter a valid email address for team member: ${member.name || 'Unnamed'}`);
                 }
-                if (!member.phone.trim()) {
-                    errors.push(`${event.title}: All team members must have phone numbers`)
+                // Validate team member phone number format (10 digits) *only if phone number is provided*
+                if (member.phone.trim() && !/^\d{10}$/.test(member.phone.trim())) {
+                    errors.push(`${event.title}: Team member phone number must be exactly 10 digits for team member: ${member.name || 'Unnamed'}`);
                 }
             })
         })
     }
+
     if (step === 5) {
         if (!formData.paymentScreenshot) {
             errors.push("Please upload the payment screenshot.")
         }
     }
+
     return errors
   }
 
   const nextStep = () => {
     const errors = validateStep(currentStep)
     if (errors.length > 0) {
-      alert("Please fix the following errors:\n" + errors.join("\n"))
+      // Join errors with a newline character for the alert dialog
+      alert("Please fix the following errors:" +"\n"+ errors.join(""))
       return
     }
     if (currentStep < 5) {
@@ -326,20 +375,16 @@ export default function RegisterPage() {
     e.preventDefault();
     const errors = validateStep(5);
     if (errors.length > 0) {
-      alert("Please fix the following errors:\n" + errors.join("\n"));
+      alert("Please fix the following errors:" +"\n"+ errors.join(""));
       return;
     }
-
     if (!formData.paymentScreenshot) {
         alert("Payment screenshot is missing.");
         return;
     }
-
     setIsSubmitting(true);
-
     // Use FormData to send both JSON and the file
     const data = new FormData();
-
     // Append JSON data as strings
     data.append('mainRegistrantData', JSON.stringify({
       title: formData.title,
@@ -352,34 +397,26 @@ export default function RegisterPage() {
       degree: formData.degree,
       department: formData.department,
     }));
-    
     data.append('eventRegistrationsData', JSON.stringify(formData.eventRegistrations.map(reg => ({
         eventId: reg.eventId,
         eventName: allEvents.find(e => e.id === reg.eventId)?.title,
         teamSize: reg.teamSize,
         teamMembers: reg.teamMembers,
     }))));
-
     data.append('totalAmount', calculateTotalFee().toString());
     data.append('submittedAt', new Date().toISOString());
-    
     // Append the file
     data.append('paymentScreenshot', formData.paymentScreenshot);
-
     try {
       const response = await fetch('https://api.eloquence.in.net/api/register', {
         method: 'POST',
         body: data, // Send the FormData object
       });
-
       const result = await response.json();
-
       if (!response.ok) {
         throw new Error(result.error || 'Something went wrong');
       }
-
       alert("Registration submitted successfully! We'll contact you soon.");
-      
       // Reset form state on success
       setFormData({
         title: "Mr.",
@@ -395,7 +432,6 @@ export default function RegisterPage() {
         paymentScreenshot: null,
       });
       setCurrentStep(1);
-
     } catch (error) {
       console.error("Submission failed:", error);
       alert(`Submission failed: ${error instanceof Error ? error.message : 'Please try again.'}`);
@@ -578,30 +614,46 @@ export default function RegisterPage() {
                                     <input type="text" value={member.name} onChange={(e) => updateTeamMember(registration.eventId, member.id, 'name', e.target.value)} className="w-full p-2 border border-foreground/10 rounded text-xs bg-background/50 backdrop-blur-sm focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-colors" placeholder="Full name" required />
                                   </div>
                                   <div>
-                                    <label className="block text-xs font-medium mb-1">Email <span className="text-red-500">*</span></label>
-                                    <input type="email" value={member.email} onChange={(e) => updateTeamMember(registration.eventId, member.id, 'email', e.target.value)} className="w-full p-2 border border-foreground/10 rounded text-xs bg-background/50 backdrop-blur-sm focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-colors" placeholder="Email address" required />
+                                    <label className="block text-xs font-medium mb-1">Email</label>
+                                    <input type="email" value={member.email} onChange={(e) => updateTeamMember(registration.eventId, member.id, 'email', e.target.value)} className="w-full p-2 border border-foreground/10 rounded text-xs bg-background/50 backdrop-blur-sm focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-colors" placeholder="Email address" />
                                   </div>
                                   <div>
-                                    <label className="block text-xs font-medium mb-1">Phone <span className="text-red-500">*</span></label>
-                                    <input type="tel" value={member.phone} onChange={(e) => updateTeamMember(registration.eventId, member.id, 'phone', e.target.value)} className="w-full p-2 border border-foreground/10 rounded text-xs bg-background/50 backdrop-blur-sm focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-colors" placeholder="Phone number" required />
+                                    <label className="block text-xs font-medium mb-1">Phone</label>
+                                    <input type="tel" value={member.phone} onChange={(e) => updateTeamMember(registration.eventId, member.id, 'phone', e.target.value)} className="w-full p-2 border border-foreground/10 rounded text-xs bg-background/50 backdrop-blur-sm focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-colors" placeholder="Phone number" />
                                   </div>
                                 </div>
                                 {registration.teamSize > 1 && (
                                   <div className="flex flex-col space-y-2 mt-3">
                                     <label className="flex items-center text-sm">
                                       <input type="checkbox" checked={member.isTeamLead} onChange={(e) => {
-                                        registration.teamMembers.forEach(otherMember => { if (otherMember.id !== member.id) { updateTeamMember(registration.eventId, otherMember.id, 'isTeamLead', false) } })
+                                        // Allow unchecking any member
+                                        // Only ensure one is checked if the new value is true
+                                        if (e.target.checked) {
+                                          registration.teamMembers.forEach(otherMember => {
+                                            if (otherMember.id !== member.id) {
+                                              updateTeamMember(registration.eventId, otherMember.id, 'isTeamLead', false)
+                                            }
+                                          })
+                                        }
                                         updateTeamMember(registration.eventId, member.id, 'isTeamLead', e.target.checked)
                                       }} className="mr-2" />
-                                      Team Lead
+                                      Team Lead (Optional)
                                     </label>
                                     {registration.teamSize > 2 && (
                                       <label className="flex items-center text-sm">
                                         <input type="checkbox" checked={member.isAlternateContact} onChange={(e) => {
-                                          registration.teamMembers.forEach(otherMember => { if (otherMember.id !== member.id) { updateTeamMember(registration.eventId, otherMember.id, 'isAlternateContact', false) } })
+                                          // Allow unchecking any member
+                                          // Only ensure one is checked if the new value is true
+                                          if (e.target.checked) {
+                                            registration.teamMembers.forEach(otherMember => {
+                                              if (otherMember.id !== member.id) {
+                                                updateTeamMember(registration.eventId, otherMember.id, 'isAlternateContact', false)
+                                              }
+                                            })
+                                          }
                                           updateTeamMember(registration.eventId, member.id, 'isAlternateContact', e.target.checked)
                                         }} className="mr-2" />
-                                        Alternate Contact
+                                        Alternate Contact (Required for 3+ member teams)
                                       </label>
                                     )}
                                   </div>
@@ -749,28 +801,6 @@ export default function RegisterPage() {
                 📅 November 1, 2025 | 🕘 9:00 AM - 5:00 PM
             </Badge>
         </div>
-
-        {checkForScheduleConflicts().length > 0 && (
-          <div className="max-w-4xl mx-auto mb-8 px-4">
-            <Card className="border-orange-200 bg-orange-50/80 backdrop-blur-sm">
-              <CardContent className="p-6">
-                <div className="flex items-start space-x-3">
-                  <span className="text-orange-600 text-xl">⚠️</span>
-                  <div>
-                    <h3 className="font-semibold text-orange-800 mb-2">Schedule Conflict Warning</h3>
-                    <p className="text-orange-700 text-sm mb-3">You have selected events with overlapping schedules. Participation is at your own risk.</p>
-                    <ul className="text-orange-700 text-sm space-y-1 list-disc list-inside">
-                      {checkForScheduleConflicts().map((conflict, index) => (
-                        <li key={index}>{conflict.event1} & {conflict.event2} ({conflict.timing})</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
         <div className="max-w-4xl mx-auto px-4 pb-12">
           <Card className="border-foreground/10 bg-background/70 backdrop-blur-sm">
             <CardHeader className="text-center pb-6">
@@ -811,9 +841,33 @@ export default function RegisterPage() {
                 </div>
               </div>
               {/* --- END OF PROGRESS BAR --- */}
-
               <form onSubmit={handleSubmit} className="space-y-8 mb-5">
                 {renderStepContent()}
+
+                {/* Schedule Conflict Warning Card - Moved here */}
+                {checkForScheduleConflicts().length > 0 && (
+                  <div className="mb-8 px-4">
+                    <Card className="border-orange-200 bg-orange-50/80 backdrop-blur-sm">
+                      <CardContent className="p-6">
+                        <div className="flex items-start space-x-3">
+                          <span className="text-orange-600 text-xl">⚠️</span>
+                          <div>
+                            <h3 className="font-semibold text-orange-800 mb-2">Schedule Conflict Warning</h3>
+                            <p className="text-orange-700 text-sm mb-3">You have selected events with overlapping schedules. Participation is at your own risk.</p>
+                            <ul className="text-orange-700 text-sm space-y-1 list-disc list-inside">
+                              {checkForScheduleConflicts().map((conflict, index) => (
+                                <li key={index}>
+                                  {conflict.event1} ({conflict.timing1}) & {conflict.event2} ({conflict.timing2})
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+
                 <div className="flex justify-between mt-8">
                   <Button type="button" variant="outline" onClick={prevStep} disabled={currentStep === 1} className="rounded-full">Back</Button>
                   {currentStep < 5 ? (
