@@ -130,7 +130,7 @@ export default function RegisterPage() {
   const nonTechnicalEvents = siteData.events.filter(event => event.type === "non-tech")
   const allEvents = siteData.events
 
-  const handleInputChange = (field: keyof RegistrationForm, value: string | File) => {
+  const handleInputChange = (field: keyof RegistrationForm, value: string | File | null) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -367,7 +367,7 @@ export default function RegisterPage() {
     data.append('paymentScreenshot', formData.paymentScreenshot);
 
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch('https://api.eloquence.in.net/api/register', {
         method: 'POST',
         body: data, // Send the FormData object
       });
