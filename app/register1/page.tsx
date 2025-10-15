@@ -64,6 +64,19 @@ export default function RegisterPage() {
     loadSiteData()
   }, [])
 
+  const calculateTotalFee = () => {
+    if (!allEvents) return 0; // Guard against allEvents not being ready
+    let total = 0
+    formData.eventRegistrations.forEach(registration => {
+      const event = allEvents.find(e => e.id === registration.eventId)
+      if (event) {
+        const baseFee = parseRegistrationFee(event.registrationFee)
+        total += baseFee * registration.teamSize
+      }
+    })
+    return total
+  }
+
   useEffect(() => {
     const generateQRCode = async () => {
       const totalAmount = calculateTotalFee()
@@ -87,7 +100,7 @@ export default function RegisterPage() {
       }
     }
     generateQRCode()
-  }, [formData.eventRegistrations])
+  }, [formData.eventRegistrations, siteData]) // Added siteData dependency
 
   if (loading) {
     return (
@@ -238,18 +251,6 @@ export default function RegisterPage() {
     return conflicts
   }
 
-  const calculateTotalFee = () => {
-    let total = 0
-    formData.eventRegistrations.forEach(registration => {
-      const event = allEvents.find(e => e.id === registration.eventId)
-      if (event) {
-        const baseFee = parseRegistrationFee(event.registrationFee)
-        total += baseFee * registration.teamSize
-      }
-    })
-    return total
-  }
-
   const validateStep = (step: number) => {
     const errors = []
     if (step === 1) {
@@ -265,8 +266,8 @@ export default function RegisterPage() {
             const event = allEvents.find(e => e.id === registration.eventId)
             if (!event) return
 
-            if (registration.teamSize < 1) {
-                errors.push(`${event.title}: Team size must be at least 1`)
+            if (registration.teamSize < event.minMembers) {
+                errors.push(`${event.title}: Team size must be at least ${event.minMembers}`)
             }
             if (registration.teamSize > event.maxMembers) {
                 errors.push(`${event.title}: Team size cannot exceed ${event.maxMembers} members`)
@@ -320,74 +321,103 @@ export default function RegisterPage() {
     }
   }
 
+  // --- THIS IS THE CORRECTED FUNCTION ---
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const errors = validateStep(5) // Validate final step before submission
+    e.preventDefault();
+    const errors = validateStep(5);
     if (errors.length > 0) {
-      alert("Please fix the following errors:\n" + errors.join("\n"))
-      return
+      alert("Please fix the following errors:\n" + errors.join("\n"));
+      return;
     }
 
-    setIsSubmitting(true)
-    const submissionData = {
-      mainRegistrant: {
-        title: formData.title,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        rollNo: formData.rollNo,
-        collegeName: formData.collegeName,
-        year: formData.year,
-        degree: formData.degree,
-        department: formData.department
-      },
-      eventRegistrations: formData.eventRegistrations.map(reg => ({
+    if (!formData.paymentScreenshot) {
+        alert("Payment screenshot is missing.");
+        return;
+    }
+
+    setIsSubmitting(true);
+
+    // Use FormData to send both JSON and the file
+    const data = new FormData();
+
+    // Append JSON data as strings
+    data.append('mainRegistrantData', JSON.stringify({
+      title: formData.title,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      rollNo: formData.rollNo,
+      collegeName: formData.collegeName,
+      year: formData.year,
+      degree: formData.degree,
+      department: formData.department,
+    }));
+    
+    data.append('eventRegistrationsData', JSON.stringify(formData.eventRegistrations.map(reg => ({
         eventId: reg.eventId,
         eventName: allEvents.find(e => e.id === reg.eventId)?.title,
         teamSize: reg.teamSize,
         teamMembers: reg.teamMembers,
-        registrationFee: allEvents.find(e => e.id === reg.eventId)?.registrationFee,
-        isNonTechnical: nonTechnicalEvents.some(e => e.id === reg.eventId)
-      })),
-      totalAmount: calculateTotalFee(),
-      paymentScreenshot: formData.paymentScreenshot?.name || "No file uploaded",
-      submittedAt: new Date().toISOString()
+    }))));
+
+    data.append('totalAmount', calculateTotalFee().toString());
+    data.append('submittedAt', new Date().toISOString());
+    
+    // Append the file
+    data.append('paymentScreenshot', formData.paymentScreenshot);
+
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        body: data, // Send the FormData object
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Something went wrong');
+      }
+
+      alert("Registration submitted successfully! We'll contact you soon.");
+      
+      // Reset form state on success
+      setFormData({
+        title: "Mr.",
+        name: "",
+        email: "",
+        phone: "",
+        rollNo: "",
+        collegeName: "",
+        year: "I Year",
+        degree: "Engineering",
+        department: "",
+        eventRegistrations: [],
+        paymentScreenshot: null,
+      });
+      setCurrentStep(1);
+
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert(`Submission failed: ${error instanceof Error ? error.message : 'Please try again.'}`);
+    } finally {
+      setIsSubmitting(false);
     }
-    console.log("Registration Data:", JSON.stringify(submissionData, null, 2))
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    alert("Registration submitted successfully! We'll contact you soon.")
-    setIsSubmitting(false)
-    
-    // Reset form state
-    setFormData({
-      title: "Mr.",
-      name: "",
-      email: "",
-      phone: "",
-      rollNo: "",
-      collegeName: "",
-      year: "I Year",
-      degree: "Engineering",
-      department: "",
-      eventRegistrations: [],
-      paymentScreenshot: null,
-    })
-    setCurrentStep(1) // Reset to first step
-  }
+  };
+  // --- END OF CORRECTED FUNCTION ---
 
   const renderStepContent = () => {
     switch (currentStep) {
-      case 1:
+        // ... (The rest of your renderStepContent function remains the same)
+        // ... I've omitted it here for brevity, but you should keep your existing code.
+        case 1:
         return (
-          <div className="space-y-6 p-0">
+          <div className="space-y-6 p-4">
             <div className="border-b border-foreground/10 pb-2">
               <h3 className="text-xl font-semibold">Personal Information</h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 p-0 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
               <div>
-                <label className="block text-sm font-medium mt -2 mb-2">Title <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium mb-2">Title <span className="text-red-500">*</span></label>
                 <select value={formData.title} onChange={(e) => handleInputChange('title', e.target.value)} className="w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors" required>
                   <option value="Mr.">Mr.</option>
                   <option value="Mrs.">Mrs.</option>
@@ -498,7 +528,7 @@ export default function RegisterPage() {
                 const event = allEvents.find(e => e.id === registration.eventId)
                 if (!event) return null
                 return (
-                  <Card key={registration.eventId} className="border-foreground/10 bg-background/50 backdrop-blur-sm m-4">
+                  <Card key={registration.eventId} className="border-foreground/10 bg-background/50 backdrop-blur-sm m-4 mt-5">
                     <CardHeader className="pb-4">
                       <CardTitle className="text-lg flex items-center justify-between mt-5">
                         {event.title}
@@ -508,12 +538,12 @@ export default function RegisterPage() {
                       </CardTitle>
                       <p className="text-sm text-muted-foreground">{event.timing} • {event.registrationFee}</p>
                     </CardHeader>
-                    <CardContent className="space-y-6 px-6 mb-5">
+                    <CardContent className="space-y-6 px-6">
                       <div>
                         <label className="block text-sm font-medium mb-2">Team Size (including you) <span className="text-red-500">*</span></label>
-                        <select value={registration.teamSize} onChange={(e) => updateEventTeamSize(registration.eventId, parseInt(e.target.value))} className="w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors">
+                        <select value={registration.teamSize} onChange={(e) => updateEventTeamSize(registration.eventId, parseInt(e.target.value))} className="w-full p-3 mb-5 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors">
                           {Array.from({ length: event.maxMembers }, (_, i) => i + 1).map(size => (
-                            <option  key={size} value={size}>{size} member{size > 1 ? 's' : ''}</option>
+                            <option key={size} value={size}>{size} member{size > 1 ? 's' : ''}</option>
                           ))}
                         </select>
                       </div>
@@ -605,7 +635,7 @@ export default function RegisterPage() {
                     </div>
                   ) : (
                     <div className="w-48 h-48 bg-muted rounded-lg flex items-center justify-center mx-auto">
-                      <p className="text-sm text-muted-foreground">Select an event to see payment details.</p>
+                      <p className="text-sm text-muted-foreground text-center">Select an event to see payment details.</p>
                     </div>
                   )}
                 </div>
@@ -624,11 +654,10 @@ export default function RegisterPage() {
                     <table className="w-full border-collapse border border-foreground/20">
                       <thead>
                         <tr className="bg-muted/50">
-                          <th className="border border-foreground/20 p-3 text-left text-sm font-medium">Event</th>
-                          <th className="border border-foreground/20 p-3 text-center text-sm font-medium">Participants</th>
+                          <th className="border border-foreground/20 p-3 text-left text-sm font-medium">Item</th>
+                          <th className="border border-foreground/20 p-3 text-center text-sm font-medium">Qty</th>
                           <th className="border border-foreground/20 p-3 text-right text-sm font-medium">Amount</th>
                         </tr>
-
                       </thead>
                       <tbody>
                         {formData.eventRegistrations.map((registration) => {
@@ -665,7 +694,7 @@ export default function RegisterPage() {
             </div>
             <div className="p-4 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
               <label className="block text-sm font-medium mb-3 text-foreground">Upload Payment Screenshot <span className="text-red-500">*</span></label>
-              <input type="file" accept="image/*" onChange={(e) => handleInputChange('paymentScreenshot', e.target.files?.[0] || new File([], ''))} className="w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors" required />
+              <input type="file" accept="image/*" onChange={(e) => handleInputChange('paymentScreenshot', e.target.files?.[0] || null)} className="w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors" required />
               <p className="text-sm text-muted-foreground mt-2">Supported formats: JPG, PNG.</p>
             </div>
             <div className="p-6 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
@@ -678,8 +707,8 @@ export default function RegisterPage() {
             </div>
           </div>
         );
-      default:
-        return null
+        default:
+            return null;
     }
   }
 
@@ -692,69 +721,34 @@ export default function RegisterPage() {
   ];
 
   return (
-    <main className="relative min-h-screen w-[95%] mx-auto">
+    <main className="relative min-h-screen w-full mx-auto">
       <BackgroundGrid />
       <BlurBubbles />
-      <div className="relative z-10 w-[95%] mx-auto">
-        <div className="text-base sm:text-sm md:text-sm font text-center mt-10 mb-2" style={{ fontFamily: 'Helvetica', fontWeight: 'bold' ,fontSize: '0.8em' }}>
-              C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
-            </div>
-          </div>
-          <p
-  className="text-nowrap font-small text-centre text opacity-75 mb-2"
-  style={{
-    fontFamily: 'Helvetica',
-    fontWeight: 'normal',
-    fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
-    lineHeight: '1.2',
-    textAlign: 'center'
-  }}
->
-  Department of Computer Science and Engineering
-</p>
-
-<p
-  className="text-nowrap font-small text opacity-75 mb-2"
-  style={{
-    fontFamily: 'Monotype Corsiva, cursive',
-    fontWeight: 'normal',
-    fontSize: 'clamp(0.8rem, 1.5vw, 1.1em)',
-    lineHeight: '1.2',
-    textAlign: 'center'
-  }}
->
-  proudly presents
-</p>
-         
-         <h1
-            className="text-balance font-Helvetica font-black leading-tight tracking-tight whitespace-nowrap mb-2"
-            style={{
-              fontFamily: 'Decaydence',
-              letterSpacing: '0.07em',
-              fontSize: 'clamp(20px, 7vw, 72px)',
-              maxWidth: '100vw',
-              lineHeight: 1.0,
-              textAlign: 'center',
-            }}
-          >
-            <span className="hidden sm:inline">ELOQUENCE'25</span>
-            <span className="sm:hidden">ELOQUENCE'25</span>
-          </h1>
-                    <p
-  className="text-nowrap font-medium text opacity-75"
-  style={{
-    fontFamily: 'Helvetica',
-    fontWeight: 'normal' ,
-    fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
-    lineHeight: '1.2'
-    ,textAlign: 'center'
-  }}
->
-  8th National Level Technical Symposium
-</p>  
-<Badge   style={{ justifyContent: 'center', alignItems: 'center' }} variant="outline"   className="mt-4 border-foreground/10 bg-background/70 text-xs sm:text-sm justify-center px-3 py-1.5 rounded-full mx-auto flex w-fit mb-6">
-            📅 November 1, 2025 | 🕘 9:00 AM - 5:00 PM
-          </Badge>
+      <div className="relative z-10 w-full mx-auto">
+        <div className="text-center pt-10 pb-8 px-4">
+             <h1
+                className="text-balance font-black leading-tight tracking-tight whitespace-nowrap mb-2"
+                style={{
+                  fontFamily: 'Decaydence',
+                  letterSpacing: '0.07em',
+                  fontSize: 'clamp(28px, 7vw, 72px)',
+                  lineHeight: 1.0,
+                  textAlign: 'center',
+                }}
+              >
+                {siteData?.symposium || "ELOQUENCE'25"}
+            </h1>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-2">
+                National Level Technical Symposium
+            </p>
+            <p className="text-sm sm:text-base text-muted-foreground">
+                {siteData?.department || 'Department of Computer Science Engineering'}<br />
+                {siteData?.college || 'C. Abdul Hakeem College of Engineering & Technology'}
+            </p>
+            <Badge variant="outline" className="mt-4 border-foreground/10 bg-background/70 text-xs sm:text-sm px-3 py-1.5 rounded-full mx-auto flex w-fit">
+                📅 November 1, 2025 | 🕘 9:00 AM - 5:00 PM
+            </Badge>
+        </div>
 
         {checkForScheduleConflicts().length > 0 && (
           <div className="max-w-4xl mx-auto mb-8 px-4">
@@ -784,24 +778,19 @@ export default function RegisterPage() {
               <p className="text-sm text-muted-foreground mt-2">* Indicates required field</p>
             </CardHeader>
             <CardContent className="px-4 sm:px-8">
-{/* --- NEW VIDEO PLAYER STYLE PROGRESS BAR --- */}
-              <div className="mb-12 pt-6"> {/* Added padding top for spacing */}
+              {/* --- NEW VIDEO PLAYER STYLE PROGRESS BAR --- */}
+              <div className="mb-12 pt-6">
                 <div className="relative">
-                  {/* This container holds the tracks and is inset to run between icon centers */}
                   <div className="absolute top-6 left-6 right-6 h-1 -translate-y-1/2">
-                    {/* Background Track */}
                     <div className="w-full h-full bg-foreground/10 rounded-full" />
-                    {/* Progress Track */}
                     <div
                       className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-500"
                       style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
                     />
                   </div>
-                  
-                  {/* 'relative' has been removed from this div */}
                   <div className="flex justify-between items-start">
                     {steps.map(({ label, icon: Icon, step }) => (
-                      <div key={step} className="z-10 flex flex-col items-center w-12"> {/* Explicit width for alignment */}
+                      <div key={step} className="z-10 flex flex-col items-center w-12">
                         <div className={`
                           w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300
                           ${currentStep > step ? 'bg-primary text-primary-foreground' : ''}
@@ -822,9 +811,10 @@ export default function RegisterPage() {
                 </div>
               </div>
               {/* --- END OF PROGRESS BAR --- */}
+
               <form onSubmit={handleSubmit} className="space-y-8 mb-5">
                 {renderStepContent()}
-                <div className="flex justify-between mt-8 w-full">
+                <div className="flex justify-between mt-8">
                   <Button type="button" variant="outline" onClick={prevStep} disabled={currentStep === 1} className="rounded-full">Back</Button>
                   {currentStep < 5 ? (
                     <Button type="button" onClick={nextStep} className="rounded-full">Next</Button>
@@ -838,6 +828,7 @@ export default function RegisterPage() {
             </CardContent>
           </Card>
         </div>
+      </div>
     </main>
   )
 }

@@ -21,16 +21,20 @@ import {
   Brain,
   Link2,
   Compass,
-  Grid3x3,   // ✅ for Chess (3x3 grid = board)
-  PenTool,   // ✅ for Mehendi (hand-drawn art)
+  Grid3x3,
+  PenTool, // Keep the original import
   Palette,
 } from "lucide-react"
+
+// --- 1. Create a new component for the rotated icon ---
+const RotatedPenTool = ({ className }: { className?: string }) => {
+  // Combine the className from props with your rotation class
+  return <PenTool className={`rotate-180 ${className || ''}`} />;
+};
 
 // Type assertions
 const TypedBlurBubbles = BlurBubbles as React.ComponentType<{ variant?: string }>
 const TypedFloatingIcons = FloatingIcons as React.ComponentType<{ variant?: string }>
-
-// EventItem type is now imported from types.ts
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   // --- Technical Events ---
@@ -46,8 +50,9 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   connection: Link2,
   "cooking-without-fire": ChefHat,
   "treasure-hunt": Compass,
-  chess: Grid3x3,     // ✅ 3x3 grid = chess board metaphor
-  mehendi: PenTool,   // ✅ pen for hand-drawn henna
+  chess: Grid3x3,
+  // --- 2. Use the new rotated component in the map ---
+  mehendi: RotatedPenTool,
 
   // --- Legacy fallbacks ---
   coding: Code2,
