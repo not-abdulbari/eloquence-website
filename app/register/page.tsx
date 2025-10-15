@@ -827,7 +827,6 @@ export default function RegisterPage() {
     justifyContent: 'center',
     display: 'flex',
     alignItems: 'center',
-    gap: '0.5rem',
   }}
 >
   Department of Computer Science and Engineering
@@ -852,6 +851,9 @@ export default function RegisterPage() {
                   fontSize: 'clamp(28px, 7vw, 72px)',
                   lineHeight: 1.0,
                   textAlign: 'center',
+                  justifyContent: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
               >
                 {siteData?.symposium || "ELOQUENCE'25"}

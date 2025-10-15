@@ -204,7 +204,7 @@
     },
     {
       "id": "esports",
-      "title": "E-Sports (Free Fire)",
+      "title": "E-Sports (BGMI & Free Fire)",
       "type": "non-tech",
       "short": "Battle Royale showdown.",
       "venue": "MBA Seminar Hall",
@@ -212,14 +212,17 @@
       "registrationFee": "₹50 per head",
       "minMembers": 4,
       "maxMembers": 4,
-      "rules": [
-        "The tournament will be played in Free Fire's Classic Battle Royale mode.",
-        "The use of hacks, cheats, or emulators will result in an immediate ban.",
-        "Players must use their registered In-Game Names; unregistered players are not allowed.",
-        "You are responsible for your device and internet connection; no rematches for disconnections.",
-        "Teams must join the custom room lobby at the specified time or risk forfeiture.",
-        "Scoring is based on a combination of final placement and total kills.",
-        "All decisions made by the event organizers are final."
+      "rules": [    
+        "Mode: Battle Royale, Squad (4 players per team).",
+        "Devices: Mobile phones only (iPads allowed for BGMI). Emulators or PC usage are strictly prohibited.",
+        "Players must use their registered in-game names.",
+        "Teams must join the custom room on time; late entry may lead to forfeiture.",
+        "No rematches in case of disconnections or server issues.",
+        "Fair Play: Hacking, cheating, or use of third-party software will result in immediate disqualification.",
+        "Respect other players; abusive language, trash talk, or misbehavior is prohibited.",
+        "Use of emotes is allowed.",
+        "Scoring is based on final placement and total kills.",
+        "All decisions by the organizers/coordinators are final."
       ],
       "contact": {
         "name": "Bharath",

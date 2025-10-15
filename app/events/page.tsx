@@ -79,19 +79,38 @@ function EventIcon({ id }: { id: string }) {
   return <Icon className="h-5 w-5 text-primary" />
 }
 
+// --- 3. Helper function to generate image URL based on event ID ---
+function getEventImageUrl(id: string): string {
+  // Use the ID exactly as is (lowercase), preserving hyphens
+  const filename = id.toLowerCase()
+  return `https://cdn.eloquence.in.net/events-webp/${filename}.webp`
+}
+
 function EventCard({ event }: { event: SiteData['events'][0] }) {
-  const imgSrc = "/vibrant-outdoor-event.png"
-  const imgAlt = `${event.title} image`
+  // Dynamically generate image URL based on event ID
+  const imgSrc = getEventImageUrl(event.id)
+  const imgAlt = `${event.title} event image`
 
   return (
     <Link href={`/events/${event.id}`}>
       <Card className="h-full transition hover:shadow-sm">
-        <div className="relative overflow-hidden rounded-t-xl border-b border-border bg-background/40">
+        {/* --- FIXED ASPECT RATIO CONTAINER --- */}
+        <div
+          className="relative overflow-hidden rounded-t-xl border-b border-border bg-background/40"
+          style={{
+            paddingTop: "56.09756%", // 460 / 820 * 100 = ~56.09756%
+            position: "relative",
+          }}
+        >
           <img
             src={imgSrc}
             alt={imgAlt}
             loading="lazy"
-            className="h-40 w-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = "/vibrant-outdoor-event.png"
+              e.currentTarget.alt = "Fallback image for event"
+            }}
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
 
