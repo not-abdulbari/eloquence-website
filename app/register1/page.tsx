@@ -76,7 +76,7 @@ export default function RegisterPage() {
       const totalAmount = calculateTotalFee()
       if (totalAmount > 0) {
         try {
-          const upiUrl = `upi://pay?pa=abdulbari250305@oksbi&am=${totalAmount.toFixed(2)}`
+          const upiUrl = `upi://pay?pa=palanirit@okaxis&am=${totalAmount.toFixed(2)}`
           const qrDataUrl = await QRCode.toDataURL(upiUrl, {
             width: 200,
             margin: 2,
@@ -226,26 +226,55 @@ export default function RegisterPage() {
     }))
   }
 
-  // Helper function to convert time string (e.g., "10:40 AM") to minutes since midnight
+  // Helper function to convert time string (e.g., "10:40 AM", "10:40AM", "10:40 am") to minutes since midnight
   const timeStringToMinutes = (timeStr: string): number => {
     if (!timeStr) return 0;
-    const [time, period] = timeStr.split(' ');
-    let [hours, minutes] = time.split(':').map(Number);
-    if (period === 'PM' && hours !== 12) {
-      hours += 12;
-    } else if (period === 'AM' && hours === 12) {
-      hours = 0;
+    // Remove extra spaces and standardize case for AM/PM
+    const normalizedStr = timeStr.trim().replace(/\s+/g, ' ').toUpperCase();
+    const timeRegex = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/;
+    const match = normalizedStr.match(timeRegex);
+
+    if (!match) {
+      console.warn(`Invalid time format detected: "${timeStr}". Using 0 minutes as fallback.`);
+      return 0; // Return 0 if the format doesn't match
     }
-    return hours * 60 + minutes;
+
+    let [_, hours, minutes, period] = match;
+    let hourNum = parseInt(hours, 10);
+    let minuteNum = parseInt(minutes, 10);
+
+    // Validate basic ranges
+    if (hourNum < 1 || hourNum > 12 || minuteNum < 0 || minuteNum > 59) {
+        console.warn(`Invalid time value detected: "${timeStr}". Using 0 minutes as fallback.`);
+        return 0; // Return 0 if values are out of range
+    }
+
+    if (period === 'PM' && hourNum !== 12) {
+      hourNum += 12;
+    } else if (period === 'AM' && hourNum === 12) {
+      hourNum = 0;
+    }
+
+    return hourNum * 60 + minuteNum;
   };
 
   // Helper function to extract start and end times from a timing string (e.g., "10:40 AM - 12:40 PM")
   const parseTiming = (timingStr: string): { start: number, end: number } => {
     if (!timingStr) return { start: 0, end: 0 };
     const parts = timingStr.split('-').map(part => part.trim());
-    if (parts.length !== 2) return { start: 0, end: 0 };
+    if (parts.length !== 2) {
+        console.warn(`Invalid timing range format detected: "${timingStr}". Using 0 for both start and end.`);
+        return { start: 0, end: 0 }; // Return 0s if the format isn't "X - Y"
+    }
     const start = timeStringToMinutes(parts[0]);
     const end = timeStringToMinutes(parts[1]);
+    // Ensure end time is not before start time (e.g., 11:45 PM - 12:30 AM should be handled carefully)
+    // For now, we'll assume events don't span midnight, so if end < start, it's likely an error in data or parsing.
+    if (end < start) {
+        console.warn(`End time is before start time for: "${timingStr}". This might indicate a parsing error or an overnight event.`);
+        // Potentially return { start: 0, end: 0 } here if you want to ignore such cases strictly.
+        // For now, we'll return the calculated values but the overlap logic should handle it correctly.
+    }
     return { start, end };
   };
 
@@ -356,7 +385,7 @@ export default function RegisterPage() {
     const errors = validateStep(currentStep)
     if (errors.length > 0) {
       // Join errors with a newline character for the alert dialog
-      alert("Please fix the following errors:" +"\n"+ errors.join(""))
+      alert("Please fix the following errors:" + errors.join("\n"))
       return
     }
     if (currentStep < 5) {
@@ -375,7 +404,7 @@ export default function RegisterPage() {
     e.preventDefault();
     const errors = validateStep(5);
     if (errors.length > 0) {
-      alert("Please fix the following errors:" +"\n"+ errors.join(""));
+      alert("Please fix the following errors:" + errors.join("\n"));
       return;
     }
     if (!formData.paymentScreenshot) {
@@ -416,7 +445,7 @@ export default function RegisterPage() {
       if (!response.ok) {
         throw new Error(result.error || 'Something went wrong');
       }
-      alert("Registration submitted successfully! We'll contact you soon.");
+      alert("Registration submitted successfully!");
       // Reset form state on success
       setFormData({
         title: "Mr.",
@@ -528,6 +557,7 @@ export default function RegisterPage() {
                     </Button>
                   </div>
                 ))}
+
               </div>
             </div>
             <div className="space-y-4 p-4">
@@ -549,6 +579,8 @@ export default function RegisterPage() {
                   </div>
                 ))}
               </div>
+              <p className="text-sm text-red-600">Note: For events with overlapping schedules, participation is at your own risk. Payments are non-refundable.</p>
+
             </div>
           </div>
         );
@@ -682,7 +714,7 @@ export default function RegisterPage() {
                   <h4 className="font-medium text-foreground mb-3">Scan to Pay</h4>
                   {qrCodeDataUrl ? (
                     <div className="inline-block p-4 bg-white rounded-lg border border-foreground/10">
-                      <img src={qrCodeDataUrl} alt="UPI Payment QR Code" className="w-48 h-48 mx-auto" onClick={() => { window.open(`upi://pay?pa=abdulbari250305@oksbi&am=${calculateTotalFee().toFixed(2)}`, '_blank') }} style={{ cursor: 'pointer' }} />
+                      <img src={qrCodeDataUrl} alt="UPI Payment QR Code" className="w-48 h-48 mx-auto" onClick={() => { window.open(`upi://pay?pa=palanirit@okaxis&am=${calculateTotalFee().toFixed(2)}`, '_blank') }} style={{ cursor: 'pointer' }} />
                       <p className="text-sm text-muted-foreground mt-2">Click QR to open UPI app</p>
                     </div>
                   ) : (
@@ -696,8 +728,8 @@ export default function RegisterPage() {
                 <div className="p-4 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
                   <h4 className="font-medium text-foreground mb-3">Payment Details</h4>
                   <div className="space-y-2 text-sm">
-                    <p><strong>UPI ID:</strong> abdulbari250305@oksbi</p>
-                    <p><strong>UPI Number:</strong> +91 95972 25564</p>
+                    <p><strong>UPI ID:</strong> palanirit@okaxis</p>
+                    <p><strong>UPI Number:</strong> +91 99522 76630</p>
                   </div>
                 </div>
                 <div className="p-6 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
@@ -733,6 +765,8 @@ export default function RegisterPage() {
                     </table>
                   </div>
                   <p className="text-xs text-muted-foreground mt-4">* Payment is per team, not per person.</p>
+                  <p className="text-xs text-muted-foreground mt-4 text-red">  * Please note that payments are non-refundable.</p>
+
                 </div>
               </div>
             </div>
