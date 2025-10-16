@@ -738,8 +738,8 @@ export default function RegisterPage() {
                     <table className="w-full border-collapse border border-foreground/20">
                       <thead>
                         <tr className="bg-muted/50">
-                          <th className="border border-foreground/20 p-3 text-left text-sm font-medium">Item</th>
-                          <th className="border border-foreground/20 p-3 text-center text-sm font-medium">Qty</th>
+                          <th className="border border-foreground/20 p-3 text-left text-sm font-medium">Event</th>
+                          <th className="border border-foreground/20 p-3 text-center text-sm font-medium">Participants</th>
                           <th className="border border-foreground/20 p-3 text-right text-sm font-medium">Amount</th>
                         </tr>
                       </thead>
