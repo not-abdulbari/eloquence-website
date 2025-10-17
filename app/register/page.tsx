@@ -301,7 +301,7 @@ export default function RegisterPage() {
     const errors = validateStep(currentStep)
     if (errors.length > 0) {
       // Join errors with a newline character for the alert dialog
-      alert("Please fix the following errors:" + "\n" +errors.join("\n"))
+      alert("Please fix the following errors:" + errors.join("\n"))
       return
     }
 
@@ -341,7 +341,7 @@ export default function RegisterPage() {
     // FIXED: Validate the final step (Step 4)
     const errors = validateStep(4);
     if (errors.length > 0) {
-      alert("Please fix the following errors:" +"\n"+ errors.join("\n"));
+      alert("Please fix the following errors:" + errors.join("\n"));
       return;
     }
     if (!formData.paymentScreenshot) {
@@ -383,7 +383,7 @@ export default function RegisterPage() {
       if (!response.ok) {
         throw new Error(result.error || 'Something went wrong');
       }
-      alert("Registration submitted successfully!, You'll receive a confirmation email soon.");
+      alert("Registration submitted successfully!");
       // Reset form state on success
       setFormData({
         title: "Mr.",
@@ -410,9 +410,7 @@ export default function RegisterPage() {
 
   const renderStepContent = () => {
     switch (currentStep) {
-        // ... (The rest of your renderStepContent function remains the same)
-        // ... I've omitted it here for brevity, but you should keep your existing code.
-        case 1:
+      case 1:
         return (
           <div className="space-y-6 p-4">
             <div className="border-b border-foreground/10 pb-2">
@@ -700,8 +698,8 @@ export default function RegisterPage() {
                       </tbody>
                     </table>
                   </div>
-                  <p className="text-sm mt-4 text-red-600">* Payment is per team, not per person.</p>
-                  <p className="text-sm  mt-4 text-red-600">  * Please note that payments are non-refundable.</p>
+                  <p className="text-xs text-muted-foreground mt-4">* Payment is per team, not per person.</p>
+                  <p className="text-xs text-muted-foreground mt-4 text-red">  * Please note that payments are non-refundable.</p>
                 </div>
                 <div className="p-4 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
                   <label className="block text-sm font-medium mb-3 text-foreground">Upload Payment Screenshot <span className="text-red-500">*</span></label>
