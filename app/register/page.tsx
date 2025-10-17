@@ -301,7 +301,7 @@ export default function RegisterPage() {
     const errors = validateStep(currentStep)
     if (errors.length > 0) {
       // Join errors with a newline character for the alert dialog
-      alert("Please fix the following errors:" + errors.join("\n"))
+      alert("Please fix the following errors:" +"\n"+ errors.join("\n"))
       return
     }
 
@@ -341,7 +341,7 @@ export default function RegisterPage() {
     // FIXED: Validate the final step (Step 4)
     const errors = validateStep(4);
     if (errors.length > 0) {
-      alert("Please fix the following errors:" + errors.join("\n"));
+      alert("Please fix the following errors:" +"\n"+ errors.join("\n"));
       return;
     }
     if (!formData.paymentScreenshot) {
