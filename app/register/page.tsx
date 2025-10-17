@@ -12,6 +12,7 @@ import { formatMembersText, parseRegistrationFee } from "@/lib/event-utils"
 import QRCode from "qrcode"
 // Import Lucide icons
 import { User, ListChecks, Users, Wallet, CheckCircle } from 'lucide-react'
+
 interface RegistrationForm {
   title: string
   name: string
@@ -25,6 +26,7 @@ interface RegistrationForm {
   eventRegistrations: EventRegistration[]
   paymentScreenshot: File | null
 }
+
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegistrationForm>({
     title: "Mr.",
@@ -44,6 +46,7 @@ export default function RegisterPage() {
   const [siteData, setSiteData] = useState<SiteData | null>(null)
   const [loading, setLoading] = useState(true)
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("")
+
   useEffect(() => {
     const loadSiteData = async () => {
       try {
@@ -58,19 +61,7 @@ export default function RegisterPage() {
     loadSiteData()
   }, [])
 
-  const calculateTotalFee = () => {
-    if (!allEvents) return 0; // Guard against allEvents not being ready
-    let total = 0
-    formData.eventRegistrations.forEach(registration => {
-      const event = allEvents.find(e => e.id === registration.eventId)
-      if (event) {
-        const baseFee = parseRegistrationFee(event.registrationFee)
-        total += baseFee * registration.teamSize
-      }
-    })
-    return total
-  }
-
+  // NEW: useEffect to calculate QR code whenever event registrations change
   useEffect(() => {
     const generateQRCode = async () => {
       const totalAmount = calculateTotalFee()
@@ -123,6 +114,19 @@ export default function RegisterPage() {
   const technicalEvents = siteData.events.filter(event => event.type === "tech")
   const nonTechnicalEvents = siteData.events.filter(event => event.type === "non-tech")
   const allEvents = siteData.events
+
+  const calculateTotalFee = () => {
+    if (!allEvents) return 0; // Guard against allEvents not being ready
+    let total = 0
+    formData.eventRegistrations.forEach(registration => {
+      const event = allEvents.find(e => e.id === registration.eventId)
+      if (event) {
+        const baseFee = parseRegistrationFee(event.registrationFee)
+        total += baseFee * registration.teamSize
+      }
+    })
+    return total
+  }
 
   const handleInputChange = (field: keyof RegistrationForm, value: string | File | null) => {
     setFormData(prev => ({
@@ -226,88 +230,8 @@ export default function RegisterPage() {
     }))
   }
 
-  // Helper function to convert time string (e.g., "10:40 AM", "10:40AM", "10:40 am") to minutes since midnight
-  const timeStringToMinutes = (timeStr: string): number => {
-    if (!timeStr) return 0;
-    // Remove extra spaces and standardize case for AM/PM
-    const normalizedStr = timeStr.trim().replace(/\s+/g, ' ').toUpperCase();
-    const timeRegex = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/;
-    const match = normalizedStr.match(timeRegex);
-
-    if (!match) {
-      console.warn(`Invalid time format detected: "${timeStr}". Using 0 minutes as fallback.`);
-      return 0; // Return 0 if the format doesn't match
-    }
-
-    let [_, hours, minutes, period] = match;
-    let hourNum = parseInt(hours, 10);
-    let minuteNum = parseInt(minutes, 10);
-
-    // Validate basic ranges
-    if (hourNum < 1 || hourNum > 12 || minuteNum < 0 || minuteNum > 59) {
-        console.warn(`Invalid time value detected: "${timeStr}". Using 0 minutes as fallback.`);
-        return 0; // Return 0 if values are out of range
-    }
-
-    if (period === 'PM' && hourNum !== 12) {
-      hourNum += 12;
-    } else if (period === 'AM' && hourNum === 12) {
-      hourNum = 0;
-    }
-
-    return hourNum * 60 + minuteNum;
-  };
-
-  // Helper function to extract start and end times from a timing string (e.g., "10:40 AM - 12:40 PM")
-  const parseTiming = (timingStr: string): { start: number, end: number } => {
-    if (!timingStr) return { start: 0, end: 0 };
-    const parts = timingStr.split('-').map(part => part.trim());
-    if (parts.length !== 2) {
-        console.warn(`Invalid timing range format detected: "${timingStr}". Using 0 for both start and end.`);
-        return { start: 0, end: 0 }; // Return 0s if the format isn't "X - Y"
-    }
-    const start = timeStringToMinutes(parts[0]);
-    const end = timeStringToMinutes(parts[1]);
-    // Ensure end time is not before start time (e.g., 11:45 PM - 12:30 AM should be handled carefully)
-    // For now, we'll assume events don't span midnight, so if end < start, it's likely an error in data or parsing.
-    if (end < start) {
-        console.warn(`End time is before start time for: "${timingStr}". This might indicate a parsing error or an overnight event.`);
-        // Potentially return { start: 0, end: 0 } here if you want to ignore such cases strictly.
-        // For now, we'll return the calculated values but the overlap logic should handle it correctly.
-    }
-    return { start, end };
-  };
-
-  const checkForScheduleConflicts = () => {
-    const conflicts = []
-    const registrations = formData.eventRegistrations
-    for (let i = 0; i < registrations.length; i++) {
-      for (let j = i + 1; j < registrations.length; j++) {
-        const event1 = allEvents.find(e => e.id === registrations[i].eventId)
-        const event2 = allEvents.find(e => e.id === registrations[j].eventId)
-        if (event1 && event2) {
-          // Parse the timing strings into start/end minutes
-          const timing1 = parseTiming(event1.timing);
-          const timing2 = parseTiming(event2.timing);
-
-          // Check for overlap: Two intervals [s1, e1] and [s2, e2] overlap if s1 < e2 and s2 < e1
-          if (timing1.start < timing2.end && timing2.start < timing1.end) {
-            conflicts.push({
-              event1: event1.title,
-              event2: event2.title,
-              timing1: event1.timing,
-              timing2: event2.timing
-            })
-          }
-        }
-      }
-    }
-    return conflicts
-  }
-
   const validateStep = (step: number) => {
     const errors: string[] = []; // Explicitly type the errors array
-
     if (step === 1) {
       if (!formData.name.trim()) errors.push("Name is required");
       // Validate email format
@@ -322,17 +246,14 @@ export default function RegisterPage() {
       } else if (!/^\d{10}$/.test(formData.phone.trim())) {
         errors.push("Phone number must be exactly 10 digits");
       }
-
       if (!formData.rollNo.trim()) errors.push("Roll No is required");
       if (!formData.collegeName.trim()) errors.push("College Name is required");
       if (!formData.department.trim()) errors.push("Department is required");
     }
-
-    if (step === 3) {
+    if (step === 2) { // Validate team members added in Step 2 (now Step 3)
         formData.eventRegistrations.forEach(registration => {
             const event = allEvents.find(e => e.id === registration.eventId)
             if (!event) return
-
             if (registration.teamSize < event.minMembers) {
                 errors.push(`${event.title}: Team size must be at least ${event.minMembers}`)
             }
@@ -342,20 +263,16 @@ export default function RegisterPage() {
             if (registration.teamMembers.length !== registration.teamSize - 1) {
                 errors.push(`${event.title}: Please add ${registration.teamSize - 1} team member(s)`)
             }
-
             // Removed validation for team leader selection
             // const hasTeamLead = registration.teamMembers.some(member => member.isTeamLead)
             // if (registration.teamSize > 1 && !hasTeamLead) {
             //     errors.push(`${event.title}: Please select a team lead`)
             // }
-
             const hasAlternateContact = registration.teamMembers.some(member => member.isAlternateContact)
-
             // Only require alternate contact for teams with 3+ *total* members (2+ team members added)
             if (registration.teamSize > 2 && !hasAlternateContact) {
                 errors.push(`${event.title}: Please select an alternate contact for teams with 3+ members`)
             }
-
             registration.teamMembers.forEach(member => {
                 if (!member.name.trim()) {
                     errors.push(`${event.title}: All team members must have names`)
@@ -371,13 +288,12 @@ export default function RegisterPage() {
             })
         })
     }
-
-    if (step === 5) {
+    // FIXED: Validate payment screenshot added in Step 4 (the new merged step)
+    if (step === 4) {
         if (!formData.paymentScreenshot) {
             errors.push("Please upload the payment screenshot.")
         }
     }
-
     return errors
   }
 
@@ -385,10 +301,30 @@ export default function RegisterPage() {
     const errors = validateStep(currentStep)
     if (errors.length > 0) {
       // Join errors with a newline character for the alert dialog
-      alert("Please fix the following errors:" + errors.join("\n"))
+      alert("Please fix the following errors:" + "\n" +errors.join("\n"))
       return
     }
-    if (currentStep < 5) {
+
+    // NEW: Check if user has selected more than 1 event when moving from Step 2 to Step 3 (now Step 4)
+    if (currentStep === 2 && formData.eventRegistrations.length > 1) {
+        const message = [
+            "You have selected multiple events.",
+            "",
+            "Please ensure that you have not selected events with conflicting/overlapping time.",
+            "",
+            "If you have overlapping events, discuss your participation with the coordinators right now and proceed accordingly.",
+            "",
+            "**IMPORTANT: Payments are non-refundable.**"
+        ].join("\n");
+
+        alert(message);
+        // The prompt says to show the dialog and "proceed accordingly".
+        // It doesn't explicitly say to prevent proceeding, so the step will advance after the alert.
+        // If you want to prevent proceeding if they have multiple events, uncomment the line below:
+        // return;
+    }
+
+    if (currentStep < 4) { // Updated max step to 4
       setCurrentStep(currentStep + 1)
     }
   }
@@ -399,16 +335,18 @@ export default function RegisterPage() {
     }
   }
 
-  // --- THIS IS THE CORRECTED FUNCTION ---
+  // --- CORRECTED handleSubmit FUNCTION ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const errors = validateStep(5);
+    // FIXED: Validate the final step (Step 4)
+    const errors = validateStep(4);
     if (errors.length > 0) {
-      alert("Please fix the following errors:" + errors.join("\n"));
+      alert("Please fix the following errors:" +"\n"+ errors.join("\n"));
       return;
     }
     if (!formData.paymentScreenshot) {
         alert("Payment screenshot is missing.");
+        // Optional: This check is now redundant due to validateStep(4), but keeping it is fine.
         return;
     }
     setIsSubmitting(true);
@@ -445,7 +383,7 @@ export default function RegisterPage() {
       if (!response.ok) {
         throw new Error(result.error || 'Something went wrong');
       }
-      alert("Registration submitted successfully!");
+      alert("Registration submitted successfully!, You'll receive a confirmation email soon.");
       // Reset form state on success
       setFormData({
         title: "Mr.",
@@ -468,7 +406,7 @@ export default function RegisterPage() {
       setIsSubmitting(false);
     }
   };
-  // --- END OF CORRECTED FUNCTION ---
+  // --- END OF CORRECTED handleSubmit FUNCTION ---
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -557,7 +495,6 @@ export default function RegisterPage() {
                     </Button>
                   </div>
                 ))}
-
               </div>
             </div>
             <div className="space-y-4 p-4">
@@ -579,8 +516,7 @@ export default function RegisterPage() {
                   </div>
                 ))}
               </div>
-              <p className="text-sm text-red-600">Note: For events with overlapping schedules, participation is at your own risk. Payments are non-refundable.</p>
-
+              {/* Removed the old note about overlapping schedules */}
             </div>
           </div>
         );
@@ -702,11 +638,11 @@ export default function RegisterPage() {
             )}
           </>
         );
-      case 4:
+      case 4: // Merged Payment and Confirm steps
         return (
           <div className="space-y-6 p-4">
             <div className="border-b border-foreground/10 pb-2">
-              <h3 className="text-xl font-semibold">Payment Information</h3>
+              <h3 className="text-xl font-semibold">Payment & Confirmation</h3>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-4">
               <div className="space-y-4">
@@ -723,8 +659,6 @@ export default function RegisterPage() {
                     </div>
                   )}
                 </div>
-              </div>
-              <div className="space-y-4">
                 <div className="p-4 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
                   <h4 className="font-medium text-foreground mb-3">Payment Details</h4>
                   <div className="space-y-2 text-sm">
@@ -732,6 +666,8 @@ export default function RegisterPage() {
                     <p><strong>UPI Number:</strong> +91 99522 76630</p>
                   </div>
                 </div>
+              </div>
+              <div className="space-y-4">
                 <div className="p-6 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
                   <h4 className="font-medium text-foreground mb-4">Payment Breakdown</h4>
                   <div className="overflow-x-auto">
@@ -764,31 +700,22 @@ export default function RegisterPage() {
                       </tbody>
                     </table>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-4">* Payment is per team, not per person.</p>
-                  <p className="text-xs text-muted-foreground mt-4 text-red">  * Please note that payments are non-refundable.</p>
-
+                  <p className="text-sm mt-4 text-red-600">* Payment is per team, not per person.</p>
+                  <p className="text-sm  mt-4 text-red-600">  * Please note that payments are non-refundable.</p>
                 </div>
-              </div>
-            </div>
-          </div>
-        );
-      case 5:
-        return (
-          <div className="space-y-6 p-4">
-            <div className="border-b border-foreground/10 pb-2">
-              <h3 className="text-xl font-semibold">Confirm & Submit</h3>
-            </div>
-            <div className="p-4 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
-              <label className="block text-sm font-medium mb-3 text-foreground">Upload Payment Screenshot <span className="text-red-500">*</span></label>
-              <input type="file" accept="image/*" onChange={(e) => handleInputChange('paymentScreenshot', e.target.files?.[0] || null)} className="w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors" required />
-              <p className="text-sm text-muted-foreground mt-2">Supported formats: JPG, PNG.</p>
-            </div>
-            <div className="p-6 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
-              <h3 className="text-lg font-semibold mb-4 text-foreground">Contact for Queries</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-                <div className="text-center"><p className="font-medium text-foreground">Jaya Suryaa</p><p className="text-muted-foreground">+91 93441 47861</p></div>
-                <div className="text-center"><p className="font-medium text-foreground">Veshal P</p><p className="text-muted-foreground">+91 73058 68148</p></div>
-                <div className="text-center"><p className="font-medium text-foreground">Abdul Bari</p><p className="text-muted-foreground">+91 95972 25564</p></div>
+                <div className="p-4 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
+                  <label className="block text-sm font-medium mb-3 text-foreground">Upload Payment Screenshot <span className="text-red-500">*</span></label>
+                  <input type="file" accept="image/*" onChange={(e) => handleInputChange('paymentScreenshot', e.target.files?.[0] || null)} className="w-full p-3 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-colors" required />
+                  <p className="text-sm text-muted-foreground mt-2">Supported formats: JPG, PNG.</p>
+                </div>
+                 <div className="p-6 border border-foreground/10 rounded-lg bg-background/50 backdrop-blur-sm">
+                  <h3 className="text-lg font-semibold mb-4 text-foreground">Contact for Queries</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div className="text-center"><p className="font-medium text-foreground">Jaya Suryaa</p><p className="text-muted-foreground">+91 93441 47861</p></div>
+                    <div className="text-center"><p className="font-medium text-foreground">Veshal P</p><p className="text-muted-foreground">+91 73058 68148</p></div>
+                    <div className="text-center"><p className="font-medium text-foreground">Abdul Bari</p><p className="text-muted-foreground">+91 95972 25564</p></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -802,18 +729,15 @@ export default function RegisterPage() {
     { label: "Personal", icon: User, step: 1 },
     { label: "Events", icon: ListChecks, step: 2 },
     { label: "Team", icon: Users, step: 3 },
-    { label: "Payment", icon: Wallet, step: 4 },
-    { label: "Confirm", icon: CheckCircle, step: 5 }
-  ];
+    { label: "Pay & Confirm", icon: Wallet, step: 4 }, // Updated label
+  ]; // Removed Step 5
 
   return (
     <main className="relative min-h-screen w-full mx-auto">
       <BackgroundGrid />
       <BlurBubbles />
       <div className="relative z-10 w-full mx-auto">
-
         <div className="text-center pt-10 pb-8 px-4">
-          
           <div className="text-base sm:text-lg md:text-xl font text-center mb-2" style={{ fontFamily: 'Helvetica', fontWeight: 'bold' ,fontSize: '1.2em' }}>
               C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
             </div>
@@ -831,7 +755,6 @@ export default function RegisterPage() {
 >
   Department of Computer Science and Engineering
 </p>
-
 <p
   className="text-nowrap font-small text opacity-75 mb-2"
   style={{
@@ -858,7 +781,6 @@ export default function RegisterPage() {
               >
                 {siteData?.symposium || "ELOQUENCE'25"}
             </h1>
-            
             <p
   className="text-nowrap font-medium text opacity-75"
   style={{
@@ -916,34 +838,9 @@ export default function RegisterPage() {
               {/* --- END OF PROGRESS BAR --- */}
               <form onSubmit={handleSubmit} className="space-y-8 mb-5">
                 {renderStepContent()}
-
-                {/* Schedule Conflict Warning Card - Moved here */}
-                {checkForScheduleConflicts().length > 0 && (
-                  <div className="mb-8 px-4">
-                    <Card className="border-orange-200 bg-orange-50/80 backdrop-blur-sm">
-                      <CardContent className="p-6">
-                        <div className="flex items-start space-x-3">
-                          <span className="text-orange-600 text-xl">⚠️</span>
-                          <div>
-                            <h3 className="font-semibold text-orange-800 mb-2">Schedule Conflict Warning</h3>
-                            <p className="text-orange-700 text-sm mb-3">You have selected events with overlapping schedules. Participation is at your own risk.</p>
-                            <ul className="text-orange-700 text-sm space-y-1 list-disc list-inside">
-                              {checkForScheduleConflicts().map((conflict, index) => (
-                                <li key={index}>
-                                  {conflict.event1} ({conflict.timing1}) & {conflict.event2} ({conflict.timing2})
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
-
                 <div className="flex justify-between mt-8">
                   <Button type="button" variant="outline" onClick={prevStep} disabled={currentStep === 1} className="rounded-full">Back</Button>
-                  {currentStep < 5 ? (
+                  {currentStep < 4 ? ( // Updated condition
                     <Button type="button" onClick={nextStep} className="rounded-full">Next</Button>
                   ) : (
                     <Button type="submit" disabled={isSubmitting || formData.eventRegistrations.length === 0} className="rounded-full">
