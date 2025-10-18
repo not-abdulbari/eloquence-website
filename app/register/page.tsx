@@ -525,7 +525,7 @@ export default function RegisterPage() {
                           Remove
                         </Button>
                       </CardTitle>
-                      <p className="text-sm text-muted-foreground">{event.timing} â€¢ {event.registrationFee}</p>
+                      <p className="text-sm text-muted-foreground">{event.timing} {event.registrationFee}</p>
                     </CardHeader>
                     <CardContent className="space-y-6 px-6">
                       <div>
