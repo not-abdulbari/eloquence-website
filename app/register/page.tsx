@@ -12,7 +12,6 @@ import { formatMembersText, parseRegistrationFee } from "@/lib/event-utils"
 import QRCode from "qrcode"
 // Import Lucide icons
 import { User, ListChecks, Users, Wallet, CheckCircle } from 'lucide-react'
-
 interface RegistrationForm {
   title: string
   name: string
@@ -26,7 +25,6 @@ interface RegistrationForm {
   eventRegistrations: EventRegistration[]
   paymentScreenshot: File | null
 }
-
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegistrationForm>({
     title: "Mr.",
@@ -46,7 +44,6 @@ export default function RegisterPage() {
   const [siteData, setSiteData] = useState<SiteData | null>(null)
   const [loading, setLoading] = useState(true)
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("")
-
   useEffect(() => {
     const loadSiteData = async () => {
       try {
@@ -60,7 +57,6 @@ export default function RegisterPage() {
     }
     loadSiteData()
   }, [])
-
   // NEW: useEffect to calculate QR code whenever event registrations change
   useEffect(() => {
     const generateQRCode = async () => {
@@ -86,7 +82,6 @@ export default function RegisterPage() {
     }
     generateQRCode()
   }, [formData.eventRegistrations, siteData]) // Added siteData dependency
-
   if (loading) {
     return (
       <main className="relative mx-auto w-[95%] py-16">
@@ -98,7 +93,6 @@ export default function RegisterPage() {
       </main>
     )
   }
-
   if (!siteData) {
     return (
       <main className="relative mx-auto w-[95%] py-16">
@@ -110,11 +104,9 @@ export default function RegisterPage() {
       </main>
     )
   }
-
   const technicalEvents = siteData.events.filter(event => event.type === "tech")
   const nonTechnicalEvents = siteData.events.filter(event => event.type === "non-tech")
   const allEvents = siteData.events
-
   const calculateTotalFee = () => {
     if (!allEvents) return 0; // Guard against allEvents not being ready
     let total = 0
@@ -127,14 +119,12 @@ export default function RegisterPage() {
     })
     return total
   }
-
   const handleInputChange = (field: keyof RegistrationForm, value: string | File | null) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }))
   }
-
   const addEventRegistration = (eventId: string) => {
     const event = allEvents.find(e => e.id === eventId)
     if (!event) return
@@ -153,14 +143,12 @@ export default function RegisterPage() {
       eventRegistrations: [...prev.eventRegistrations, newRegistration]
     }))
   }
-
   const removeEventRegistration = (eventId: string) => {
     setFormData(prev => ({
       ...prev,
       eventRegistrations: prev.eventRegistrations.filter(reg => reg.eventId !== eventId)
     }))
   }
-
   const updateEventTeamSize = (eventId: string, teamSize: number) => {
     const event = allEvents.find(e => e.id === eventId)
     if (!event || teamSize > event.maxMembers || teamSize < event.minMembers) return
@@ -171,7 +159,6 @@ export default function RegisterPage() {
       )
     }))
   }
-
   const addTeamMemberToEvent = (eventId: string) => {
     const registration = formData.eventRegistrations.find(reg => reg.eventId === eventId)
     if (!registration) return
@@ -202,7 +189,6 @@ export default function RegisterPage() {
       )
     }))
   }
-
   const removeTeamMemberFromEvent = (eventId: string, memberId: string) => {
     setFormData(prev => ({
       ...prev,
@@ -213,7 +199,6 @@ export default function RegisterPage() {
       )
     }))
   }
-
   const updateTeamMember = (eventId: string, memberId: string, field: keyof TeamMember, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
@@ -229,7 +214,6 @@ export default function RegisterPage() {
       )
     }))
   }
-
   const validateStep = (step: number) => {
     const errors: string[] = []; // Explicitly type the errors array
     if (step === 1) {
@@ -250,29 +234,39 @@ export default function RegisterPage() {
       if (!formData.collegeName.trim()) errors.push("College Name is required");
       if (!formData.department.trim()) errors.push("Department is required");
     }
-    if (step === 2) { // Validate team members added in Step 2 (now Step 3)
+    if (step === 2) {
+      // Validate that at least one event is selected
+      if (formData.eventRegistrations.length === 0) {
+          errors.push("Please select at least one event.");
+      }
+      // Removed team size and member validation from Step 2
+      // These checks now belong in Step 3 (Team)
+    }
+    if (step === 3) { // NEW: Validate team members added in Step 3 (Team)
         formData.eventRegistrations.forEach(registration => {
             const event = allEvents.find(e => e.id === registration.eventId)
             if (!event) return
+
+            // Validate team size against event limits
             if (registration.teamSize < event.minMembers) {
                 errors.push(`${event.title}: Team size must be at least ${event.minMembers}`)
             }
             if (registration.teamSize > event.maxMembers) {
                 errors.push(`${event.title}: Team size cannot exceed ${event.maxMembers} members`)
             }
+
+            // Validate number of team members matches the team size
             if (registration.teamMembers.length !== registration.teamSize - 1) {
                 errors.push(`${event.title}: Please add ${registration.teamSize - 1} team member(s)`)
             }
-            // Removed validation for team leader selection
-            // const hasTeamLead = registration.teamMembers.some(member => member.isTeamLead)
-            // if (registration.teamSize > 1 && !hasTeamLead) {
-            //     errors.push(`${event.title}: Please select a team lead`)
-            // }
+
+            // Validate alternate contact for larger teams
             const hasAlternateContact = registration.teamMembers.some(member => member.isAlternateContact)
-            // Only require alternate contact for teams with 3+ *total* members (2+ team members added)
             if (registration.teamSize > 2 && !hasAlternateContact) {
                 errors.push(`${event.title}: Please select an alternate contact for teams with 3+ members`)
             }
+
+            // Validate details for each team member
             registration.teamMembers.forEach(member => {
                 if (!member.name.trim()) {
                     errors.push(`${event.title}: All team members must have names`)
@@ -288,7 +282,7 @@ export default function RegisterPage() {
             })
         })
     }
-    // FIXED: Validate payment screenshot added in Step 4 (the new merged step)
+    // Validate payment screenshot added in Step 4 (the new merged step)
     if (step === 4) {
         if (!formData.paymentScreenshot) {
             errors.push("Please upload the payment screenshot.")
@@ -296,15 +290,13 @@ export default function RegisterPage() {
     }
     return errors
   }
-
   const nextStep = () => {
     const errors = validateStep(currentStep)
     if (errors.length > 0) {
       // Join errors with a newline character for the alert dialog
-      alert("Please fix the following errors:" +"\n"+ errors.join("\n"))
+      alert("Please fix the following errors:" +"\n"+ errors.join(""))
       return
     }
-
     // NEW: Check if user has selected more than 1 event when moving from Step 2 to Step 3 (now Step 4)
     if (currentStep === 2 && formData.eventRegistrations.length > 1) {
         const message = [
@@ -316,32 +308,28 @@ export default function RegisterPage() {
             "",
             "**IMPORTANT: Payments are non-refundable.**"
         ].join("\n");
-
         alert(message);
         // The prompt says to show the dialog and "proceed accordingly".
         // It doesn't explicitly say to prevent proceeding, so the step will advance after the alert.
         // If you want to prevent proceeding if they have multiple events, uncomment the line below:
         // return;
     }
-
     if (currentStep < 4) { // Updated max step to 4
       setCurrentStep(currentStep + 1)
     }
   }
-
   const prevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
     }
   }
-
   // --- CORRECTED handleSubmit FUNCTION ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // FIXED: Validate the final step (Step 4)
     const errors = validateStep(4);
     if (errors.length > 0) {
-      alert("Please fix the following errors:" +"\n"+ errors.join("\n"));
+      alert("Please fix the following errors:" +"\n"+ errors.join(""));
       return;
     }
     if (!formData.paymentScreenshot) {
@@ -407,7 +395,6 @@ export default function RegisterPage() {
     }
   };
   // --- END OF CORRECTED handleSubmit FUNCTION ---
-
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
@@ -538,7 +525,7 @@ export default function RegisterPage() {
                           Remove
                         </Button>
                       </CardTitle>
-                      <p className="text-sm text-muted-foreground">{event.timing} • {event.registrationFee}</p>
+                      <p className="text-sm text-muted-foreground">{event.timing} â€¢ {event.registrationFee}</p>
                     </CardHeader>
                     <CardContent className="space-y-6 px-6">
                       <div>
@@ -687,13 +674,13 @@ export default function RegisterPage() {
                             <tr key={registration.eventId}>
                               <td className="border border-foreground/20 p-3 text-sm">{event.title}</td>
                               <td className="border border-foreground/20 p-3 text-center text-sm">{registration.teamSize}</td>
-                              <td className="border border-foreground/20 p-3 text-right text-sm">₹{totalEventFee.toFixed(2)}</td>
+                              <td className="border border-foreground/20 p-3 text-right text-sm">â‚¹{totalEventFee.toFixed(2)}</td>
                             </tr>
                           )
                         })}
                         <tr className="bg-muted/30 font-bold">
                           <td colSpan={2} className="border border-foreground/20 p-3 text-right">Total</td>
-                          <td className="border border-foreground/20 p-3 text-right">₹{calculateTotalFee().toFixed(2)}</td>
+                          <td className="border border-foreground/20 p-3 text-right">â‚¹{calculateTotalFee().toFixed(2)}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -722,14 +709,12 @@ export default function RegisterPage() {
             return null;
     }
   }
-
   const steps = [
     { label: "Personal", icon: User, step: 1 },
     { label: "Events", icon: ListChecks, step: 2 },
     { label: "Team", icon: Users, step: 3 },
     { label: "Pay & Confirm", icon: Wallet, step: 4 }, // Updated label
   ]; // Removed Step 5
-
   return (
     <main className="relative min-h-screen w-full mx-auto">
       <BackgroundGrid />
@@ -791,7 +776,7 @@ export default function RegisterPage() {
   8th National Level Technical Symposium
 </p>
             <Badge variant="outline" className="mt-4 border-foreground/10 bg-background/70 text-xs sm:text-sm px-3 py-1.5 rounded-full mx-auto flex w-fit">
-                📅 November 1, 2025 | 🕘 9:00 AM - 5:00 PM
+                ðŸ“… November 1, 2025 | ðŸ•˜ 9:00 AM - 5:00 PM
             </Badge>
         </div>
         <div className="max-w-4xl mx-auto px-4 pb-12">
