@@ -776,7 +776,7 @@ export default function RegisterPage() {
   8th National Level Technical Symposium
 </p>
             <Badge variant="outline" className="mt-4 border-foreground/10 bg-background/70 text-xs sm:text-sm px-3 py-1.5 rounded-full mx-auto flex w-fit">
-                ðŸ“… November 1, 2025 | ðŸ•˜ 9:00 AM - 5:00 PM
+                📆November 1, 2025 | ⏱️ 9:00 AM - 4:00 PM
             </Badge>
         </div>
         <div className="max-w-4xl mx-auto px-4 pb-12">
