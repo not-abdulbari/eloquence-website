@@ -674,13 +674,13 @@ export default function RegisterPage() {
                             <tr key={registration.eventId}>
                               <td className="border border-foreground/20 p-3 text-sm">{event.title}</td>
                               <td className="border border-foreground/20 p-3 text-center text-sm">{registration.teamSize}</td>
-                              <td className="border border-foreground/20 p-3 text-right text-sm">â‚¹{totalEventFee.toFixed(2)}</td>
+                              <td className="border border-foreground/20 p-3 text-right text-sm">Rs. {totalEventFee.toFixed(2)}</td>
                             </tr>
                           )
                         })}
                         <tr className="bg-muted/30 font-bold">
                           <td colSpan={2} className="border border-foreground/20 p-3 text-right">Total</td>
-                          <td className="border border-foreground/20 p-3 text-right">â‚¹{calculateTotalFee().toFixed(2)}</td>
+                          <td className="border border-foreground/20 p-3 text-right">Rs. {calculateTotalFee().toFixed(2)}</td>
                         </tr>
                       </tbody>
                     </table>
