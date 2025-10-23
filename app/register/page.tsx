@@ -1,5 +1,5 @@
 // app/register/page.tsx
-"use client"
+/*"use client"
 import { useState, useEffect } from "react"
 import BackgroundGrid from "@/components/background-grid"
 import BlurBubbles from "@/components/blur-bubbles"
@@ -501,8 +501,8 @@ export default function RegisterPage() {
                   </div>
                 ))}
               </div>
-              {/* Removed the old note about overlapping schedules */}
-            </div>
+              {/* Removed the old note about overlapping schedules }
+           </div>
           </div>
         );
       case 3:
@@ -786,7 +786,7 @@ export default function RegisterPage() {
               <p className="text-sm text-muted-foreground mt-2">* Indicates required field</p>
             </CardHeader>
             <CardContent className="px-4 sm:px-8">
-              {/* --- NEW VIDEO PLAYER STYLE PROGRESS BAR --- */}
+              {/* --- NEW VIDEO PLAYER STYLE PROGRESS BAR --- /}
               <div className="mb-12 pt-6">
                 <div className="relative">
                   <div className="absolute top-6 left-6 right-6 h-1 -translate-y-1/2">
@@ -818,7 +818,7 @@ export default function RegisterPage() {
                   </div>
                 </div>
               </div>
-              {/* --- END OF PROGRESS BAR --- */}
+              {/* --- END OF PROGRESS BAR --- /}
               <form onSubmit={handleSubmit} className="space-y-8 mb-5">
                 {renderStepContent()}
                 <div className="flex justify-between mt-8">
@@ -839,3 +839,6 @@ export default function RegisterPage() {
     </main>
   )
 }
+
+
+*/
