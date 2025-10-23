@@ -90,9 +90,9 @@ export default function SiteFooter() {
 
           <div>
             <h4 className="mb-3 text-sm font-medium">Get Started</h4>
-            <Link href="/register">
+            <Link href="/register1">
 <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
-                Register
+                Registration Paused
               </Button>
             </Link>
           </div>

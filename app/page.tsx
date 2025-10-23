@@ -43,10 +43,11 @@ import { Button } from "@/components/ui/button"
 import EventsIconsStrip from "@/components/sections/events-icons-strip"
 import SponsorsSection from "@/components/sections/sponsors-section"
 import PatronsSection from "@/components/sections/patrons-section"
-import CountdownTimer from "@/components/countdown-timer"
+// import CountdownTimer from "@/components/countdown-timer" // Commented out as not needed now
 import FloatingIcons from "@/components/floating-icons"
 import BackgroundGrid from "@/components/background-grid"
-import { Utensils, Code2, Globe, HelpCircle } from "lucide-react"
+import { Utensils, Code2, Globe, HelpCircle, Calendar, AlertTriangle } from "lucide-react"
+import PostponementPopup from '@/components/postponement-popup'; // Ensure correct path and filename
 
 function IconPill({ children }: { children: React.ReactNode }) {
   return (
@@ -59,50 +60,58 @@ function IconPill({ children }: { children: React.ReactNode }) {
 export default async function HomePage() {
   return (
     <main>
+      <PostponementPopup />
       {/* HERO */}
-  <section className="relative mx-auto w-full max-w-5xl px-[2vw] sm:px-4 py-[6vh] sm:py-8 md:py-12 lg:py-16 xl:py-20 text-center">
+      <section className="relative mx-auto w-full max-w-5xl px-[2vw] sm:px-4 py-[6vh] sm:py-8 md:py-12 lg:py-16 xl:py-20 text-center">
         <BackgroundGrid />
         <FloatingIcons variant="hero" />
-<div
-  className="relative flex flex-col items-center gap-0 sm:gap-1"
-  style={{ marginTop: 'clamp(0rem, -2vw, -5rem)' }}
->
-  <div className="flex flex-col items-center gap-0 sm:gap-0">
-    <img
-      src="/cahcet-logo.webp"
-      alt="CAHCET College logo"
-      className="h-20 w-20 sm:h-20 sm:w-20 md:h-40 md:w-40 rounded-md border bg-card p-1 mt-[-0.25rem]"
-    />
-  
+        {/* NEW: Postponement Banner */}
+        <div className="relative mb-8 mx-auto w-full max-w-2xl px-4 py-3 rounded-lg bg-red-100 border border-red-300 text-red-800 dark:bg-red-900/30 dark:border-red-700 dark:text-red-200">
+          <div className="flex items-center justify-center gap-2">
+            <p className="text-sm sm:text-base font-medium">
+              <strong>IMPORTANT ANNOUNCEMENT</strong><br></br> Eloquence'25 has been postponed due to <strong>Anna University Practical Examinations</strong>. Registered members will be contacted by the symposium coordinators soon.
+            </p>
+          </div>
+        </div>
+        <div
+          className="relative flex flex-col items-center gap-0 sm:gap-1"
+          style={{ marginTop: 'clamp(0rem, -2vw, -5rem)' }}
+        >
+          <div className="flex flex-col items-center gap-0 sm:gap-0">
+            <img
+              src="/cahcet-logo.webp"
+              alt="CAHCET College logo"
+              className="h-20 w-20 sm:h-20 sm:w-20 md:h-40 md:w-40 rounded-md border bg-card p-1 mt-[-0.25rem]"
+            />
             <div className="text-base sm:text-lg md:text-xl font text-center mb-2" style={{ fontFamily: 'Helvetica', fontWeight: 'bold' ,fontSize: '1.5em' }}>
               C. ABDUL HAKEEM COLLEGE OF ENGINEERING AND TECHNOLOGY
             </div>
           </div>
           <p
-  className="text-nowrap font-small text opacity-75 mb-2"
-  style={{
-    fontFamily: 'Helvetica',
-    fontWeight: 'normal',
-    fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
-    lineHeight: '1.2'
-  }}
->
-  Department of Computer Science and Engineering
-</p>
+            className="text-nowrap font-small text opacity-75 mb-2"
+            style={{
+              fontFamily: 'Helvetica',
+              fontWeight: 'normal',
+              fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
+              lineHeight: '1.2'
+            }}
+          >
+            Department of Computer Science and Engineering
+          </p>
 
-<p
-  className="text-nowrap font-small text opacity-75 mb-2"
-  style={{
-    fontFamily: 'Monotype Corsiva, cursive',
-    fontWeight: 'normal',
-    fontSize: 'clamp(0.8rem, 1.5vw, 1.1em)',
-    lineHeight: '1.2'
-  }}
->
-  proudly presents
-</p>
-         
-         <h1
+          <p
+            className="text-nowrap font-small text opacity-75 mb-2"
+            style={{
+              fontFamily: 'Monotype Corsiva, cursive',
+              fontWeight: 'normal',
+              fontSize: 'clamp(0.8rem, 1.5vw, 1.1em)',
+              lineHeight: '1.2'
+            }}
+          >
+            proudly presents
+          </p>
+
+          <h1
             className="text-balance font-Helvetica font-black leading-tight tracking-tight whitespace-nowrap mb-2"
             style={{
               fontFamily: 'Decaydence',
@@ -115,36 +124,37 @@ export default async function HomePage() {
             <span className="hidden sm:inline">ELOQUENCE'25</span>
             <span className="sm:hidden">ELOQUENCE'25</span>
           </h1>
-                    <p
-  className="text-nowrap font-medium text opacity-75"
-  style={{
-    fontFamily: 'Helvetica',
-    fontWeight: 'normal' ,
-    fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
-    lineHeight: '1.2'
-  }}
->
-  8th National Level Technical Symposium
-</p><CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs mb-2" />
-          <p className="text-xs text opacity-75">November 01, 2025 • 9:00 AM IST</p>
+          <p
+            className="text-nowrap font-medium text opacity-75"
+            style={{
+              fontFamily: 'Helvetica',
+              fontWeight: 'normal' ,
+              fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
+              lineHeight: '1.2'
+            }}
+          >
+            8th National Level Technical Symposium
+          </p>
+          {/* NEW: Removed Countdown and Date */}
+          {/* <CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs mb-2" />
+          <p className="text-xs text opacity-75">November 01, 2025 • 9:00 AM IST</p> */}
           {/* CTAs */}
           <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 w-full" id="register">
-            <Link href="/register">
-<Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
+            {/* NEW: Updated Register Button Text */}
+            <Link href="/register1">
+              <Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
+                Registration Paused
+              </Button>
+            </Link>
 
-    Register Now
-  </Button>
-</Link>
-
-<Link href="/events">
-  <Button
-    variant="glass"
-    className="rounded-full w-full sm:w-auto px-6 py-3"
-  >
-    View Events
-  </Button>
-</Link>
-
+            <Link href="/events">
+              <Button
+                variant="glass"
+                className="rounded-full w-full sm:w-auto px-6 py-3"
+              >
+                View Events
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

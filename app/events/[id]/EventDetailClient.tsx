@@ -69,7 +69,7 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 
 				<aside className="space-y-4">
 					<Link
-						href={`/register?event=${event.id}`}
+						href={`/register1?event=${event.id}`}
 						target="_blank"
 						rel="noopener noreferrer"
 					>
