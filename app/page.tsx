@@ -40,14 +40,13 @@ export const metadata: Metadata = {
 }
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import EventsIconsStrip from "@/components/sections/events-icons-strip"
 import SponsorsSection from "@/components/sections/sponsors-section"
+import { Badge } from "@/components/ui/badge"
 import PatronsSection from "@/components/sections/patrons-section"
-// import CountdownTimer from "@/components/countdown-timer" // Commented out as not needed now
+import CountdownTimer from "@/components/countdown-timer" 
 import FloatingIcons from "@/components/floating-icons"
 import BackgroundGrid from "@/components/background-grid"
 import { Utensils, Code2, Globe, HelpCircle, Calendar, AlertTriangle } from "lucide-react"
-import PostponementPopup from '@/components/postponement-popup'; // Ensure correct path and filename
 
 function IconPill({ children }: { children: React.ReactNode }) {
   return (
@@ -60,19 +59,11 @@ function IconPill({ children }: { children: React.ReactNode }) {
 export default async function HomePage() {
   return (
     <main>
-      <PostponementPopup />
       {/* HERO */}
       <section className="relative mx-auto w-full max-w-5xl px-[2vw] sm:px-4 py-[6vh] sm:py-8 md:py-12 lg:py-16 xl:py-20 text-center">
         <BackgroundGrid />
         <FloatingIcons variant="hero" />
-        {/* NEW: Postponement Banner */}
-        <div className="relative mb-8 mx-auto w-full max-w-2xl px-4 py-3 rounded-lg bg-red-100 border border-red-300 text-red-800 dark:bg-red-900/30 dark:border-red-700 dark:text-red-200">
-          <div className="flex items-center justify-center gap-2">
-            <p className="text-sm sm:text-base font-medium">
-              <strong>IMPORTANT ANNOUNCEMENT</strong><br></br> Eloquence'25 has been postponed due to <strong>Anna University Practical Examinations</strong>. Registered members will be contacted by the symposium coordinators soon.
-            </p>
-          </div>
-        </div>
+        
         <div
           className="relative flex flex-col items-center gap-0 sm:gap-1"
           style={{ marginTop: 'clamp(0rem, -2vw, -5rem)' }}
@@ -125,25 +116,26 @@ export default async function HomePage() {
             <span className="sm:hidden">ELOQUENCE'25</span>
           </h1>
           <p
-            className="text-nowrap font-medium text opacity-75"
+            className="text-nowrap font-medium text opacity-75 mt-2"
             style={{
               fontFamily: 'Helvetica',
               fontWeight: 'normal' ,
               fontSize: 'clamp(0.8rem, 1.5vw, 1.2em)',
               lineHeight: '1.2'
+            
             }}
           >
             8th National Level Technical Symposium
           </p>
-          {/* NEW: Removed Countdown and Date */}
-          {/* <CountdownTimer target="2025-11-01T09:00:00+05:30" className="mt-2 mx-auto w-full max-w-xs mb-2" />
-          <p className="text-xs text opacity-75">November 01, 2025 • 9:00 AM IST</p> */}
-          {/* CTAs */}
+          <CountdownTimer target="2026-01-30T09:00:00+05:30" className= "mt-2 mx-auto w-full max-w-xs mb-2" />
+            <Badge variant="outline" className="mt-4 border-foreground/10 bg-background/70 text-xs sm:text-sm px-3 py-1.5 rounded-full mx-auto flex w-fit">
+                📆 January 30, 2026 | ⏱️ 9:00 AM IST
+            </Badge>          {/* CTAs */}
           <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-2 sm:gap-1 w-full" id="register">
             {/* NEW: Updated Register Button Text */}
-            <Link href="/register1">
+            <Link href="/register">
               <Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
-                Registration Paused
+                Register Now
               </Button>
             </Link>
 

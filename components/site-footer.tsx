@@ -90,16 +90,17 @@ export default function SiteFooter() {
 
           <div>
             <h4 className="mb-3 text-sm font-medium">Get Started</h4>
-            <Link href="/register1">
+            <Link href="/register">
 <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
-                Registration Paused
+                Register Now
               </Button>
             </Link>
           </div>
         </div>
-        <div className="mt-10 border-t pt-6 text-xs text opacity-75">
-          © 2025 Eloquence&apos;25 · CSE, CAHCET · All rights reserved
+        <div className="mt-10 border-t pt-6 text-xs opacity-75">
+          © {new Date().getFullYear()} Eloquence&apos;25 · CSE, CAHCET · All rights reserved
         </div>
+
       </div>
     </footer>
   )

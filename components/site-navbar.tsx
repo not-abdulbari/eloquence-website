@@ -51,21 +51,21 @@ export default function SiteNavbar() {
             {/* Show Register button in mobile menu */}
             {menuOpen && (
               <Link 
-                href="/register1" 
+                href="/register" 
                 className="block w-full mt-2 sm:hidden"
                 onClick={closeMenu}
               >
 <Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors">
-                  Registration Paused
+                  Register Now
                 </Button>
               </Link>
             )}
           </nav>
           {/* Right: Register (desktop), ThemeToggle, Hamburger */}
           <div className="flex items-center gap-1 ml-auto">
-            <Link href="/register1" className="hidden sm:block">
+            <Link href="/register" className="hidden sm:block">
 <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground transition-colors ">
-                Registration Paused
+                Register Now
               </Button>
             </Link>
             <ThemeToggle />

@@ -21,9 +21,7 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 		<main className="mx-auto max-w-6xl px-4 py-12">
 			<div className="mb-6 flex items-center gap-3">
 				<h1 className="text-3xl font-bold">{event.title}</h1>
-				<Badge variant={event.type === "tech" ? "default" : "secondary"}>
-					{event.type === "tech" ? "Technical" : "Non-Technical"}
-				</Badge>
+				
 			</div>
 
 			<div className="grid gap-8 md:grid-cols-3">
@@ -69,7 +67,7 @@ export default function EventDetailClient({ event, googleFormUrl }: { event: Eve
 
 				<aside className="space-y-4">
 					<Link
-						href={`/register1?event=${event.id}`}
+						href={`/register?event=${event.id}`}
 						target="_blank"
 						rel="noopener noreferrer"
 					>
