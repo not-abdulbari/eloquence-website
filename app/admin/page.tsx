@@ -124,7 +124,7 @@ export default function AdminDashboard() {
               <CardTitle className="text-2xl font-bold mt-10 text-primary">Registrations Dashboard</CardTitle>
               <p className="text-sm text-muted-foreground mt-1">C. Abdul Hakeem College of Engineering and Technology</p>
             </div>
-            <Button variant="outline" size="sm" onClick={handleLogout} className="bg-primary hover:bg-primary/90">
+            <Button variant="outline" size="sm" onClick={handleLogout} className="bg-secondary hover:bg-secondary/900">
               Logout
             </Button>
           </CardHeader>
@@ -157,7 +157,7 @@ export default function AdminDashboard() {
                   </optgroup>
                 </select>
               </div>
-              <Button onClick={fetchRegistrations} disabled={loading} className="h-[46px] px-8 font-bold bg-primary/90">
+              <Button onClick={fetchRegistrations} disabled={loading} className="h-[46px] px-8 font-bold bg-primary hover:bg-primary/90 text-white">
                 {loading ? "Fetching..." : "Fetch Data"}
               </Button>
             </div>
