@@ -103,7 +103,7 @@ export default function AdminDashboard() {
                   required
                 />
               </div>
-              <Button type="submit" className="w-full h-12 mb-10 text-lg font-semibold">
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 h-12 mb-10 text-lg font-semibold">
                 Login to Dashboard
               </Button>
             </form>
@@ -124,7 +124,7 @@ export default function AdminDashboard() {
               <CardTitle className="text-2xl font-bold mt-10 text-primary">Registrations Dashboard</CardTitle>
               <p className="text-sm text-muted-foreground mt-1">C. Abdul Hakeem College of Engineering and Technology</p>
             </div>
-            <Button variant="outline" size="sm" onClick={handleLogout} className="text-red-500 hover:bg-red-50">
+            <Button variant="outline" size="sm" onClick={handleLogout} className="bg-primary hover:bg-primary/90">
               Logout
             </Button>
           </CardHeader>
@@ -157,7 +157,7 @@ export default function AdminDashboard() {
                   </optgroup>
                 </select>
               </div>
-              <Button onClick={fetchRegistrations} disabled={loading} className="h-[46px] px-8 font-bold">
+              <Button onClick={fetchRegistrations} disabled={loading} className="h-[46px] px-8 font-bold bg-primary/90">
                 {loading ? "Fetching..." : "Fetch Data"}
               </Button>
             </div>
