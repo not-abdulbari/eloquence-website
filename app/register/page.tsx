@@ -14,7 +14,7 @@ export default function RegisterPage() {
       <div className="relative z-10 w-full max-w-xl px-4">
         <Card className="border-foreground/10 bg-background/80 backdrop-blur-sm text-center">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-red-600">
+            <CardTitle className="text-2xl font-bold text-red-600 mt-5">
               Online Registration Closed
             </CardTitle>
           </CardHeader>
@@ -33,7 +33,7 @@ export default function RegisterPage() {
               📍 Please carry a valid college ID
             </p>
 
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground mb-5">
               Thank you for your interest. We look forward to seeing you at the event!
             </p>
           </CardContent>
